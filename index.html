@@ -725,6 +725,103 @@
 
     @media (max-width: 768px) {
       .eco-grid { grid-template-columns: 1fr; }
+      .eco-preview-devices { flex-direction: column; align-items: center; }
+      .eco-prev-arrow { transform: rotate(90deg); margin: -8px 0; }
+    }
+
+    /* ===== ECOSYSTEM MINI-PREVIEW ===== */
+    .eco-preview-devices {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; padding: 0 16px;
+    }
+    .eco-prev-device {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .eco-prev-book {
+      width: 100px; height: 136px; perspective: 400px; cursor: pointer;
+    }
+    .eco-prev-book-inner {
+      width: 100%; height: 100%; border-radius: 3px 6px 6px 3px;
+      background: linear-gradient(160deg, #1a2640, #131c2e, #0e1526);
+      border: 1px solid rgba(148,163,184,0.15);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 10px 8px; position: relative; overflow: hidden;
+      transform: rotateY(-6deg); transition: transform 0.4s ease;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.35), 0 0 40px rgba(217,119,6,0.05);
+    }
+    .eco-prev-book:hover .eco-prev-book-inner { transform: rotateY(-2deg); }
+    .eco-prev-book-inner::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 50% 30%, rgba(251,191,36,0.08) 0%, transparent 60%);
+    }
+    .eco-prev-logo { width: 32px; height: 32px; margin-bottom: 6px; position: relative; z-index: 1; }
+
+    .eco-prev-phone {
+      width: 60px; height: 120px; background: #0d1321; border-radius: 12px;
+      border: 2px solid #1e293b; position: relative; overflow: hidden; cursor: pointer;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 12px 40px rgba(0,0,0,0.35), 0 0 40px rgba(217,119,6,0.04);
+      transition: transform 0.3s ease;
+    }
+    .eco-prev-phone:hover { transform: translateY(-3px); }
+    .eco-prev-phone-notch {
+      position: absolute; top: 3px; left: 50%; transform: translateX(-50%);
+      width: 22px; height: 7px; background: #000; border-radius: 5px; z-index: 10;
+    }
+
+    .eco-prev-mac { cursor: pointer; transition: transform 0.3s ease; }
+    .eco-prev-mac:hover { transform: translateY(-3px); }
+    .eco-prev-mac-screen {
+      width: 160px; height: 100px; background: #0d1117;
+      border: 2px solid #1e293b; border-radius: 6px 6px 0 0; overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 -2px 20px rgba(0,0,0,0.25), 0 0 40px rgba(217,119,6,0.03);
+    }
+    .eco-prev-mac-base {
+      width: 184px; height: 7px;
+      background: linear-gradient(180deg, #1e293b, #15202e);
+      border-radius: 0 0 4px 4px; margin-left: -12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    }
+
+    .eco-prev-label { font-size: 14px; font-weight: 700; color: #e2e8f0; }
+    .eco-prev-sublabel { font-size: 11px; color: #94a3b8; }
+
+    /* Flow Arrows */
+    .eco-prev-arrow { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .eco-prev-arrow-label {
+      font-size: 9px; font-weight: 600; color: #f59e0b;
+      background: rgba(15,23,42,0.9); border: 1px solid rgba(245,158,11,0.2);
+      border-radius: 6px; padding: 3px 8px; white-space: nowrap;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .eco-prev-arrow-line {
+      width: 50px; height: 2px; position: relative;
+      background: linear-gradient(90deg, rgba(245,158,11,0.15), rgba(245,158,11,0.4), rgba(245,158,11,0.15));
+      border-radius: 1px;
+    }
+    .eco-prev-arrow-line::after {
+      content: ''; position: absolute; right: -5px; top: 50%; transform: translateY(-50%);
+      border-left: 6px solid rgba(245,158,11,0.5);
+      border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+    }
+    .eco-prev-arrow-pulse {
+      position: absolute; top: 0; left: 0; width: 12px; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(251,191,36,0.6), transparent);
+      border-radius: 1px; animation: ecoPulse 2s ease-in-out infinite;
+    }
+    @keyframes ecoPulse { 0% { left: -12px; } 100% { left: 100%; } }
+
+    /* CTA Button */
+    .eco-preview-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 14px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #0f172a; font-weight: 600; font-size: 15px;
+      text-decoration: none; transition: all 0.25s ease;
+      box-shadow: 0 4px 20px rgba(217,119,6,0.25);
+    }
+    .eco-preview-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(217,119,6,0.35);
     }
 
     /* ===== BOOK / TOC ===== */
@@ -1366,9 +1463,6 @@
       <div class="section-label">Das Ökosystem</div>
       <div class="section-title" style="max-width:600px;margin:0 auto 8px;">Dein Werkzeugkasten. Nicht ihrer.</div>
       <div class="section-subtitle" style="margin:0 auto;">Drei Bausteine, die zusammen ein ganzes Ökosystem bilden – und jeder davon gehört dir.</div>
-      <a href="ecosystem-tour.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:14px;font-weight:500;color:#f59e0b;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-        Wie sie zusammenspielen →
-      </a>
     </div>
     <div class="eco-grid fade-in">
       <!-- Book -->
@@ -1433,6 +1527,104 @@
         </a>
       </div>
     </div>
+
+    <!-- === ECOSYSTEM MINI-PREVIEW === -->
+    <div class="eco-preview fade-in" style="margin-top:48px;">
+      <div style="text-align:center;margin-bottom:24px;">
+        <div style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:#f59e0b;margin-bottom:8px;">So hängt alles zusammen</div>
+      </div>
+
+      <div class="eco-preview-devices">
+        <!-- Book -->
+        <div class="eco-prev-device">
+          <div class="eco-prev-book">
+            <div class="eco-prev-book-inner">
+              <svg class="eco-prev-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs><linearGradient id="epblg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs>
+                <path d="M50 15c-8 0-15 5-18 12-2 5-1 10 1 14l-8 12c-2 3-1 7 2 9l6 4-3 10c-1 3 1 6 4 7h8l2 7c1 3 4 5 7 4l8-2 8 2c3 1 6-1 7-4l2-7h8c3-1 5-4 4-7l-3-10 6-4c3-2 4-6 2-9l-8-12c2-4 3-9 1-14-3-7-10-12-18-12z" fill="url(#epblg)"/>
+              </svg>
+              <div style="font-size:10px;font-weight:700;color:#e2e8f0;">OpenClaw</div>
+            </div>
+          </div>
+          <div class="eco-prev-label">Buch</div>
+          <div class="eco-prev-sublabel">Lesen & Lernen</div>
+        </div>
+
+        <!-- Arrow 1 -->
+        <div class="eco-prev-arrow">
+          <div class="eco-prev-arrow-label">Seite scannen</div>
+          <div class="eco-prev-arrow-line"><div class="eco-prev-arrow-pulse"></div></div>
+        </div>
+
+        <!-- iPhone -->
+        <div class="eco-prev-device">
+          <div class="eco-prev-phone">
+            <div class="eco-prev-phone-notch"></div>
+            <div style="padding:14px 6px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;">
+              <div style="font-size:7px;font-weight:700;color:#e2e8f0;">Cowan</div>
+              <div style="font-size:5px;color:#22c55e;background:rgba(34,197,94,0.12);border-radius:4px;padding:1px 4px;">Verbunden</div>
+              <div style="display:flex;gap:2px;margin-top:2px;">
+                <div style="width:18px;height:14px;border-radius:3px;background:rgba(30,41,59,0.6);border:1px solid rgba(148,163,184,0.12);display:flex;align-items:center;justify-content:center;">
+                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/></svg>
+                </div>
+                <div style="width:18px;height:14px;border-radius:3px;background:rgba(30,41,59,0.6);border:1px solid rgba(148,163,184,0.12);display:flex;align-items:center;justify-content:center;">
+                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/></svg>
+                </div>
+                <div style="width:18px;height:14px;border-radius:3px;background:rgba(30,41,59,0.6);border:1px solid rgba(148,163,184,0.12);display:flex;align-items:center;justify-content:center;">
+                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="eco-prev-label">Cowan</div>
+          <div class="eco-prev-sublabel">Scannen & Fragen</div>
+        </div>
+
+        <!-- Arrow 2 -->
+        <div class="eco-prev-arrow">
+          <div class="eco-prev-arrow-label">Fortschritt tracken</div>
+          <div class="eco-prev-arrow-line"><div class="eco-prev-arrow-pulse" style="animation-delay:1s;"></div></div>
+        </div>
+
+        <!-- MacBook -->
+        <div class="eco-prev-device">
+          <div class="eco-prev-mac">
+            <div class="eco-prev-mac-screen">
+              <div style="background:linear-gradient(135deg,#4c1d95,#312e81);padding:3px 5px;display:flex;align-items:center;gap:3px;border-bottom:1px solid rgba(139,92,246,0.2);">
+                <div style="width:8px;height:8px;border-radius:2px;background:linear-gradient(135deg,#8b5cf6,#6d28d9);"></div>
+                <span style="font-size:5px;font-weight:700;color:#e2e8f0;">Dashboard</span>
+              </div>
+              <div style="padding:3px;display:flex;gap:2px;">
+                <div style="flex:1;padding:2px 3px;border-radius:3px;background:rgba(30,41,59,0.55);border:1px solid rgba(148,163,184,0.08);">
+                  <div style="font-size:4px;color:#64748b;">Tasks</div>
+                  <div style="font-size:7px;font-weight:700;color:#a78bfa;">120</div>
+                </div>
+                <div style="flex:1;padding:2px 3px;border-radius:3px;background:rgba(30,41,59,0.55);border:1px solid rgba(148,163,184,0.08);">
+                  <div style="font-size:4px;color:#64748b;">Done</div>
+                  <div style="font-size:7px;font-weight:700;color:#4ade80;">42</div>
+                </div>
+                <div style="flex:1;padding:2px 3px;border-radius:3px;background:rgba(30,41,59,0.55);border:1px solid rgba(148,163,184,0.08);">
+                  <div style="font-size:4px;color:#64748b;">%</div>
+                  <div style="font-size:7px;font-weight:700;color:#f59e0b;">35%</div>
+                </div>
+              </div>
+            </div>
+            <div class="eco-prev-mac-base"></div>
+          </div>
+          <div class="eco-prev-label">Dashboard</div>
+          <div class="eco-prev-sublabel">Tracken & Umsetzen</div>
+        </div>
+      </div>
+
+      <!-- CTA Button -->
+      <div style="text-align:center;margin-top:32px;">
+        <a href="ecosystem-tour.html" class="eco-preview-cta">
+          Ökosystem entdecken
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+
   </section>
 
   <div class="divider"><hr></div>
