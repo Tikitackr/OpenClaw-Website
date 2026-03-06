@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Tour – OpenClaw</title>
+  <meta name="description" content="Entdecke das OpenClaw Dashboard – deine Kommandozentrale für das Buchprojekt. 7 Module, 120 Tasks, Kapitel-Tracker und eingebauter KI-Chat.">
+  <meta name="author" content="Thomas Iburg">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0f172a">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Dashboard Tour – OpenClaw">
+  <meta property="og:description" content="Entdecke das OpenClaw Dashboard – deine Kommandozentrale für das Buchprojekt mit 7 Modulen und KI-Chat.">
+  <meta property="og:url" content="https://tikitackr.github.io/OpenClaw/dashboard-tour.html">
+  <meta property="og:site_name" content="OpenClaw">
+  <meta property="og:locale" content="de_DE">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; overflow-x: hidden; min-height: 100vh; }
+
+    .bg-glow { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .bg-glow::before { content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%; background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 70%); animation: floatGlow 20s ease-in-out infinite; }
+    .bg-glow::after { content: ''; position: absolute; bottom: -20%; right: -10%; width: 60%; height: 60%; background: radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%); animation: floatGlow 25s ease-in-out infinite reverse; }
+    @keyframes floatGlow { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(40px, -30px); } }
+
+    /* ===== NAV ===== */
+    .back-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(15,23,42,0.85); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid rgba(148,163,184,0.12); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .back-link { color: #f59e0b; text-decoration: none; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: opacity 0.2s; }
+    .back-link:hover { opacity: 0.8; }
+    .back-link svg { width: 16px; height: 16px; }
+    .nav-title { font-size: 14px; color: #94a3b8; }
+
+    .tour-page { position: relative; z-index: 1; max-width: 1300px; margin: 0 auto; padding: 72px 24px 80px; }
+
+    /* ===== HERO ===== */
+    .tour-hero { text-align: center; margin-bottom: 8px; }
+    .tour-hero h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 700; line-height: 1.15; margin-bottom: 12px; }
+    .tour-hero h1 span { background: linear-gradient(135deg, #fbbf24, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .tour-hero p { font-size: 18px; color: #94a3b8; max-width: 720px; margin: 0 auto; }
+    .tour-hint { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #64748b; background: rgba(30,41,59,0.55); border: 1px solid rgba(148,163,184,0.12); border-radius: 20px; padding: 8px 16px; margin-bottom: 12px; }
+
+    /* ===== ORBIT LAYOUT ===== */
+    .orbit-section { position: relative; display: flex; justify-content: center; align-items: center; min-height: 560px; }
+
+    /* ===== MACBOOK FRAME ===== */
+    .macbook-frame { position: relative; z-index: 10; flex-shrink: 0; width: 360px; }
+    .macbook-screen {
+      width: 360px; height: 235px;
+      background: #0d1117;
+      border: 3px solid #1e293b;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden; position: relative;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 -2px 40px rgba(0,0,0,0.3), 0 0 80px rgba(217,119,6,0.05);
+    }
+    .macbook-camera { position: absolute; top: 6px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; border-radius: 50%; background: #1e293b; z-index: 5; }
+    .macbook-camera::after { content: ''; position: absolute; top: 1.5px; left: 1.5px; width: 3px; height: 3px; border-radius: 50%; background: #0f172a; }
+    .macbook-base {
+      width: 420px; height: 12px;
+      background: linear-gradient(180deg, #1e293b, #15202e);
+      border-radius: 0 0 8px 8px;
+      margin-left: -30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .macbook-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: #0f172a; border-radius: 0 0 4px 4px; }
+    .macbook-base-line { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 1px; background: rgba(148,163,184,0.15); border-radius: 1px; margin-top: 6px; }
+
+    /* ===== DASHBOARD UI ===== */
+    .dash-ui { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; font-size: 10px; }
+
+    /* Dashboard Header */
+    .dash-header {
+      background: linear-gradient(135deg, #4c1d95, #312e81, #1e1b4b);
+      padding: 10px 14px 8px; display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid rgba(139,92,246,0.2);
+    }
+    .dash-header-icon { width: 20px; height: 20px; border-radius: 5px; background: linear-gradient(135deg, #8b5cf6, #6d28d9); display: flex; align-items: center; justify-content: center; }
+    .dash-header-icon svg { width: 12px; height: 12px; fill: white; }
+    .dash-header-title { font-size: 11px; font-weight: 700; color: #e2e8f0; flex: 1; }
+    .dash-api-badge { display: flex; align-items: center; gap: 3px; font-size: 8px; color: #22c55e; background: rgba(34,197,94,0.12); border-radius: 8px; padding: 2px 6px; }
+    .dash-api-badge::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: #22c55e; }
+    .dash-progress-mini { width: 80px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); overflow: hidden; margin-left: 8px; }
+    .dash-progress-mini-fill { width: 35%; height: 100%; background: linear-gradient(90deg, #8b5cf6, #a78bfa); border-radius: 2px; }
+
+    /* Module Nav */
+    .dash-modules {
+      background: rgba(30,41,59,0.6); padding: 6px 10px;
+      display: flex; gap: 4px; border-bottom: 1px solid rgba(148,163,184,0.08);
+    }
+    .dash-mod-btn {
+      padding: 3px 8px; border-radius: 6px; font-size: 8px; font-weight: 600;
+      background: rgba(30,41,59,0.5); color: #94a3b8; white-space: nowrap;
+      border: 1px solid transparent;
+      transition: all 0.3s ease;
+    }
+    .dash-mod-btn.active-mod { background: rgba(139,92,246,0.15); color: #a78bfa; border-color: rgba(139,92,246,0.3); }
+    .dash-mod-btn.highlighted-mod { background: rgba(245,158,11,0.12); color: #f59e0b; border-color: rgba(245,158,11,0.4); }
+
+    /* Dashboard Content */
+    .dash-content { flex: 1; display: flex; overflow: hidden; }
+    .dash-main { flex: 1; padding: 10px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+
+    /* Stat Boxes */
+    .dash-stats { display: flex; gap: 6px; }
+    .dash-stat {
+      flex: 1; padding: 8px 10px; border-radius: 8px;
+      background: rgba(30,41,59,0.55); border: 1px solid rgba(148,163,184,0.08);
+      transition: all 0.3s ease;
+    }
+    .dash-stat.highlighted-stat { border-color: rgba(245,158,11,0.4); background: rgba(217,119,6,0.06); }
+    .dash-stat-label { font-size: 7px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+    .dash-stat-value { font-size: 14px; font-weight: 700; color: #e2e8f0; }
+    .dash-stat-value.purple { color: #a78bfa; }
+    .dash-stat-value.green { color: #4ade80; }
+    .dash-stat-value.amber { color: #f59e0b; }
+
+    /* Chapter Grid */
+    .dash-chapter-grid {
+      background: rgba(30,41,59,0.55); border: 1px solid rgba(148,163,184,0.08);
+      border-radius: 8px; padding: 8px 10px; flex: 1;
+      transition: all 0.3s ease;
+    }
+    .dash-chapter-grid.highlighted-grid { border-color: rgba(245,158,11,0.4); background: rgba(217,119,6,0.06); }
+    .dash-grid-title { font-size: 8px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .dash-grid {
+      display: grid; grid-template-columns: repeat(15, 1fr); gap: 2px;
+    }
+    .dash-grid-cell {
+      height: 8px; border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .cell-empty { background: rgba(51,65,85,0.4); }
+    .cell-blue { background: #3b82f6; }
+    .cell-cyan { background: #06b6d4; }
+    .cell-yellow { background: #eab308; }
+    .cell-orange { background: #f97316; }
+    .cell-green { background: #22c55e; }
+    .dash-grid-legend { display: flex; gap: 8px; margin-top: 5px; }
+    .dash-legend-item { display: flex; align-items: center; gap: 3px; font-size: 7px; color: #64748b; }
+    .dash-legend-dot { width: 5px; height: 5px; border-radius: 1px; }
+
+    /* Task List mini */
+    .dash-tasks { display: flex; flex-direction: column; gap: 3px; }
+    .dash-task { display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 6px; background: rgba(30,41,59,0.4); border: 1px solid rgba(148,163,184,0.06); }
+    .dash-task-check { width: 10px; height: 10px; border-radius: 3px; border: 1px solid #475569; flex-shrink: 0; }
+    .dash-task-check.done { background: #22c55e; border-color: #22c55e; }
+    .dash-task-text { font-size: 8px; color: #94a3b8; }
+    .dash-task-text.done-text { color: #475569; text-decoration: line-through; }
+
+    /* Cowan Widget (right sidebar) */
+    .dash-cowan {
+      width: 150px; border-left: 1px solid rgba(148,163,184,0.08);
+      background: rgba(30,41,59,0.4); display: flex; flex-direction: column;
+      transition: all 0.3s ease;
+    }
+    .dash-cowan.highlighted-cowan { border-left-color: rgba(245,158,11,0.4); background: rgba(217,119,6,0.04); }
+    .dash-cowan-header {
+      padding: 6px 8px; border-bottom: 1px solid rgba(148,163,184,0.08);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .dash-cowan-dot { width: 14px; height: 14px; border-radius: 4px; background: linear-gradient(135deg, #fbbf24, #d97706); display: flex; align-items: center; justify-content: center; font-size: 7px; font-weight: 800; color: #0f172a; }
+    .dash-cowan-label { font-size: 8px; font-weight: 600; color: #e2e8f0; }
+    .dash-cowan-chat { flex: 1; padding: 6px; display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+    .mini-bubble { padding: 4px 6px; border-radius: 6px; font-size: 7px; line-height: 1.4; max-width: 90%; }
+    .mini-bubble-bot { background: rgba(30,41,59,0.6); border: 1px solid rgba(148,163,184,0.1); color: #94a3b8; align-self: flex-start; border-bottom-left-radius: 2px; }
+    .mini-bubble-user { background: #334155; color: #94a3b8; align-self: flex-end; border-bottom-right-radius: 2px; }
+    .dash-cowan-input { padding: 5px 6px; border-top: 1px solid rgba(148,163,184,0.08); display: flex; gap: 4px; align-items: center; }
+    .dash-cowan-inputfield { flex: 1; height: 16px; border-radius: 8px; background: rgba(51,65,85,0.4); border: 1px solid rgba(148,163,184,0.08); padding: 0 6px; font-size: 7px; color: #475569; display: flex; align-items: center; }
+    .dash-cowan-send { width: 16px; height: 16px; border-radius: 50%; background: linear-gradient(135deg, #fbbf24, #d97706); flex-shrink: 0; }
+
+    /* ===== SATELLITE CARDS ===== */
+    .sat-left, .sat-right { position: absolute; top: 50%; display: flex; flex-direction: column; gap: 18px; z-index: 5; width: 260px; }
+    .sat-left { right: calc(50% + 230px); transform: translateY(-50%); }
+    .sat-right { left: calc(50% + 230px); transform: translateY(-50%); }
+
+    .sat-card {
+      background: rgba(30,41,59,0.45); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(148,163,184,0.08); border-radius: 14px; padding: 16px 18px;
+      cursor: pointer; transition: all 0.35s cubic-bezier(0.4,0,0.2,1); opacity: 0.55;
+    }
+    .sat-card:hover { opacity: 0.85; border-color: rgba(148,163,184,0.2); }
+    .sat-card.active { opacity: 1; border-color: rgba(245,158,11,0.35); box-shadow: 0 0 40px rgba(217,119,6,0.06); background: rgba(30,41,59,0.6); }
+    .sat-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .sat-card-icon { width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0; background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(217,119,6,0.12)); display: flex; align-items: center; justify-content: center; }
+    .sat-card-icon svg { width: 17px; height: 17px; stroke: #f59e0b; fill: none; stroke-width: 1.8; }
+    .sat-card h3 { font-size: 14px; font-weight: 600; color: #e2e8f0; }
+    .sat-card p { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+    .sat-card .tag { display: inline-block; margin-top: 8px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #f59e0b; background: rgba(245,158,11,0.08); padding: 2px 7px; border-radius: 5px; }
+
+    .connectors { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 6; }
+    .connector-line { stroke: rgba(245,158,11,0); stroke-width: 1; fill: none; transition: stroke 0.4s ease; stroke-dasharray: 4 4; }
+    .connector-line.active { stroke: rgba(245,158,11,0.25); }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 1100px) {
+      .orbit-section { flex-direction: column; min-height: auto; gap: 48px; padding-top: 20px; }
+      .sat-left, .sat-right { position: static; transform: none; width: 100%; max-width: 480px; margin: 0 auto; }
+      .sat-left { order: 2; } .sat-right { order: 3; }
+      .macbook-frame { order: 1; }
+      .connectors { display: none; }
+      .sat-card { opacity: 0.6; } .sat-card.active { opacity: 1; }
+    }
+    @media (max-width: 640px) {
+      .macbook-screen { width: 320px; height: 207px; }
+      .macbook-base { width: 370px; left: -25px; }
+      .dash-cowan { display: none; }
+      .dash-stat-value { font-size: 11px; }
+    }
+
+    /* ===== CTA ===== */
+    .tour-cta { text-align: center; margin-top: 80px; padding: 48px 24px; background: rgba(30,41,59,0.3); border-radius: 24px; border: 1px solid rgba(148,163,184,0.08); }
+    .tour-cta h2 { font-size: clamp(22px, 4vw, 30px); font-weight: 700; margin-bottom: 12px; }
+    .tour-cta h2 span { background: linear-gradient(135deg, #fbbf24, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .tour-cta p { font-size: 15px; color: #94a3b8; max-width: 480px; margin: 0 auto 24px; }
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #0f172a; font-weight: 600; font-size: 14px; text-decoration: none; transition: all 0.2s; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(217,119,6,0.3); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 12px; background: rgba(30,41,59,0.55); border: 1px solid rgba(148,163,184,0.18); color: #e2e8f0; font-weight: 500; font-size: 14px; text-decoration: none; transition: all 0.2s; }
+    .btn-secondary:hover { background: rgba(30,41,59,0.75); transform: translateY(-2px); }
+
+    .tour-footer { text-align: center; padding: 32px 24px; font-size: 13px; color: #475569; border-top: 1px solid rgba(148,163,184,0.08); margin-top: 60px; }
+    .tour-footer a { color: #64748b; text-decoration: none; } .tour-footer a:hover { color: #f59e0b; }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<div class="back-nav">
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    Zurück zur Website
+  </a>
+  <span class="nav-title">Dashboard Tour</span>
+</div>
+
+<div class="tour-page">
+
+  <div class="tour-hero fade-up">
+    <h1>Deine Kommandozentrale.<br><span>Alles im Blick.</span></h1>
+    <p>Dein Fortschritt, 120 Tasks in 7 Modulen und ein eingebauter KI-Chat – alles im Browser.</p>
+  </div>
+
+  <div style="text-align: center;">
+    <div class="tour-hint">Klicke auf ein Feature, um mehr zu erfahren</div>
+  </div>
+
+  <div class="orbit-section fade-up">
+
+    <!-- Left Cards -->
+    <div class="sat-left">
+      <div class="sat-card active" data-feature="modules" data-highlight="modules">
+        <div class="sat-card-head">
+          <div class="sat-card-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+          <h3>7 Module</h3>
+        </div>
+        <p>Von Server-Setup bis Publishing. Jedes Modul hat eigene Tasks, eigene Farbe, eigenen Fortschritt.</p>
+        <span class="tag">Navigation</span>
+      </div>
+      <div class="sat-card" data-feature="chapters" data-highlight="chapters">
+        <div class="sat-card-head">
+          <div class="sat-card-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
+          <h3>Kapitel-Tracker</h3>
+        </div>
+        <p>15 Kapitel × 5 Schritte. Farbcodiert von Outline bis Final. Du siehst sofort, wo du stehst.</p>
+        <span class="tag">15 Kapitel</span>
+      </div>
+      <div class="sat-card" data-feature="stats" data-highlight="stats">
+        <div class="sat-card-head">
+          <div class="sat-card-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <h3>Live-Statistiken</h3>
+        </div>
+        <p>120 Tasks, Fortschritt in Prozent, erledigte vs. offene Aufgaben – immer aktuell, immer ehrlich.</p>
+        <span class="tag">Tracking</span>
+      </div>
+    </div>
+
+    <!-- MacBook -->
+    <div class="macbook-frame">
+      <div class="macbook-screen">
+        <div class="macbook-camera"></div>
+        <div class="dash-ui">
+          <!-- Header -->
+          <div class="dash-header">
+            <div class="dash-header-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
+            <span class="dash-header-title">OpenClaw Buchprojekt</span>
+            <div class="dash-api-badge">API aktiv</div>
+            <div class="dash-progress-mini"><div class="dash-progress-mini-fill"></div></div>
+          </div>
+          <!-- Module Nav -->
+          <div class="dash-modules" id="dashModules">
+            <div class="dash-mod-btn active-mod" data-mod="home">Home</div>
+            <div class="dash-mod-btn" data-mod="m1">M1 Server</div>
+            <div class="dash-mod-btn" data-mod="m2">M2 Agents</div>
+            <div class="dash-mod-btn" data-mod="m3">M3 Pipeline</div>
+            <div class="dash-mod-btn" data-mod="m4">M4 Publish</div>
+            <div class="dash-mod-btn" data-mod="m5">M5 Buch</div>
+            <div class="dash-mod-btn" data-mod="m6">M6 Projekt</div>
+          </div>
+          <!-- Content -->
+          <div class="dash-content">
+            <div class="dash-main">
+              <!-- Stats -->
+              <div class="dash-stats" id="dashStats">
+                <div class="dash-stat">
+                  <div class="dash-stat-label">Tasks gesamt</div>
+                  <div class="dash-stat-value purple">120</div>
+                </div>
+                <div class="dash-stat">
+                  <div class="dash-stat-label">Erledigt</div>
+                  <div class="dash-stat-value green">42</div>
+                </div>
+                <div class="dash-stat">
+                  <div class="dash-stat-label">Fortschritt</div>
+                  <div class="dash-stat-value amber">35%</div>
+                </div>
+              </div>
+              <!-- Chapter Grid -->
+              <div class="dash-chapter-grid" id="dashChapterGrid">
+                <div class="dash-grid-title">Kapitelfortschritt (15 × 5)</div>
+                <div class="dash-grid" id="chapterGrid"></div>
+                <div class="dash-grid-legend">
+                  <div class="dash-legend-item"><div class="dash-legend-dot" style="background:#3b82f6"></div>Outline</div>
+                  <div class="dash-legend-item"><div class="dash-legend-dot" style="background:#06b6d4"></div>Draft</div>
+                  <div class="dash-legend-item"><div class="dash-legend-dot" style="background:#eab308"></div>Check</div>
+                  <div class="dash-legend-item"><div class="dash-legend-dot" style="background:#f97316"></div>Review</div>
+                  <div class="dash-legend-item"><div class="dash-legend-dot" style="background:#22c55e"></div>Final</div>
+                </div>
+              </div>
+              <!-- Tasks -->
+              <div class="dash-tasks" id="dashTasks">
+                <div class="dash-task"><div class="dash-task-check done"></div><span class="dash-task-text done-text">VPS auf Hostinger aufsetzen</span></div>
+                <div class="dash-task"><div class="dash-task-check done"></div><span class="dash-task-text done-text">Docker + Portainer installieren</span></div>
+                <div class="dash-task"><div class="dash-task-check"></div><span class="dash-task-text">Tailscale VPN konfigurieren</span></div>
+                <div class="dash-task"><div class="dash-task-check"></div><span class="dash-task-text">n8n Workflow deployen</span></div>
+              </div>
+            </div>
+            <!-- Cowan Widget -->
+            <div class="dash-cowan" id="dashCowan">
+              <div class="dash-cowan-header">
+                <div class="dash-cowan-dot">C</div>
+                <span class="dash-cowan-label">Cowan</span>
+              </div>
+              <div class="dash-cowan-chat">
+                <div class="mini-bubble mini-bubble-bot">Hey! Wie kann ich helfen?</div>
+                <div class="mini-bubble mini-bubble-user">Status Kapitel 3?</div>
+                <div class="mini-bubble mini-bubble-bot">Kap. 3: Outline fertig, Draft läuft. 2 von 5 Schritten.</div>
+              </div>
+              <div class="dash-cowan-input">
+                <div class="dash-cowan-inputfield">Frag mich...</div>
+                <div class="dash-cowan-send"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="macbook-base">
+        <div class="macbook-notch"></div>
+        <div class="macbook-base-line"></div>
+      </div>
+    </div>
+
+    <!-- Right Cards -->
+    <div class="sat-right">
+      <div class="sat-card" data-feature="cowan" data-highlight="cowan">
+        <div class="sat-card-head">
+          <div class="sat-card-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+          <h3>Cowan-Widget</h3>
+        </div>
+        <p>Eingebauter KI-Chat. Frag Cowan nach Kapitel-Status, Setup-Hilfe oder lass dir Code erklären – direkt im Dashboard.</p>
+        <span class="tag">KI-Chat</span>
+      </div>
+      <div class="sat-card" data-feature="tasks" data-highlight="tasks">
+        <div class="sat-card-head">
+          <div class="sat-card-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+          <h3>120 Tasks</h3>
+        </div>
+        <p>4 Sprints + 15 Kapitel × 5 Schritte. Abhaken, Undo, Filtern. Alles lokal gespeichert, nichts in der Cloud.</p>
+        <span class="tag">Aufgaben</span>
+      </div>
+      <div class="sat-card" data-feature="byok" data-highlight="byok">
+        <div class="sat-card-head">
+          <div class="sat-card-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+          <h3>BYOK & Daten</h3>
+        </div>
+        <p>Dein API-Key, dein Browser, deine Daten. Export/Import als JSON. Keine Registrierung, kein Account nötig.</p>
+        <span class="tag">Deine Kontrolle</span>
+      </div>
+    </div>
+
+    <svg class="connectors" id="connectors"></svg>
+  </div>
+
+  <div class="tour-cta fade-up">
+    <h2>Alles unter Kontrolle.<br><span>Probier's aus.</span></h2>
+    <p>Das Dashboard läuft komplett im Browser – kein Download, kein Login. Dein Fortschritt wird lokal gespeichert. Für den KI-Chat brauchst du einen Claude API-Key (BYOK).</p>
+    <div class="cta-buttons">
+      <a href="https://tikitackr.github.io/OpenClaw-Dashboard/" target="_blank" class="btn-primary">
+        Dashboard öffnen
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+      <a href="cowan-tour.html" class="btn-secondary">Cowan Tour</a>
+      <a href="index.html" class="btn-secondary">Zurück zur Website</a>
+    </div>
+  </div>
+
+  <div class="tour-footer">
+    <p>OpenClaw · <a href="index.html">Website</a> · <a href="cowan-tour.html">Cowan Tour</a> · <a href="leseprobe.html">Leseprobe</a></p>
+    <p style="margin-top: 8px;">© 2026 Thomas Iburg</p>
+  </div>
+
+</div>
+
+<script>
+  // Generate chapter grid cells
+  const grid = document.getElementById('chapterGrid');
+  const colors = ['cell-blue','cell-cyan','cell-yellow','cell-orange','cell-green'];
+  // Simulated progress: first 3 chapters mostly done, 4-6 partial, rest empty
+  const progress = [5,5,4,3,2,2,1,1,0,0,0,0,0,0,0];
+  for (let step = 0; step < 5; step++) {
+    for (let ch = 0; ch < 15; ch++) {
+      const cell = document.createElement('div');
+      cell.className = 'dash-grid-cell ' + (step < progress[ch] ? colors[step] : 'cell-empty');
+      grid.appendChild(cell);
+    }
+  }
+
+  // Feature interaction
+  const satCards = document.querySelectorAll('.sat-card');
+  let active = 'modules';
+
+  function activate(feature) {
+    active = feature;
+    satCards.forEach(c => c.classList.toggle('active', c.dataset.feature === feature));
+
+    // Reset all highlights
+    document.querySelectorAll('.dash-mod-btn').forEach(b => b.classList.remove('highlighted-mod'));
+    document.querySelectorAll('.dash-stat').forEach(s => s.classList.remove('highlighted-stat'));
+    document.getElementById('dashChapterGrid').classList.remove('highlighted-grid');
+    document.getElementById('dashCowan').classList.remove('highlighted-cowan');
+    document.getElementById('dashTasks').style.outline = '';
+    document.getElementById('dashModules').style.outline = '';
+
+    // Apply feature-specific highlight
+    switch(feature) {
+      case 'modules':
+        document.querySelectorAll('.dash-mod-btn').forEach(b => b.classList.add('highlighted-mod'));
+        break;
+      case 'chapters':
+        document.getElementById('dashChapterGrid').classList.add('highlighted-grid');
+        break;
+      case 'stats':
+        document.querySelectorAll('.dash-stat').forEach(s => s.classList.add('highlighted-stat'));
+        break;
+      case 'cowan':
+        document.getElementById('dashCowan').classList.add('highlighted-cowan');
+        break;
+      case 'tasks':
+        document.getElementById('dashTasks').style.outline = '1px solid rgba(245,158,11,0.4)';
+        document.getElementById('dashTasks').style.outlineOffset = '3px';
+        document.getElementById('dashTasks').style.borderRadius = '8px';
+        break;
+      case 'byok':
+        document.querySelectorAll('.dash-stat').forEach(s => s.classList.add('highlighted-stat'));
+        break;
+    }
+    drawConnectors();
+  }
+
+  satCards.forEach(c => {
+    c.addEventListener('click', () => activate(c.dataset.feature));
+    c.addEventListener('mouseenter', () => activate(c.dataset.feature));
+  });
+
+  function drawConnectors() {
+    const svg = document.getElementById('connectors');
+    const section = document.querySelector('.orbit-section');
+    if (!section || window.innerWidth <= 1100) { svg.innerHTML = ''; return; }
+    const sRect = section.getBoundingClientRect();
+    const macRect = document.querySelector('.macbook-screen').getBoundingClientRect();
+    const macCY = macRect.top + macRect.height / 2 - sRect.top;
+    let lines = '';
+    satCards.forEach(card => {
+      const r = card.getBoundingClientRect();
+      const isLeft = r.right < macRect.left;
+      const cx = isLeft ? (r.right - sRect.left) : (r.left - sRect.left);
+      const cy = r.top + r.height / 2 - sRect.top;
+      const edgeX = isLeft ? (macRect.left - sRect.left) : (macRect.right - sRect.left);
+      const isActive = card.classList.contains('active');
+      lines += `<path class="connector-line ${isActive ? 'active' : ''}" d="M${cx},${cy} C${(cx+edgeX)/2},${cy} ${(cx+edgeX)/2},${macCY} ${edgeX},${macCY}"/>`;
+    });
+    svg.innerHTML = lines;
+  }
+
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(el => observer.observe(el));
+
+  window.addEventListener('resize', drawConnectors);
+  window.addEventListener('scroll', drawConnectors);
+  setTimeout(drawConnectors, 100);
+
+  activate('modules');
+</script>
+
+</body>
+</html>

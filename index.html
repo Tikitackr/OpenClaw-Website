@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenClaw – Agentic Authorship</title>
+  <meta name="description" content="Das Sachbuch über Agentic Authorship. Wie ein Mensch mit KI ein Buch schreibt – und dabei eine App, ein Dashboard und eine Multi-Agent-Pipeline baut.">
+  <meta name="author" content="Thomas Iburg">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="canonical" href="https://tikitackr.github.io/OpenClaw/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="OpenClaw – Agentic Authorship">
+  <meta property="og:description" content="Ein Mensch. Eine KI. Ein ganzes Ökosystem. Das Sachbuch über Agentic Authorship – mit App, Dashboard und Multi-Agent-Pipeline.">
+  <meta property="og:url" content="https://tikitackr.github.io/OpenClaw/">
+  <meta property="og:site_name" content="OpenClaw">
+  <meta property="og:locale" content="de_DE">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="OpenClaw – Agentic Authorship">
+  <meta name="twitter:description" content="Ein Mensch. Eine KI. Ein ganzes Ökosystem. Das Sachbuch über Agentic Authorship.">
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===== BACKGROUND EFFECTS ===== */
+    .bg-glow {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .bg-glow::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -10%;
+      width: 50%;
+      height: 50%;
+      background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 70%);
+      animation: floatGlow 20s ease-in-out infinite;
+    }
+    .bg-glow::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      right: -10%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%);
+      animation: floatGlow 25s ease-in-out infinite reverse;
+    }
+    @keyframes floatGlow {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(40px, -30px); }
+    }
+
+    /* ===== NAVIGATION ===== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      background: rgba(15,23,42,0.8);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(148,163,184,0.1);
+    }
+    nav .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #e2e8f0;
+    }
+    .nav-logo-icon {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 8px rgba(217,119,6,0.3));
+    }
+    .nav-logo-text {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.3px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #f59e0b; }
+
+    /* Mobile nav toggle */
+    .nav-toggle { display: none; background: none; border: none; color: #e2e8f0; cursor: pointer; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: block; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 60px; left: 0; right: 0;
+        background: rgba(15,23,42,0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 20px 24px;
+        gap: 16px;
+        border-bottom: 1px solid rgba(148,163,184,0.1);
+      }
+    }
+
+    /* ===== SECTIONS ===== */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #d97706;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    .section-subtitle {
+      font-size: 17px;
+      color: #94a3b8;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 80px;
+    }
+    .hero-content {
+      max-width: 750px;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      background: rgba(217,119,6,0.12);
+      border: 1px solid rgba(217,119,6,0.25);
+      color: #f59e0b;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 28px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: clamp(17px, 2vw, 20px);
+      color: #94a3b8;
+      max-width: 580px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      padding: 14px 32px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(217,119,6,0.3);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(217,119,6,0.4);
+    }
+    .btn-secondary {
+      padding: 14px 32px;
+      border-radius: 12px;
+      background: rgba(30,41,59,0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(148,163,184,0.18);
+      color: #e2e8f0;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .btn-secondary:hover {
+      background: rgba(217,119,6,0.08);
+      border-color: rgba(217,119,6,0.3);
+    }
+
+    /* ===== ABOUT / WORUM GEHT'S ===== */
+    .about {
+      padding-top: 120px;
+      padding-bottom: 80px;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-top: 40px;
+    }
+    .about-text {
+      font-size: 17px;
+      color: #cbd5e1;
+      line-height: 1.8;
+    }
+    .about-text p + p { margin-top: 20px; }
+    .about-visual {
+      position: relative;
+    }
+    .glass-card {
+      background: rgba(30,41,59,0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%);
+      border-radius: 16px 16px 0 0;
+      pointer-events: none;
+    }
+    .concept-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 16px 0;
+    }
+    .concept-item + .concept-item {
+      border-top: 1px solid rgba(148,163,184,0.08);
+    }
+    .concept-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(217,119,6,0.1);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+    .concept-label {
+      font-weight: 600;
+      color: #f59e0b;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .concept-desc {
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    /* ===== 3D BOOK COVER ===== */
+    .book-mockup {
+      perspective: 900px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    /* Ambient glow behind the entire book */
+    .book-mockup::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 420px;
+      height: 560px;
+      background: radial-gradient(ellipse, rgba(217,119,6,0.18) 0%, rgba(217,119,6,0.06) 40%, transparent 70%);
+      pointer-events: none;
+      border-radius: 50%;
+      filter: blur(30px);
+      z-index: 0;
+    }
+    .book-3d {
+      width: 320px;
+      height: 480px;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateY(-12deg) rotateX(2deg);
+      transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+      z-index: 1;
+    }
+    .book-3d:hover {
+      transform: rotateY(-4deg) rotateX(1deg) translateY(-6px);
+    }
+    .book-front {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(160deg, #1a2640 0%, #131c2e 40%, #0e1526 100%);
+      border-radius: 4px 12px 12px 4px;
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        6px 6px 20px rgba(0,0,0,0.6),
+        20px 10px 40px rgba(0,0,0,0.4),
+        0 0 80px rgba(217,119,6,0.12),
+        0 0 120px rgba(217,119,6,0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 24px 22px;
+      border: 1px solid rgba(217,119,6,0.12);
+      border-left: 3px solid rgba(217,119,6,0.4);
+    }
+    /* Spine edge */
+    .book-spine-edge {
+      position: absolute;
+      top: 0; left: -16px;
+      width: 16px; height: 100%;
+      background: linear-gradient(90deg, #1e293b, #162032);
+      border-radius: 4px 0 0 4px;
+      transform: rotateY(90deg);
+      transform-origin: right center;
+      box-shadow: inset -2px 0 8px rgba(0,0,0,0.4);
+    }
+    /* Page edges (stacked pages on right side) */
+    .book-pages-edge {
+      position: absolute;
+      top: 4px;
+      right: -6px;
+      width: 6px;
+      height: calc(100% - 8px);
+      background: repeating-linear-gradient(
+        180deg,
+        rgba(203,213,225,0.12) 0px,
+        rgba(203,213,225,0.12) 1px,
+        rgba(30,41,59,0.5) 1px,
+        rgba(30,41,59,0.5) 3px
+      );
+      border-radius: 0 2px 2px 0;
+      transform: translateZ(-2px);
+    }
+    /* Book glow – top */
+    .book-front::before {
+      content: '';
+      position: absolute;
+      top: -15%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      height: 200px;
+      background: radial-gradient(ellipse, rgba(217,119,6,0.14) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    /* Ambient center glow */
+    .book-front::after {
+      content: '';
+      position: absolute;
+      top: 42%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .bk-top { text-align: center; position: relative; z-index: 2; }
+    .bk-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      background: rgba(217,119,6,0.1);
+      border: 1px solid rgba(217,119,6,0.25);
+      color: #f59e0b;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .bk-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.05;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .bk-subtitle {
+      font-size: 10px;
+      color: #94a3b8;
+      line-height: 1.5;
+      max-width: 220px;
+      margin: 0 auto;
+    }
+    .bk-center {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .bk-scene {
+      position: relative;
+      width: 260px;
+      height: 220px;
+    }
+    /* Floating labels in book cover */
+    .bk-fl {
+      position: absolute;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 8px;
+      border: 1px solid rgba(148,163,184,0.12);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 11px;
+      font-size: 9px;
+      font-weight: 600;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.3);
+    }
+    .bk-fl svg {
+      width: 12px; height: 12px;
+      stroke: currentColor; fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .bk-fl-1 { top: 8px; left: 0; background: rgba(30,41,59,0.75); color: #cbd5e1; animation: bkFloat 4s ease-in-out infinite; }
+    .bk-fl-2 { top: 2px; right: 0; background: rgba(217,119,6,0.12); border-color: rgba(217,119,6,0.25); color: #f59e0b; animation: bkFloat 4s ease-in-out infinite 0.8s; }
+    .bk-fl-3 { top: 52px; left: -4px; background: rgba(217,119,6,0.08); border-color: rgba(217,119,6,0.2); color: #fbbf24; animation: bkFloat 4s ease-in-out infinite 1.6s; }
+    .bk-fl-4 { top: 64px; right: -4px; background: rgba(30,41,59,0.75); color: #cbd5e1; animation: bkFloat 4s ease-in-out infinite 0.4s; }
+    .bk-fl-5 { top: 32px; left: 50%; transform: translateX(-50%); background: rgba(217,119,6,0.14); border-color: rgba(217,119,6,0.28); color: #f59e0b; animation: bkFloatC 4s ease-in-out infinite 1.2s; }
+    @keyframes bkFloat {
+      0%, 100% { transform: translateY(0); opacity: 0.75; }
+      50% { transform: translateY(-6px); opacity: 1; }
+    }
+    @keyframes bkFloatC {
+      0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.75; }
+      50% { transform: translateX(-50%) translateY(-6px); opacity: 1; }
+    }
+    /* Mini hummer on book cover */
+    .bk-hummer {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      filter: drop-shadow(0 0 14px rgba(217,119,6,0.3));
+      animation: bkHummer 3s ease-in-out infinite;
+    }
+    @keyframes bkHummer {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-4px); }
+    }
+    /* Mini open book */
+    .bk-book {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 180px;
+      height: 90px;
+    }
+    .bk-page {
+      position: absolute;
+      bottom: 0;
+      width: 86px;
+      height: 90px;
+      background: rgba(30,41,59,0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(148,163,184,0.08);
+    }
+    .bk-page-l {
+      left: 0;
+      border-right: none;
+      border-radius: 3px 0 0 3px;
+    }
+    .bk-page-r {
+      right: 0;
+      border-left: none;
+      border-radius: 0 3px 3px 0;
+    }
+    .bk-book-spine {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 90px;
+      background: linear-gradient(180deg, rgba(217,119,6,0.4), rgba(217,119,6,0.08));
+    }
+    .bk-lines {
+      padding: 10px 7px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .bk-line {
+      height: 1px;
+      border-radius: 0.5px;
+      background: rgba(148,163,184,0.08);
+    }
+    /* Particles */
+    .bk-dots {
+      position: absolute;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 50px;
+      pointer-events: none;
+    }
+    .bk-dot {
+      position: absolute;
+      width: 2px; height: 2px;
+      border-radius: 50%;
+      background: rgba(217,119,6,0.3);
+      animation: bkRise 3.5s ease-out infinite;
+    }
+    .bk-dot:nth-child(1) { left: 20%; animation-delay: 0s; }
+    .bk-dot:nth-child(2) { left: 40%; animation-delay: 0.6s; }
+    .bk-dot:nth-child(3) { left: 60%; animation-delay: 1.2s; }
+    .bk-dot:nth-child(4) { left: 80%; animation-delay: 0.3s; }
+    .bk-dot:nth-child(5) { left: 50%; animation-delay: 0.9s; }
+    @keyframes bkRise {
+      0% { bottom: 0; opacity: 0; }
+      15% { opacity: 0.7; }
+      100% { bottom: 50px; opacity: 0; }
+    }
+    .bk-author {
+      font-size: 10px;
+      font-weight: 300;
+      color: #94a3b8;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+      .book-3d { width: 260px; height: 390px; transform: rotateY(-8deg) rotateX(1deg); }
+      .book-mockup::before { width: 340px; height: 460px; }
+      .bk-title { font-size: 22px; }
+    }
+
+    /* ===== ECOSYSTEM ===== */
+    .ecosystem {
+      padding-top: 120px;
+      padding-bottom: 80px;
+    }
+    .eco-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .eco-card {
+      background: rgba(30,41,59,0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 16px;
+      padding: 32px 28px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .eco-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .eco-card:hover::before { opacity: 1; }
+    .eco-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(217,119,6,0.2);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(217,119,6,0.1);
+    }
+    .eco-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      background: rgba(217,119,6,0.08);
+      border: 1px solid rgba(217,119,6,0.15);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .eco-icon svg { width: 28px; height: 28px; stroke: #f59e0b; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .eco-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #e2e8f0;
+    }
+    .eco-card .version {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 8px;
+      background: rgba(217,119,6,0.1);
+      color: #f59e0b;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .eco-card p {
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .eco-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .eco-tag {
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(30,41,59,0.8);
+      border: 1px solid rgba(148,163,184,0.1);
+      font-size: 11px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+    .eco-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #f59e0b;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: gap 0.2s;
+    }
+    .eco-link:hover { gap: 10px; }
+    .eco-link svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    @media (max-width: 768px) {
+      .eco-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===== BOOK / TOC ===== */
+    .book-toc {
+      padding-top: 120px;
+      padding-bottom: 80px;
+    }
+    .toc-parts {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .toc-part {
+      background: rgba(30,41,59,0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 16px;
+      padding: 28px 32px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    .toc-part::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(180deg, #fbbf24, #d97706);
+      border-radius: 4px 0 0 4px;
+    }
+    .toc-part-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .toc-part-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(217,119,6,0.12);
+      border: 1px solid rgba(217,119,6,0.25);
+      color: #f59e0b;
+      font-weight: 800;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .toc-part-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+    .toc-part-subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+    .toc-chapters {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .toc-chapter {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(148,163,184,0.06);
+      transition: all 0.2s;
+    }
+    .toc-chapter:last-child { border-bottom: none; }
+    .toc-chapter:hover { padding-left: 8px; }
+    .toc-chapter:hover .toc-ch-num { color: #f59e0b; border-color: rgba(217,119,6,0.4); }
+    .toc-ch-num {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: 1px solid rgba(148,163,184,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #64748b;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .toc-ch-info { flex: 1; min-width: 0; }
+    .toc-ch-title {
+      font-size: 15px;
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+    .toc-ch-desc {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+    .toc-part-result {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 4px;
+      font-style: italic;
+    }
+    .toc-cta {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .toc-part { padding: 24px 20px; }
+    }
+
+    /* ===== PIPELINE ===== */
+    .pipeline {
+      padding-top: 120px;
+      padding-bottom: 80px;
+    }
+    .pipeline-visual {
+      margin-top: 48px;
+      position: relative;
+    }
+    .pipeline-steps {
+      display: flex;
+      gap: 0;
+      align-items: stretch;
+      position: relative;
+    }
+    .pipe-step {
+      flex: 1;
+      text-align: center;
+      padding: 28px 16px;
+      position: relative;
+    }
+    .pipe-step::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -12px;
+      width: 24px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(217,119,6,0.4), rgba(217,119,6,0.1));
+      z-index: 2;
+    }
+    .pipe-step:last-child::after { display: none; }
+    .pipe-num {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(217,119,6,0.12);
+      border: 2px solid rgba(217,119,6,0.3);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px;
+      font-weight: 700;
+      font-size: 16px;
+      color: #f59e0b;
+    }
+    .pipe-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 8px;
+    }
+    .pipe-desc {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+    .pipeline-card {
+      background: rgba(30,41,59,0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+      overflow: hidden;
+      position: relative;
+    }
+    .pipeline-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+      .pipeline-steps { flex-direction: column; }
+      .pipe-step::after {
+        top: auto;
+        bottom: -12px;
+        left: 50%;
+        right: auto;
+        width: 2px;
+        height: 24px;
+        background: linear-gradient(180deg, rgba(217,119,6,0.4), rgba(217,119,6,0.1));
+      }
+    }
+
+    /* ===== NUMBERS / STATS ===== */
+    .stats {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 32px 16px;
+      background: rgba(30,41,59,0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(148,163,184,0.08);
+      border-radius: 16px;
+    }
+    .stat-number {
+      font-size: 40px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+    .stat-label {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ===== TECH / GEBAUT MIT ===== */
+    .tech-hero {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 36px 32px;
+      background: rgba(30,41,59,0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(217,119,6,0.18);
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 60px rgba(217,119,6,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .tech-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(217,119,6,0.4), transparent);
+    }
+    .tech-hero::after {
+      content: '';
+      position: absolute;
+      top: -40%; right: -10%;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .tech-hero-logo {
+      flex-shrink: 0;
+      width: 80px; height: 80px;
+      border-radius: 20px;
+      background: rgba(217,119,6,0.08);
+      border: 1px solid rgba(217,119,6,0.2);
+      display: flex; align-items: center; justify-content: center;
+      filter: drop-shadow(0 0 20px rgba(217,119,6,0.2));
+    }
+    .tech-hero-info {
+      flex: 1;
+    }
+    .tech-hero-name {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+    }
+    .tech-hero-claim {
+      font-size: 16px;
+      color: #94a3b8;
+      line-height: 1.6;
+      max-width: 500px;
+    }
+    .tech-hero-badge {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 4px 14px;
+      border-radius: 10px;
+      background: rgba(217,119,6,0.1);
+      border: 1px solid rgba(217,119,6,0.2);
+      color: #f59e0b;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .tech-divider-label {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .tech-hero { flex-direction: column; text-align: center; padding: 28px 24px; }
+      .tech-hero-claim { max-width: 100%; }
+    }
+
+    /* ===== AUTHOR ===== */
+    .author {
+      padding-top: 120px;
+      padding-bottom: 80px;
+    }
+    .author-card {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      margin-top: 40px;
+    }
+    .author-avatar {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(217,119,6,0.15), rgba(30,41,59,0.8));
+      border: 3px solid rgba(217,119,6,0.2);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 8px rgba(217,119,6,0.05);
+    }
+    .author-avatar-letter {
+      font-size: 52px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .author-info h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .author-info .author-role {
+      color: #f59e0b;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .author-info p {
+      color: #94a3b8;
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 550px;
+    }
+
+    @media (max-width: 768px) {
+      .author-card { flex-direction: column; text-align: center; }
+      .author-info p { max-width: 100%; }
+    }
+
+    /* ===== TECH STACK ===== */
+    .tech {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+    .tech-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 32px;
+    }
+    .tech-pill {
+      padding: 10px 20px;
+      border-radius: 12px;
+      background: rgba(30,41,59,0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(148,163,184,0.12);
+      font-size: 14px;
+      font-weight: 500;
+      color: #cbd5e1;
+      transition: all 0.2s;
+    }
+    .tech-pill:hover {
+      border-color: rgba(217,119,6,0.3);
+      color: #f59e0b;
+    }
+
+    /* ===== CTA ===== */
+    .cta {
+      padding-top: 80px;
+      padding-bottom: 120px;
+      text-align: center;
+    }
+    .cta-card {
+      background: rgba(30,41,59,0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(217,119,6,0.15);
+      border-radius: 20px;
+      padding: 60px 40px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 80px rgba(217,119,6,0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(217,119,6,0.3), transparent);
+    }
+    .cta-card h2 {
+      font-size: clamp(24px, 3.5vw, 36px);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .cta-card p {
+      color: #94a3b8;
+      font-size: 17px;
+      margin-bottom: 32px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid rgba(148,163,184,0.08);
+      padding: 40px 24px;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #64748b;
+      font-size: 14px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      color: #64748b;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: #f59e0b; }
+    .footer-legal {
+      width: 100%;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(148,163,184,0.06);
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.7;
+    }
+    .footer-legal a {
+      color: #64748b;
+      text-decoration: underline;
+      text-decoration-color: rgba(100,116,139,0.3);
+      transition: color 0.2s;
+    }
+    .footer-legal a:hover { color: #f59e0b; }
+    .legal-section { margin-bottom: 16px; }
+    .legal-section:last-child { margin-bottom: 0; }
+    .legal-heading {
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+
+    /* ===== FADE IN ANIMATION ===== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .divider hr {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(148,163,184,0.12), transparent);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background glow -->
+  <div class="bg-glow"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="22" height="22"><defs><linearGradient id="navLG" x1="20%" y1="0%" x2="80%" y2="100%"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0.9"/><stop offset="50%" stop-color="#f59e0b" stop-opacity="0.8"/><stop offset="100%" stop-color="#d97706" stop-opacity="0.65"/></linearGradient></defs><path fill="url(#navLG)" d="m166.5 52.5q3.5 0 7 0 2.75 2.99 1.5 7-21.27 45.61-20.5 96 39.99 2.76 72 26.5 7.87 6.86 13.5 15.5 42.88-56.39 103.5-92.5 47.35-25.46 101-25 14.52 0.38 23.5 11.5 3.19 7.74 2 16-1.81 7.18-4.5 14-1 0-1 1-5.04 6.05-9 13-1 0-1 1 0 0.5 0 1-12.42 12.15-28.5 19-6.02 36.27-41.5 45-0.83 2.75 0 5 19.02-12.85 41.5-9 10.85-8.09 23.5-13 15.01-6.37 31-2.5 14.09 7.43 14 23.5-2.83 23.25-15.5 43-6.42 9.92-14 19-10.04 8.8-19.5 18-72.02 48.88-156.5 27-19.63 9.6-41.5 10.5-4.59 1.27-9 3 2 1 4 2 20.09-1.11 35 12 25.46 6.95 37.5 30.5 1.26 5.69-1 11-3.38 3.79-7.5 6.5 5.74 10.07 1.5 20.5-7.55 7.47-17.5 3.5-11.01-5.34-22.5-9.5-18.26 10-38.5 13-15.5 0-31 0-26.62-4.54-51-17-4.17 1.33-8 3.5-7.23 5.87-15 11-8.62 2.58-13.5-4.5-1.82 2.32-4.5 3.5-6.06 2.24-12 3.5-7.5 0-15 0-27.42-2.56-50-18.5-18-17.25-23-41.5 0-11.5 0-23 4.12-22.7 25-33 6.95-16.67 22-26.5-20.39-20.8-14.5-49.5 7.01-26.98 28.5-44.5 7.56-5.27 15-10.5-13.09-30.88-7.5-64 3.16-15.57 14.5-26.5 6.85-2.48 8 4.5-6.59 39.53 11 75.5 7.99-0.49 16-2 2.42-34.57 14.5-67.5 8.51-22.23 27.5-36z"/><path fill="#b45309" opacity="0.45" d="m113.5 401.5q0.48-5.1-1-10-0.91 0.19-1 1-2.46 1.74-5 3.5 5.65 9.54-5 13-32.21 5.55-61-10-32.89-23.11-29.5-63.5 2.96-22.67 23.5-32 7.99-19.75 27-29.5-27.65-23.7-15.5-58.5 7.33-16.82 20.5-29.5 10.79-8.14 22-15.5-16.49-37.08-5.5-76 3.19-6.13 7.5-11.5 1.48-0.89 2 1-5.69 41.09 12.5 78.5 1 1 2 2 9.97-3.24 20.5-4 2 0 4 0 0-7.5 0-15 0.99-42.22 24.5-77 6.12-7.12 14-12-4.65 13.43-10 27-11.93 37.6-9.5 77 49.38 0.7 83.5 36 2.75 4.5 5.5 9 38.99-52.24 93-88.5 45.84-29.03 100-32.5 15.69-1.56 29 6.5 5.68 7.29 3.5 16.5-10.38 33.62-43.5 45-4.39 37.33-41 45-0.79 8.63-6 15.5 1.91 1.83 4.5 2.5 22.27-17.25 50.5-14.5 12.93-9.41 28-15 36.22-8.28 31.5 28.5-15.19 51.69-62.5 77.5-65.92 35.87-138 15.5-19.67 10.42-42 10.5-8.39 2.88-17 5 3.58 6.08 10 9 20.92-1.14 36 13 22.67 5.23 34.5 25.5 3.33 7.13-3.5 11.5-3.88 1.8-8 3 7.36 8.45 6.5 19.5-4.43 5.66-11.5 3.5-12.84-5.67-26-10.5-39.4 21.02-83 10.5-18.85-5.78-36.5-14.5-13.65 4.14-23.5 14.5-9.51 3.74-11-6.5z"/></svg></div>
+        <span class="nav-logo-text">OpenClaw</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <ul class="nav-links">
+        <li><a href="#about">Worum geht's</a></li>
+        <li><a href="#ecosystem">Ökosystem</a></li>
+        <li><a href="#buch">Das Buch</a></li>
+        <li><a href="#pipeline">Pipeline</a></li>
+        <li><a href="#author">Autor</a></li>
+        <li><a href="https://github.com/tikitackr" target="_blank">GitHub</a></li>
+        <li><a href="#impressum">Impressum</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-content fade-in">
+      <div class="hero-badge">Sachbuch · 2026</div>
+      <h1>
+        Du willst KI nutzen?<br>
+        <span class="highlight">Dann hör auf, sie zu mieten.</span>
+      </h1>
+      <p>
+        Bau dir dein eigenes System. Mit deinen Regeln, deinen Daten, deiner Stimme.
+        Dieses Buch zeigt dir wie – und das Ökosystem drumherum beweist, dass es funktioniert.
+      </p>
+      <div class="hero-buttons">
+        <a href="#about" class="btn-primary">Warum das wichtig ist</a>
+        <a href="https://github.com/tikitackr" target="_blank" class="btn-secondary">GitHub ansehen</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="fade-in">
+      <div class="section-label">Worum geht's</div>
+      <div class="section-title">Moment mal – wem gehört eigentlich deine KI?</div>
+      <div class="section-subtitle">Spoiler: Wahrscheinlich nicht dir. Aber das lässt sich ändern.</div>
+    </div>
+    <div class="about-grid fade-in">
+      <div class="about-text">
+        <p>
+          Stell dir vor, du mietest eine Wohnung. Schöne Küche, netter Balkon. Aber du darfst die Wände nicht streichen, den Herd nicht tauschen, und wenn der Vermieter die Miete erhöht – Pech gehabt. <strong style="color:#f59e0b">Genau so funktionieren gehostete KI-Dienste.</strong>
+        </p>
+        <p>
+          OpenClaw ist der Gegenentwurf: Du baust dir dein eigenes System. Du bestimmst die Regeln. Du gibst der KI eine Stimme – <em>deine</em> Stimme. Und du behältst die Kontrolle über jeden einzelnen Satz.
+        </p>
+        <p>
+          Das Ergebnis? Nicht nur ein Buch – sondern ein ganzes Ökosystem aus App, Dashboard und Multi-Agent-Pipeline. Alles Open Source. Alles nachvollziehbar. Alles <em>deins</em>.
+        </p>
+      </div>
+      <div class="about-visual book-mockup">
+        <div class="book-3d">
+          <div class="book-spine-edge"></div>
+          <div class="book-pages-edge"></div>
+          <div class="book-front">
+            <!-- Top: Headline -->
+            <div class="bk-top">
+              <div class="bk-badge">Sachbuch · 2026</div>
+              <div class="bk-title">OpenClaw</div>
+              <div class="bk-subtitle">Agentic Authorship — Wie du mit KI ein Buch schreibst und dabei ein ganzes Ökosystem baust</div>
+            </div>
+            <!-- Center: Book scene -->
+            <div class="bk-center">
+              <div class="bk-scene">
+                <div class="bk-fl bk-fl-1"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span>Code</span></div>
+                <div class="bk-fl bk-fl-2"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span>Dashboard</span></div>
+                <div class="bk-fl bk-fl-3"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg><span>Cowan</span></div>
+                <div class="bk-fl bk-fl-4"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Pipeline</span></div>
+                <div class="bk-fl bk-fl-5"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span>Multi-Agent</span></div>
+                <div class="bk-dots"><div class="bk-dot"></div><div class="bk-dot"></div><div class="bk-dot"></div><div class="bk-dot"></div><div class="bk-dot"></div></div>
+                <div class="bk-hummer">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="42" height="42"><defs><linearGradient id="bkHG" x1="20%" y1="0%" x2="80%" y2="100%"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0.95"/><stop offset="50%" stop-color="#f59e0b" stop-opacity="0.85"/><stop offset="100%" stop-color="#d97706" stop-opacity="0.7"/></linearGradient></defs><path fill="url(#bkHG)" d="m166.5 52.5q3.5 0 7 0 2.75 2.99 1.5 7-21.27 45.61-20.5 96 39.99 2.76 72 26.5 7.87 6.86 13.5 15.5 42.88-56.39 103.5-92.5 47.35-25.46 101-25 14.52 0.38 23.5 11.5 3.19 7.74 2 16-1.81 7.18-4.5 14-1 0-1 1-5.04 6.05-9 13-1 0-1 1 0 0.5 0 1-12.42 12.15-28.5 19-6.02 36.27-41.5 45-0.83 2.75 0 5 19.02-12.85 41.5-9 10.85-8.09 23.5-13 15.01-6.37 31-2.5 14.09 7.43 14 23.5-2.83 23.25-15.5 43-6.42 9.92-14 19-10.04 8.8-19.5 18-72.02 48.88-156.5 27-19.63 9.6-41.5 10.5-4.59 1.27-9 3 2 1 4 2 20.09-1.11 35 12 25.46 6.95 37.5 30.5 1.26 5.69-1 11-3.38 3.79-7.5 6.5 5.74 10.07 1.5 20.5-7.55 7.47-17.5 3.5-11.01-5.34-22.5-9.5-18.26 10-38.5 13-15.5 0-31 0-26.62-4.54-51-17-4.17 1.33-8 3.5-7.23 5.87-15 11-8.62 2.58-13.5-4.5-1.82 2.32-4.5 3.5-6.06 2.24-12 3.5-7.5 0-15 0-27.42-2.56-50-18.5-18-17.25-23-41.5 0-11.5 0-23 4.12-22.7 25-33 6.95-16.67 22-26.5-20.39-20.8-14.5-49.5 7.01-26.98 28.5-44.5 7.56-5.27 15-10.5-13.09-30.88-7.5-64 3.16-15.57 14.5-26.5 6.85-2.48 8 4.5-6.59 39.53 11 75.5 7.99-0.49 16-2 2.42-34.57 14.5-67.5 8.51-22.23 27.5-36z"/><path fill="#b45309" opacity="0.4" d="m113.5 401.5q0.48-5.1-1-10-0.91 0.19-1 1-2.46 1.74-5 3.5 5.65 9.54-5 13-32.21 5.55-61-10-32.89-23.11-29.5-63.5 2.96-22.67 23.5-32 7.99-19.75 27-29.5-27.65-23.7-15.5-58.5 7.33-16.82 20.5-29.5 10.79-8.14 22-15.5-16.49-37.08-5.5-76 3.19-6.13 7.5-11.5 1.48-0.89 2 1-5.69 41.09 12.5 78.5 1 1 2 2 9.97-3.24 20.5-4 2 0 4 0 0-7.5 0-15 0.99-42.22 24.5-77 6.12-7.12 14-12-4.65 13.43-10 27-11.93 37.6-9.5 77 49.38 0.7 83.5 36 2.75 4.5 5.5 9 38.99-52.24 93-88.5 45.84-29.03 100-32.5 15.69-1.56 29 6.5 5.68 7.29 3.5 16.5-10.38 33.62-43.5 45-4.39 37.33-41 45-0.79 8.63-6 15.5 1.91 1.83 4.5 2.5 22.27-17.25 50.5-14.5 12.93-9.41 28-15 36.22-8.28 31.5 28.5-15.19 51.69-62.5 77.5-65.92 35.87-138 15.5-19.67 10.42-42 10.5-8.39 2.88-17 5 3.58 6.08 10 9 20.92-1.14 36 13 22.67 5.23 34.5 25.5 3.33 7.13-3.5 11.5-3.88 1.8-8 3 7.36 8.45 6.5 19.5-4.43 5.66-11.5 3.5-12.84-5.67-26-10.5-39.4 21.02-83 10.5-18.85-5.78-36.5-14.5-13.65 4.14-23.5 14.5-9.51 3.74-11-6.5z"/></svg>
+                </div>
+                <div class="bk-book">
+                  <div class="bk-page bk-page-l"><div class="bk-lines"><div class="bk-line" style="width:80%"></div><div class="bk-line" style="width:90%"></div><div class="bk-line" style="width:65%"></div><div class="bk-line" style="width:85%"></div><div class="bk-line" style="width:55%"></div><div class="bk-line" style="width:78%"></div></div></div>
+                  <div class="bk-book-spine"></div>
+                  <div class="bk-page bk-page-r"><div class="bk-lines"><div class="bk-line" style="width:85%"></div><div class="bk-line" style="width:70%"></div><div class="bk-line" style="width:92%"></div><div class="bk-line" style="width:60%"></div><div class="bk-line" style="width:80%"></div><div class="bk-line" style="width:72%"></div></div></div>
+                </div>
+              </div>
+            </div>
+            <!-- Bottom: Author -->
+            <div class="bk-author">Thomas Iburg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <!-- Ecosystem -->
+  <section class="ecosystem" id="ecosystem">
+    <div class="fade-in" style="text-align:center;">
+      <div class="section-label">Das Ökosystem</div>
+      <div class="section-title" style="max-width:600px;margin:0 auto 8px;">Dein Werkzeugkasten. Nicht ihrer.</div>
+      <div class="section-subtitle" style="margin:0 auto;">Drei Bausteine, die zusammen ein ganzes Ökosystem bilden – und jeder davon gehört dir.</div>
+      <a href="ecosystem-tour.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:14px;font-weight:500;color:#f59e0b;text-decoration:none;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+        Wie sie zusammenspielen →
+      </a>
+    </div>
+    <div class="eco-grid fade-in">
+      <!-- Book -->
+      <div class="eco-card">
+        <div class="eco-icon">
+          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h3>Das Buch</h3>
+        <span class="version">15 Kapitel</span>
+        <p>
+          Ein Sachbuch, das dokumentiert wie es selbst entsteht. Jedes Kapitel zeigt einen anderen Aspekt der Mensch-KI-Kollaboration – von der ersten Idee bis zum fertigen Manuskript.
+        </p>
+        <div class="eco-tags">
+          <span class="eco-tag">Sachbuch</span>
+          <span class="eco-tag">Agentic Authorship</span>
+          <span class="eco-tag">Transparenz</span>
+        </div>
+        <a href="#buch" class="eco-link">
+          Inhaltsverzeichnis
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+      <!-- Cowan -->
+      <div class="eco-card">
+        <div class="eco-icon">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </div>
+        <h3>Cowan App</h3>
+        <span class="version">v5.7.0</span>
+        <p>
+          Der mobile Begleiter zum Buch. Fotografiere eine Buchseite, stelle Fragen per Sprache, und lass dir Inhalte vorlesen. KI-gestützt, komplett im Browser.
+        </p>
+        <div class="eco-tags">
+          <span class="eco-tag">React</span>
+          <span class="eco-tag">Kamera</span>
+          <span class="eco-tag">TTS</span>
+          <span class="eco-tag">BYOK</span>
+        </div>
+        <a href="cowan-tour.html" class="eco-link">
+          Ansehen
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+      <!-- Dashboard -->
+      <div class="eco-card">
+        <div class="eco-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>Dashboard</h3>
+        <span class="version">v6.11.0</span>
+        <p>
+          Die Kommandozentrale. Buchstatus, Kapitelfortschritt, Agent-Übersicht und Produktionssteuerung – alles in einem iOS-18-inspirierten Glassmorphism-Interface.
+        </p>
+        <div class="eco-tags">
+          <span class="eco-tag">React</span>
+          <span class="eco-tag">Glassmorphism</span>
+          <span class="eco-tag">GitHub Pages</span>
+        </div>
+        <a href="dashboard-tour.html" class="eco-link">
+          Ansehen
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <!-- Book / TOC -->
+  <section class="book-toc" id="buch">
+    <div class="fade-in" style="text-align:center;">
+      <div class="section-label">Das Buch</div>
+      <div class="section-title" style="max-width:650px;margin:0 auto 8px;">15 Kapitel. Drei Teile. Ein roter Faden.</div>
+      <div class="section-subtitle" style="margin:0 auto;">Vom ersten Setup bis zum eigenen Buch-Projekt – mit echten Zahlen, echten Fehlern und echten Learnings.</div>
+    </div>
+    <div class="toc-parts fade-in">
+      <!-- Teil A -->
+      <div class="toc-part">
+        <div class="toc-part-header">
+          <div class="toc-part-badge">A</div>
+          <div>
+            <div class="toc-part-title">OpenClaw Tutorial</div>
+            <div class="toc-part-subtitle">Kapitel 1–7 · Von null auf ein laufendes System</div>
+            <div class="toc-part-result">Am Ende hast du einen laufenden KI-Assistenten auf deinem eigenen Server.</div>
+          </div>
+        </div>
+        <div class="toc-chapters">
+          <div class="toc-chapter"><div class="toc-ch-num">01</div><div class="toc-ch-info"><div class="toc-ch-title">Was ist OpenClaw?</div><div class="toc-ch-desc">Warum gehostete KI-Dienste an ihre Grenzen stoßen</div></div></div>
+          <div class="toc-chapter"><div class="toc-ch-num">02</div><div class="toc-ch-info"><div class="toc-ch-title">Installation & Setup</div><div class="toc-ch-desc">VPS aufsetzen, OpenClaw installieren, erster Agent in 30 Minuten</div></div></div>
+          <div class="toc-chapter"><div class="toc-ch-num">03</div><div class="toc-ch-info"><div class="toc-ch-title">Docker für OpenClaw</div><div class="toc-ch-desc">Container verstehen, Compose-Setup, Updates ohne Datenverlust</div></div></div>
+          <div class="toc-chapter"><div class="toc-ch-num">04</div><div class="toc-ch-info"><div class="toc-ch-title">Agent-Konzepte verstehen</div><div class="toc-ch-desc">SOUL.md, Workspace, Tools – was einen Agent zum Agenten macht</div></div></div>
+          <div class="toc-chapter"><div class="toc-ch-num">05</div><div class="toc-ch-info"><div class="toc-ch-title">Multi-Channel Setup</div><div class="toc-ch-desc">Telegram, WhatsApp und Web – ein Agent, viele Eingänge</div></div></div>
+          <div class="toc-chapter"><div class="toc-ch-num">06</div><div class="toc-ch-info"><div class="toc-ch-title">Security Best Practices</div><div class="toc-ch-desc">API-Keys schützen, Zugriff absichern, HTTPS einrichten</div></div></div>
+          <div class="toc-chapter"><div class="toc-ch-num">07</div><div class="toc-ch-info"><div class="toc-ch-title">Troubleshooting & FAQ</div><div class="toc-ch-desc">Die häufigsten Fehler und wie du sie in Minuten löst</div></div></div>
+        </div>
+      </div>
+      <!-- Teil B -->
+      <div class="toc-part">
+        <div class="toc-part-header">
+          <div class="toc-part-badge">B</div>
+          <div>
+            <div class="toc-part-title">Case Study</div>
+            <div class="toc-part-subtitle">Kapitel 8–12 · Wie dieses Buch entstanden ist</div>
+            <div class="toc-part-result">Du verstehst, wie ein echtes KI-Projekt von der Vision zum Produkt wird.</div>
+          </div>
+        </div>
+        <div class="toc-chapters">
+          <div class="toc-chapter"><div class="toc-ch-num">08</div><div class="toc-ch-info"><div class="toc-ch-title">Unser Buch-Projekt: Die Vision</div><div class="toc-ch-desc">Wie die Idee entstand und warum wir alles öffentlich machen</div></div></div>
+          <div class="toc-chapter"><div class="toc-ch-num">09</div><div class="toc-ch-info"><div class="toc-ch-title">Agent-Architektur im Detail</div><div class="toc-ch-desc">Gateway, Nodes, Channels – die technische Tiefe hinter OpenClaw</div></div></div>
+          <div class="toc-chapter"><div class="toc-ch-num">10</div><div class="toc-ch-info"><div class="toc-ch-title">Multi-Agent: Vom Einzelagenten zum Team</div><div class="toc-ch-desc">Wie Writer, Editor und QA als Team zusammenarbeiten</div></div></div>
+          <div class="toc-chapter"><div class="toc-ch-num">11</div><div class="toc-ch-info"><div class="toc-ch-title">Kosten, Zeit & Learnings</div><div class="toc-ch-desc">Echte Zahlen aus 50+ Sessions – was es wirklich kostet</div></div></div>
+          <div class="toc-chapter"><div class="toc-ch-num">12</div><div class="toc-ch-info"><div class="toc-ch-title">Von der Idee zum fertigen Buch</div><div class="toc-ch-desc">Der komplette Produktionsprozess, Schritt für Schritt nacherzählt</div></div></div>
+        </div>
+      </div>
+      <!-- Teil C -->
+      <div class="toc-part">
+        <div class="toc-part-header">
+          <div class="toc-part-badge">C</div>
+          <div>
+            <div class="toc-part-title">Blueprint</div>
+            <div class="toc-part-subtitle">Kapitel 13–15 · Dein eigenes Projekt starten</div>
+            <div class="toc-part-result">Du hast einen konkreten Plan für dein eigenes Buch-Projekt.</div>
+          </div>
+        </div>
+        <div class="toc-chapters">
+          <div class="toc-chapter"><div class="toc-ch-num">13</div><div class="toc-ch-info"><div class="toc-ch-title">Dein Setup: Step-by-Step</div><div class="toc-ch-desc">Komplettanleitung zum Nachbauen – von der leeren Festplatte zum System</div></div></div>
+          <div class="toc-chapter"><div class="toc-ch-num">14</div><div class="toc-ch-info"><div class="toc-ch-title">Von Thema zu Buch in 30 Tagen</div><div class="toc-ch-desc">Der Fahrplan: Woche für Woche von der Idee zum Manuskript</div></div></div>
+          <div class="toc-chapter"><div class="toc-ch-num">15</div><div class="toc-ch-info"><div class="toc-ch-title">Marketing & Verkauf optimieren</div><div class="toc-ch-desc">Amazon KDP, Preisgestaltung und wie dein Buch Leser findet</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="toc-cta fade-in">
+      <a href="leseprobe.html" class="btn-primary">Leseprobe lesen</a>
+    </div>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <!-- Pipeline -->
+  <section class="pipeline" id="pipeline">
+    <div class="fade-in" style="text-align:center;">
+      <div class="section-label">Multi-Agent Pipeline</div>
+      <div class="section-title" style="max-width:650px;margin:0 auto 8px;">Vier Agenten. Ein Kapitel. Null Chaos.</div>
+      <div class="section-subtitle" style="margin:0 auto;">Stell dir ein Orchester vor – nur dass hier KI-Agenten die Instrumente spielen. Vom Rohkonzept zum druckfertigen Text.</div>
+    </div>
+    <div class="pipeline-visual fade-in">
+      <div class="pipeline-card">
+        <div class="pipeline-steps">
+          <div class="pipe-step">
+            <div class="pipe-num">1</div>
+            <div class="pipe-title">Recherche</div>
+            <div class="pipe-desc">Agent sammelt Quellen, Fakten und Kontext zum Kapitelthema.</div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-num">2</div>
+            <div class="pipe-title">Entwurf</div>
+            <div class="pipe-desc">Erster Textentwurf auf Basis der Recherche und Stilvorlage.</div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-num">3</div>
+            <div class="pipe-title">Review</div>
+            <div class="pipe-desc">Kritische Prüfung auf Fakten, Stil, Kohärenz und Lesbarkeit.</div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-num">4</div>
+            <div class="pipe-title">Finalisierung</div>
+            <div class="pipe-desc">Letzte Überarbeitung, Formatierung und Einbau ins Manuskript.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <!-- Stats -->
+  <section class="stats" id="stats">
+    <div class="fade-in">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number">50+</div>
+          <div class="stat-label">Sessions</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">15</div>
+          <div class="stat-label">Kapitel</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">3</div>
+          <div class="stat-label">Live-Produkte</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Open Source</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <!-- Tech Stack -->
+  <section class="tech" id="tech">
+    <div class="fade-in" style="text-align:center;">
+      <div class="section-label">Gebaut mit</div>
+      <div class="section-title" style="max-width:600px;margin:0 auto 8px;">Was unter der Haube steckt</div>
+      <div class="section-subtitle" style="margin:0 auto;">Open Source, moderne Technologien – und du kannst jede einzelne Zeile nachschlagen.</div>
+    </div>
+    <!-- OpenClaw Hero Block -->
+    <div class="tech-hero fade-in">
+      <div class="tech-hero-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="48" height="48"><defs><linearGradient id="techHG" x1="20%" y1="0%" x2="80%" y2="100%"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0.95"/><stop offset="50%" stop-color="#f59e0b" stop-opacity="0.85"/><stop offset="100%" stop-color="#d97706" stop-opacity="0.7"/></linearGradient></defs><path fill="url(#techHG)" d="m166.5 52.5q3.5 0 7 0 2.75 2.99 1.5 7-21.27 45.61-20.5 96 39.99 2.76 72 26.5 7.87 6.86 13.5 15.5 42.88-56.39 103.5-92.5 47.35-25.46 101-25 14.52 0.38 23.5 11.5 3.19 7.74 2 16-1.81 7.18-4.5 14-1 0-1 1-5.04 6.05-9 13-1 0-1 1 0 0.5 0 1-12.42 12.15-28.5 19-6.02 36.27-41.5 45-0.83 2.75 0 5 19.02-12.85 41.5-9 10.85-8.09 23.5-13 15.01-6.37 31-2.5 14.09 7.43 14 23.5-2.83 23.25-15.5 43-6.42 9.92-14 19-10.04 8.8-19.5 18-72.02 48.88-156.5 27-19.63 9.6-41.5 10.5-4.59 1.27-9 3 2 1 4 2 20.09-1.11 35 12 25.46 6.95 37.5 30.5 1.26 5.69-1 11-3.38 3.79-7.5 6.5 5.74 10.07 1.5 20.5-7.55 7.47-17.5 3.5-11.01-5.34-22.5-9.5-18.26 10-38.5 13-15.5 0-31 0-26.62-4.54-51-17-4.17 1.33-8 3.5-7.23 5.87-15 11-8.62 2.58-13.5-4.5-1.82 2.32-4.5 3.5-6.06 2.24-12 3.5-7.5 0-15 0-27.42-2.56-50-18.5-18-17.25-23-41.5 0-11.5 0-23 4.12-22.7 25-33 6.95-16.67 22-26.5-20.39-20.8-14.5-49.5 7.01-26.98 28.5-44.5 7.56-5.27 15-10.5-13.09-30.88-7.5-64 3.16-15.57 14.5-26.5 6.85-2.48 8 4.5-6.59 39.53 11 75.5 7.99-0.49 16-2 2.42-34.57 14.5-67.5 8.51-22.23 27.5-36z"/></svg>
+      </div>
+      <div class="tech-hero-info">
+        <div class="tech-hero-name">OpenClaw</div>
+        <div class="tech-hero-claim">Das Open-Source-Framework für Agentic Authorship. Buch, App, Dashboard und Multi-Agent-Pipeline – alles aus einem Guss, alles transparent.</div>
+        <span class="tech-hero-badge">Open Source · MIT Lizenz</span>
+      </div>
+    </div>
+    <!-- Tech Pills -->
+    <div class="tech-divider-label fade-in">Powered by</div>
+    <div class="tech-grid fade-in">
+      <span class="tech-pill">React 18</span>
+      <span class="tech-pill">Claude API</span>
+      <span class="tech-pill">esbuild</span>
+      <span class="tech-pill">Babel</span>
+      <span class="tech-pill">GitHub Pages</span>
+      <span class="tech-pill">iOS 18 Glassmorphism</span>
+      <span class="tech-pill">Web Audio API</span>
+      <span class="tech-pill">TTS / Speech</span>
+      <span class="tech-pill">BYOK (Bring Your Own Key)</span>
+      <span class="tech-pill">100% Client-Side</span>
+    </div>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <!-- Author -->
+  <section class="author" id="author">
+    <div class="fade-in">
+      <div class="section-label">Der Autor</div>
+      <div class="section-title">Thomas Iburg</div>
+    </div>
+    <div class="author-card fade-in">
+      <div class="author-avatar">
+        <span class="author-avatar-letter">T</span>
+      </div>
+      <div class="author-info">
+        <h3>Thomas Iburg</h3>
+        <div class="author-role">Autor · Builder · Agentic-Authorship-Pionier</div>
+        <p>
+          Thomas dokumentiert den Entstehungsprozess seines Sachbuchs nicht nur –
+          er baut die Werkzeuge gleich mit. Mit OpenClaw zeigt er, dass die Zukunft
+          des Schreibens nicht "Mensch oder KI" heißt, sondern "Mensch mit KI".
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="cta-card fade-in">
+      <h2>Noch Mieter – oder schon <span style="color:#f59e0b">Eigentümer</span>?</h2>
+      <p>Schau dir an, wie das Ganze in der Praxis aussieht. Cowan und Dashboard laufen im Demo-Modus – für die volle Funktion brauchst du einen eigenen API-Key (BYOK). Alles offen, alles live, alles im Code nachvollziehbar.</p>
+      <div class="hero-buttons">
+        <a href="cowan-tour.html" class="btn-primary">Cowan ansehen</a>
+        <a href="dashboard-tour.html" class="btn-secondary">Dashboard ansehen</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <div class="nav-logo-icon" style="width:24px;height:24px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="20" height="20"><defs><linearGradient id="ftLG" x1="20%" y1="0%" x2="80%" y2="100%"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0.9"/><stop offset="50%" stop-color="#f59e0b" stop-opacity="0.8"/><stop offset="100%" stop-color="#d97706" stop-opacity="0.65"/></linearGradient></defs><path fill="url(#ftLG)" d="m166.5 52.5q3.5 0 7 0 2.75 2.99 1.5 7-21.27 45.61-20.5 96 39.99 2.76 72 26.5 7.87 6.86 13.5 15.5 42.88-56.39 103.5-92.5 47.35-25.46 101-25 14.52 0.38 23.5 11.5 3.19 7.74 2 16-1.81 7.18-4.5 14-1 0-1 1-5.04 6.05-9 13-1 0-1 1 0 0.5 0 1-12.42 12.15-28.5 19-6.02 36.27-41.5 45-0.83 2.75 0 5 19.02-12.85 41.5-9 10.85-8.09 23.5-13 15.01-6.37 31-2.5 14.09 7.43 14 23.5-2.83 23.25-15.5 43-6.42 9.92-14 19-10.04 8.8-19.5 18-72.02 48.88-156.5 27-19.63 9.6-41.5 10.5-4.59 1.27-9 3 2 1 4 2 20.09-1.11 35 12 25.46 6.95 37.5 30.5 1.26 5.69-1 11-3.38 3.79-7.5 6.5 5.74 10.07 1.5 20.5-7.55 7.47-17.5 3.5-11.01-5.34-22.5-9.5-18.26 10-38.5 13-15.5 0-31 0-26.62-4.54-51-17-4.17 1.33-8 3.5-7.23 5.87-15 11-8.62 2.58-13.5-4.5-1.82 2.32-4.5 3.5-6.06 2.24-12 3.5-7.5 0-15 0-27.42-2.56-50-18.5-18-17.25-23-41.5 0-11.5 0-23 4.12-22.7 25-33 6.95-16.67 22-26.5-20.39-20.8-14.5-49.5 7.01-26.98 28.5-44.5 7.56-5.27 15-10.5-13.09-30.88-7.5-64 3.16-15.57 14.5-26.5 6.85-2.48 8 4.5-6.59 39.53 11 75.5 7.99-0.49 16-2 2.42-34.57 14.5-67.5 8.51-22.23 27.5-36z"/></svg></div>
+        <span>&copy; 2026 OpenClaw. Open Source unter MIT.</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/tikitackr" target="_blank">GitHub</a>
+        <a href="https://tikitackr.github.io/Cowan/" target="_blank">Cowan</a>
+        <a href="https://tikitackr.github.io/OpenClaw-Dashboard/" target="_blank">Dashboard</a>
+      </div>
+      <!-- Impressum & Datenschutz -->
+      <div class="footer-legal" id="impressum">
+        <div class="legal-section">
+          <div class="legal-heading">Impressum</div>
+          Thomas Iburg · Verantwortlich für den Inhalt gemäß § 5 TMG / § 18 Abs. 2 MStV<br>
+          Kontakt: <a href="mailto:kontakt@openclaw.de">kontakt@openclaw.de</a>
+        </div>
+        <div class="legal-section">
+          <div class="legal-heading">Datenschutz</div>
+          Diese Website wird über GitHub Pages gehostet und erhebt keine personenbezogenen Daten. Es werden keine Cookies gesetzt, kein Tracking eingesetzt und keine Daten an Dritte weitergegeben. Externe Links (GitHub) unterliegen deren jeweiligen Datenschutzbestimmungen.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll Animation Script -->
+  <script>
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Close mobile nav on link click
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.remove('open');
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cowan App Tour – OpenClaw</title>
+  <meta name="description" content="Entdecke Cowan – den mobilen KI-Begleiter zum OpenClaw-Sachbuch. Interaktive Tour durch alle Features: Kamera, Spracheingabe, TTS und mehr.">
+  <meta name="author" content="Thomas Iburg">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0f172a">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Cowan App Tour – OpenClaw">
+  <meta property="og:description" content="Entdecke Cowan – den mobilen KI-Begleiter zum OpenClaw-Sachbuch. Interaktive Feature-Tour.">
+  <meta property="og:url" content="https://tikitackr.github.io/OpenClaw/cowan-tour.html">
+  <meta property="og:site_name" content="OpenClaw">
+  <meta property="og:locale" content="de_DE">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI", Roboto, sans-serif;
+      background: #0f172a; color: #e2e8f0; line-height: 1.6; overflow-x: hidden; min-height: 100vh;
+    }
+
+    /* ===== BACKGROUND ===== */
+    .bg-glow { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .bg-glow::before { content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%; background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 70%); animation: floatGlow 20s ease-in-out infinite; }
+    .bg-glow::after { content: ''; position: absolute; bottom: -20%; right: -10%; width: 60%; height: 60%; background: radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%); animation: floatGlow 25s ease-in-out infinite reverse; }
+    @keyframes floatGlow { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(40px, -30px); } }
+
+    /* ===== BACK NAV ===== */
+    .back-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(15,23,42,0.85); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(148,163,184,0.12); padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .back-link { color: #f59e0b; text-decoration: none; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: opacity 0.2s; }
+    .back-link:hover { opacity: 0.8; }
+    .back-link svg { width: 16px; height: 16px; }
+    .nav-title { font-size: 14px; color: #94a3b8; }
+
+    /* ===== PAGE ===== */
+    .tour-page { position: relative; z-index: 1; max-width: 1300px; margin: 0 auto; padding: 72px 24px 80px; }
+
+    /* ===== HERO ===== */
+    .tour-hero { text-align: center; margin-bottom: 8px; }
+    .tour-hero h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 700; line-height: 1.15; margin-bottom: 12px; }
+    .tour-hero h1 span { background: linear-gradient(135deg, #fbbf24, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .tour-hero p { font-size: 18px; color: #94a3b8; max-width: 720px; margin: 0 auto; }
+    .tour-hint { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #64748b; background: rgba(30,41,59,0.55); border: 1px solid rgba(148,163,184,0.12); border-radius: 20px; padding: 8px 16px; margin-bottom: 12px; }
+
+    /* ===== ORBIT LAYOUT ===== */
+    .orbit-section { position: relative; display: flex; justify-content: center; align-items: center; min-height: 560px; }
+
+    /* iPhone */
+    .iphone-frame {
+      width: 220px; height: 456px; background: #0d1321; border-radius: 34px; border: 3px solid #1e293b;
+      position: relative; z-index: 10; flex-shrink: 0;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 30px 80px rgba(0,0,0,0.5), 0 0 80px rgba(217,119,6,0.06);
+      overflow: hidden;
+      transition: box-shadow 0.4s ease;
+    }
+    .dynamic-island { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 72px; height: 21px; background: #000; border-radius: 16px; z-index: 20; }
+    .status-bar { position: absolute; top: 10px; left: 18px; right: 18px; z-index: 15; display: flex; justify-content: space-between; align-items: center; font-size: 9px; font-weight: 600; color: #e2e8f0; }
+    .status-bar-right { display: flex; gap: 4px; align-items: center; }
+    .status-bar-right svg { width: 10px; height: 10px; fill: #e2e8f0; }
+
+    /* Cowan Screen */
+    .cowan-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #0f172a; display: flex; flex-direction: column; padding-top: 36px; }
+    .cowan-header { background: rgba(30,41,59,0.72); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(148,163,184,0.12); padding: 6px 10px; display: flex; align-items: center; gap: 6px; }
+    .cowan-logo { width: 22px; height: 22px; flex-shrink: 0; }
+    .cowan-header-title { flex: 1; font-size: 11px; font-weight: 700; color: #e2e8f0; }
+    .cowan-header-btn { width: 22px; height: 22px; border-radius: 6px; background: rgba(51,65,85,0.5); border: 1px solid rgba(148,163,184,0.12); display: flex; align-items: center; justify-content: center; }
+    .cowan-header-btn svg { width: 11px; height: 11px; stroke: #94a3b8; fill: none; stroke-width: 1.8; }
+    .cowan-header-actions { display: flex; gap: 6px; }
+
+    .cowan-home { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 14px 10px 10px; gap: 10px; }
+    .cowan-app-title { font-size: 16px; font-weight: 700; color: #e2e8f0; }
+    .cowan-status { display: inline-flex; align-items: center; gap: 4px; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.25); border-radius: 12px; padding: 2px 10px; font-size: 8px; font-weight: 600; color: #22c55e; }
+    .cowan-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
+
+    .action-cards { display: flex; gap: 6px; width: 100%; margin-top: 4px; }
+    .action-card { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 10px 3px 8px; background: rgba(30,41,59,0.55); border: 1px solid rgba(148,163,184,0.12); border-radius: 10px; transition: all 0.4s ease; }
+    .action-card.highlighted { border-color: rgba(245,158,11,0.5); background: rgba(217,119,6,0.08); }
+    .action-card-icon { width: 26px; height: 26px; border-radius: 7px; background: rgba(51,65,85,0.6); display: flex; align-items: center; justify-content: center; }
+    .action-card-icon svg { width: 14px; height: 14px; stroke: #d97706; fill: none; stroke-width: 1.8; }
+    .action-card-label { font-size: 8px; font-weight: 600; color: #e2e8f0; text-align: center; line-height: 1.3; }
+
+    .progress-card { width: 100%; background: rgba(30,41,59,0.55); border: 1px solid rgba(148,163,184,0.12); border-radius: 10px; padding: 10px 12px; transition: all 0.4s ease; }
+    .progress-card.highlighted { border-color: rgba(245,158,11,0.5); background: rgba(217,119,6,0.08); }
+    .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .progress-label { font-size: 7px; font-weight: 700; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase; }
+    .progress-percent { font-size: 12px; font-weight: 700; color: #f59e0b; }
+    .progress-bar-track { width: 100%; height: 4px; border-radius: 2px; background: rgba(51,65,85,0.6); margin-bottom: 6px; }
+    .progress-bar-fill { width: 0%; height: 100%; border-radius: 2px; background: linear-gradient(90deg, #f59e0b, #d97706); }
+    .progress-text { font-size: 8px; color: #64748b; }
+
+    /* ===== SATELLITE FEATURE CARDS ===== */
+    .sat-left, .sat-right {
+      position: absolute; top: 50%; display: flex; flex-direction: column; gap: 18px;
+      z-index: 5; width: 260px;
+    }
+    .sat-left { right: calc(50% + 230px); transform: translateY(-50%); }
+    .sat-right { left: calc(50% + 230px); transform: translateY(-50%); }
+
+    .sat-card {
+      background: rgba(30,41,59,0.45); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(148,163,184,0.08); border-radius: 14px; padding: 16px 18px;
+      cursor: pointer; transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+      opacity: 0.55;
+    }
+    .sat-card:hover { opacity: 0.85; border-color: rgba(148,163,184,0.2); }
+    .sat-card.active {
+      opacity: 1; border-color: rgba(245,158,11,0.35);
+      box-shadow: 0 0 40px rgba(217,119,6,0.06);
+      background: rgba(30,41,59,0.6);
+    }
+    .sat-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .sat-card-icon {
+      width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(217,119,6,0.12));
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sat-card-icon svg { width: 17px; height: 17px; stroke: #f59e0b; fill: none; stroke-width: 1.8; }
+    .sat-card h3 { font-size: 14px; font-weight: 600; color: #e2e8f0; }
+    .sat-card p { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+    .sat-card .tag { display: inline-block; margin-top: 8px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #f59e0b; background: rgba(245,158,11,0.08); padding: 2px 7px; border-radius: 5px; }
+
+    /* Connector lines (SVG drawn dynamically) */
+    .connectors { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 6; }
+    .connector-line { stroke: rgba(245,158,11,0); stroke-width: 1; fill: none; transition: stroke 0.4s ease; stroke-dasharray: 4 4; }
+    .connector-line.active { stroke: rgba(245,158,11,0.25); }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 1100px) {
+      .orbit-section { flex-direction: column; min-height: auto; gap: 48px; padding-top: 20px; }
+      .sat-left, .sat-right { position: static; transform: none; width: 100%; max-width: 480px; margin: 0 auto; }
+      .sat-left { order: 2; }
+      .sat-right { order: 3; }
+      .iphone-frame { order: 1; }
+      .connectors { display: none; }
+      .sat-card { opacity: 0.6; }
+      .sat-card.active { opacity: 1; }
+    }
+    @media (max-width: 480px) {
+      .iphone-frame { width: 200px; height: 414px; border-radius: 30px; }
+      .dynamic-island { width: 64px; height: 18px; border-radius: 14px; top: 8px; }
+    }
+
+    /* ===== CTA ===== */
+    .tour-cta { text-align: center; margin-top: 80px; padding: 48px 24px; background: rgba(30,41,59,0.3); border-radius: 24px; border: 1px solid rgba(148,163,184,0.08); }
+    .tour-cta h2 { font-size: clamp(22px, 4vw, 30px); font-weight: 700; margin-bottom: 12px; }
+    .tour-cta h2 span { background: linear-gradient(135deg, #fbbf24, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .tour-cta p { font-size: 15px; color: #94a3b8; max-width: 480px; margin: 0 auto 24px; }
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #0f172a; font-weight: 600; font-size: 14px; text-decoration: none; transition: all 0.2s; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(217,119,6,0.3); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 12px; background: rgba(30,41,59,0.55); border: 1px solid rgba(148,163,184,0.18); color: #e2e8f0; font-weight: 500; font-size: 14px; text-decoration: none; transition: all 0.2s; }
+    .btn-secondary:hover { background: rgba(30,41,59,0.75); transform: translateY(-2px); }
+
+    .tour-footer { text-align: center; padding: 32px 24px; font-size: 13px; color: #475569; border-top: 1px solid rgba(148,163,184,0.08); margin-top: 60px; }
+    .tour-footer a { color: #64748b; text-decoration: none; }
+    .tour-footer a:hover { color: #f59e0b; }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<div class="back-nav">
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    Zurück zur Website
+  </a>
+  <span class="nav-title">Cowan App Tour</span>
+</div>
+
+<div class="tour-page">
+
+  <div class="tour-hero fade-up">
+    <h1>Dein KI-Begleiter.<br><span>Direkt auf dem Handy.</span></h1>
+    <p>Scanne Buchseiten, frag per Sprache, lass dir Antworten vorlesen – alles in einer App.</p>
+  </div>
+
+  <div style="text-align: center;">
+    <div class="tour-hint">Klicke auf ein Feature, um mehr zu erfahren</div>
+  </div>
+
+  <!-- Orbit: Cards around iPhone -->
+  <div class="orbit-section fade-up">
+
+    <!-- Left satellite cards -->
+    <div class="sat-left">
+      <div class="sat-card active" data-feature="camera" data-phone="card-camera">
+        <div class="sat-card-head">
+          <div class="sat-card-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+          <h3>Seite scannen</h3>
+        </div>
+        <p>Fotografiere eine Buchseite und Cowan erkennt den Inhalt. Stell Fragen direkt zum gescannten Text.</p>
+        <span class="tag">Kamera</span>
+      </div>
+      <div class="sat-card" data-feature="voice" data-phone="card-voice">
+        <div class="sat-card-head">
+          <div class="sat-card-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></div>
+          <h3>Sprachbefehl</h3>
+        </div>
+        <p>Continuous Speech Mode ohne Timeout. Cowan hört zu, so lange du redest. Kein Tippen nötig.</p>
+        <span class="tag">Speech-to-Text</span>
+      </div>
+      <div class="sat-card" data-feature="chat" data-phone="card-chat">
+        <div class="sat-card-head">
+          <div class="sat-card-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+          <h3>Schnelle Frage</h3>
+        </div>
+        <p>Antworten mit Quellenangabe aus 36 Wissensblöcken – sofort, ohne Umwege.</p>
+        <span class="tag">KI-Chat</span>
+      </div>
+    </div>
+
+    <!-- iPhone -->
+    <div class="iphone-frame" id="iphoneFrame">
+      <div class="dynamic-island"></div>
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="status-bar-right">
+          <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+        </div>
+      </div>
+      <div class="cowan-screen">
+        <div class="cowan-header">
+          <svg class="cowan-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs>
+            <path d="M50 15c-8 0-15 5-18 12-2 5-1 10 1 14l-8 12c-2 3-1 7 2 9l6 4-3 10c-1 3 1 6 4 7h8l2 7c1 3 4 5 7 4l8-2 8 2c3 1 6-1 7-4l2-7h8c3-1 5-4 4-7l-3-10 6-4c3-2 4-6 2-9l-8-12c2-4 3-9 1-14-3-7-10-12-18-12z" fill="url(#lg)"/>
+            <path d="M42 35c0-2 2-4 4-4s4 2 4 4-2 4-4 4-4-2-4-4zM54 35c0-2 2-4 4-4s4 2 4 4-2 4-4 4-4-2-4-4z" fill="#0f172a" opacity="0.7"/>
+            <path d="M25 27c-4-8-2-14 3-16M75 27c4-8 2-14-3-16" stroke="url(#lg)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </svg>
+          <span class="cowan-header-title">Cowan</span>
+          <div class="cowan-header-actions">
+            <div class="cowan-header-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></div>
+            <div class="cowan-header-btn"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div>
+          </div>
+        </div>
+        <div class="cowan-home">
+          <div class="cowan-app-title">Cowan</div>
+          <div class="cowan-status">Verbunden</div>
+          <div class="action-cards">
+            <div class="action-card highlighted" id="card-camera">
+              <div class="action-card-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+              <div class="action-card-label">Seite<br>scannen</div>
+            </div>
+            <div class="action-card" id="card-voice">
+              <div class="action-card-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></div>
+              <div class="action-card-label">Sprach-<br>befehl</div>
+            </div>
+            <div class="action-card" id="card-chat">
+              <div class="action-card-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+              <div class="action-card-label">Schnelle<br>Frage</div>
+            </div>
+          </div>
+          <div class="progress-card" id="card-progress">
+            <div class="progress-header">
+              <span class="progress-label">Fortschritt</span>
+              <span class="progress-percent">0%</span>
+            </div>
+            <div class="progress-bar-track"><div class="progress-bar-fill"></div></div>
+            <div class="progress-text">0 von 15 Kapiteln</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right satellite cards -->
+    <div class="sat-right">
+      <div class="sat-card" data-feature="progress" data-phone="card-progress">
+        <div class="sat-card-head">
+          <div class="sat-card-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <h3>Lesefortschritt</h3>
+        </div>
+        <p>Cowan trackt deine Kapitel. 0 von 15 – oder schon bei Kapitel 8? Dein Fortschritt, immer im Blick.</p>
+        <span class="tag">Tracking</span>
+      </div>
+      <div class="sat-card" data-feature="tts">
+        <div class="sat-card-head">
+          <div class="sat-card-icon"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg></div>
+          <h3>Vorlesen (TTS)</h3>
+        </div>
+        <p>Lass dir Antworten auf Deutsch vorlesen. Perfekt unterwegs oder wenn du keine Hand frei hast.</p>
+        <span class="tag">Text-to-Speech</span>
+      </div>
+      <div class="sat-card" data-feature="byok">
+        <div class="sat-card-head">
+          <div class="sat-card-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+          <h3>BYOK – Dein Key</h3>
+        </div>
+        <p>Bring Your Own Key: Du nutzt deinen eigenen Claude API-Key. Keine Cloud, kein Abo, volle Kontrolle.</p>
+        <span class="tag">Deine Daten</span>
+      </div>
+    </div>
+
+    <!-- SVG connector lines -->
+    <svg class="connectors" id="connectors"></svg>
+
+  </div><!-- /orbit-section -->
+
+  <div class="tour-cta fade-up">
+    <h2>Neugierig geworden?<br><span>Cowan wartet auf dich.</span></h2>
+    <p>Cowan läuft direkt im Browser – kein Download, keine Installation. Du brauchst nur einen Claude API-Key (BYOK), und schon geht's los.</p>
+    <div class="cta-buttons">
+      <a href="https://tikitackr.github.io/Cowan/" target="_blank" class="btn-primary">
+        Cowan öffnen
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+      <a href="index.html" class="btn-secondary">Zurück zur Website</a>
+    </div>
+  </div>
+
+  <div class="tour-footer">
+    <p>OpenClaw · <a href="index.html">Website</a> · <a href="https://tikitackr.github.io/OpenClaw-Dashboard/" target="_blank">Dashboard</a> · <a href="leseprobe.html">Leseprobe</a></p>
+    <p style="margin-top: 8px;">© 2026 Thomas Iburg</p>
+  </div>
+
+</div>
+
+<script>
+  const satCards = document.querySelectorAll('.sat-card');
+  const phoneElements = {
+    camera: document.getElementById('card-camera'),
+    voice: document.getElementById('card-voice'),
+    chat: document.getElementById('card-chat'),
+    progress: document.getElementById('card-progress')
+  };
+  let active = 'camera';
+
+  function activate(feature) {
+    active = feature;
+
+    // Update satellite cards
+    satCards.forEach(c => c.classList.toggle('active', c.dataset.feature === feature));
+
+    // Update phone elements
+    document.querySelectorAll('.action-card').forEach(c => c.classList.remove('highlighted'));
+    document.querySelector('.progress-card').classList.remove('highlighted');
+
+    if (phoneElements[feature]) {
+      phoneElements[feature].classList.add('highlighted');
+    }
+
+    // Glow effect on phone frame when feature is active
+    const phone = document.getElementById('iphoneFrame');
+    phone.style.boxShadow = `0 0 0 1px rgba(255,255,255,0.04), 0 30px 80px rgba(0,0,0,0.5), 0 0 80px rgba(217,119,6,0.1)`;
+
+    // Update connector lines
+    drawConnectors();
+  }
+
+  satCards.forEach(c => {
+    c.addEventListener('click', () => activate(c.dataset.feature));
+    c.addEventListener('mouseenter', () => activate(c.dataset.feature));
+  });
+
+  // Draw connector lines from active card to phone
+  function drawConnectors() {
+    const svg = document.getElementById('connectors');
+    const section = document.querySelector('.orbit-section');
+    if (!section || window.innerWidth <= 1100) { svg.innerHTML = ''; return; }
+
+    const sRect = section.getBoundingClientRect();
+    const phoneRect = document.getElementById('iphoneFrame').getBoundingClientRect();
+    const phoneCX = phoneRect.left + phoneRect.width / 2 - sRect.left;
+    const phoneCY = phoneRect.top + phoneRect.height / 2 - sRect.top;
+
+    let lines = '';
+    satCards.forEach(card => {
+      const r = card.getBoundingClientRect();
+      const isLeft = r.right < phoneRect.left;
+      const cx = isLeft ? (r.right - sRect.left) : (r.left - sRect.left);
+      const cy = r.top + r.height / 2 - sRect.top;
+
+      const phoneEdgeX = isLeft ? (phoneRect.left - sRect.left) : (phoneRect.right - sRect.left);
+      const isActive = card.classList.contains('active');
+
+      lines += `<path class="connector-line ${isActive ? 'active' : ''}" d="M${cx},${cy} C${(cx + phoneEdgeX) / 2},${cy} ${(cx + phoneEdgeX) / 2},${phoneCY} ${phoneEdgeX},${phoneCY}"/>`;
+    });
+    svg.innerHTML = lines;
+  }
+
+  // Scroll animations
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(el => observer.observe(el));
+
+  // Redraw connectors on resize/scroll
+  window.addEventListener('resize', drawConnectors);
+  window.addEventListener('scroll', drawConnectors);
+  setTimeout(drawConnectors, 100);
+
+  // Init
+  activate('camera');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Das Ökosystem – OpenClaw</title>
+  <meta name="description" content="Das OpenClaw-Ökosystem: Ein Buch, eine App, ein Dashboard – und wie sie zusammenspielen. Entdecke den Flow von Buchseite bis Fortschrittstracking.">
+  <meta name="author" content="Thomas Iburg">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0f172a">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Das Ökosystem – OpenClaw">
+  <meta property="og:description" content="Ein Buch, eine App, ein Dashboard – und wie sie zusammenspielen.">
+  <meta property="og:url" content="https://tikitackr.github.io/OpenClaw/ecosystem-tour.html">
+  <meta property="og:site_name" content="OpenClaw">
+  <meta property="og:locale" content="de_DE">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; overflow-x: hidden; min-height: 100vh; }
+
+    .bg-glow { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .bg-glow::before { content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%; background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 70%); animation: floatGlow 20s ease-in-out infinite; }
+    .bg-glow::after { content: ''; position: absolute; bottom: -20%; right: -10%; width: 60%; height: 60%; background: radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%); animation: floatGlow 25s ease-in-out infinite reverse; }
+    @keyframes floatGlow { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(40px, -30px); } }
+
+    /* ===== NAV ===== */
+    .back-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(15,23,42,0.85); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid rgba(148,163,184,0.12); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .back-link { color: #f59e0b; text-decoration: none; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: opacity 0.2s; }
+    .back-link:hover { opacity: 0.8; }
+    .back-link svg { width: 16px; height: 16px; }
+    .nav-title { font-size: 14px; color: #94a3b8; }
+
+    .tour-page { position: relative; z-index: 1; max-width: 1300px; margin: 0 auto; padding: 72px 24px 80px; }
+
+    /* ===== HERO ===== */
+    .tour-hero { text-align: center; margin-bottom: 8px; }
+    .tour-hero h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 700; line-height: 1.15; margin-bottom: 12px; }
+    .tour-hero h1 span { background: linear-gradient(135deg, #fbbf24, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .tour-hero p { font-size: 18px; color: #94a3b8; max-width: 720px; margin: 0 auto; }
+
+    /* ===== ECOSYSTEM LAYOUT ===== */
+    .eco-section { position: relative; margin-top: 48px; }
+
+    .eco-devices {
+      display: flex; justify-content: center; align-items: center;
+      gap: 40px; padding: 40px 0 20px; position: relative;
+      max-width: 960px; margin: 0 auto;
+    }
+
+    /* ===== DEVICE WRAPPERS (equal width + height for true centering) ===== */
+    .book-wrapper, .iphone-wrapper, .macbook-wrapper {
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+      min-height: 360px; justify-content: center;
+      flex: 1; max-width: 360px;
+    }
+
+    /* ===== BOOK MOCKUP ===== */
+    .book-frame {
+      width: 180px; height: 245px; perspective: 600px; cursor: pointer;
+    }
+    .book-3d {
+      width: 100%; height: 100%; position: relative;
+      transform: rotateY(-8deg); transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+    }
+    .book-frame:hover .book-3d { transform: rotateY(-2deg); }
+    .book-cover {
+      width: 100%; height: 100%; border-radius: 4px 8px 8px 4px;
+      background: linear-gradient(160deg, #1a2640, #131c2e, #0e1526);
+      border: 1px solid rgba(148,163,184,0.15);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 16px 12px; position: relative; overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 60px rgba(217,119,6,0.06);
+    }
+    .book-cover::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 50% 30%, rgba(251,191,36,0.08) 0%, transparent 60%);
+    }
+    .book-logo { width: 50px; height: 50px; margin-bottom: 12px; position: relative; z-index: 1; }
+    .book-title { font-size: 16px; font-weight: 700; color: #e2e8f0; text-align: center; line-height: 1.3; position: relative; z-index: 1; }
+    .book-subtitle { font-size: 8px; color: #94a3b8; text-align: center; margin-top: 8px; line-height: 1.4; position: relative; z-index: 1; }
+    .book-spine {
+      position: absolute; left: -6px; top: 0; width: 6px; height: 100%;
+      background: linear-gradient(180deg, #1e293b, #0f172a);
+      transform: rotateY(90deg); transform-origin: right;
+      border-radius: 2px 0 0 2px;
+    }
+    .book-pages {
+      position: absolute; right: -3px; top: 3px; width: 3px; height: calc(100% - 6px);
+      background: repeating-linear-gradient(180deg, #cbd5e1 0px, #cbd5e1 1px, #e2e8f0 1px, #e2e8f0 2px);
+      border-radius: 0 1px 1px 0; opacity: 0.3;
+    }
+
+    /* ===== IPHONE MINI ===== */
+    .iphone-mini {
+      width: 105px; height: 218px; background: #0d1321; border-radius: 20px; border: 2px solid #1e293b;
+      position: relative; overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 20px 60px rgba(0,0,0,0.4), 0 0 60px rgba(217,119,6,0.05);
+    }
+    .iphone-mini .dyn-island { position: absolute; top: 5px; left: 50%; transform: translateX(-50%); width: 36px; height: 11px; background: #000; border-radius: 8px; z-index: 10; }
+    .iphone-mini-screen {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: #0f172a; display: flex; flex-direction: column; padding-top: 22px;
+    }
+    .mini-header {
+      background: rgba(30,41,59,0.72); padding: 3px 6px;
+      display: flex; align-items: center; gap: 4px;
+      border-bottom: 1px solid rgba(148,163,184,0.12);
+    }
+    .mini-header-logo { width: 10px; height: 10px; }
+    .mini-header-title { font-size: 6px; font-weight: 700; color: #e2e8f0; }
+    .mini-home {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      padding: 6px 6px; gap: 5px;
+    }
+    .mini-app-title { font-size: 9px; font-weight: 700; color: #e2e8f0; }
+    .mini-status { font-size: 5px; color: #22c55e; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.25); border-radius: 6px; padding: 1px 5px; display: flex; align-items: center; gap: 2px; }
+    .mini-status::before { content: ''; width: 3px; height: 3px; border-radius: 50%; background: #22c55e; }
+    .mini-cards { display: flex; gap: 3px; width: 100%; }
+    .mini-card {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+      padding: 5px 2px 4px; background: rgba(30,41,59,0.55); border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 6px;
+    }
+    .mini-card-icon { width: 12px; height: 12px; border-radius: 3px; background: rgba(51,65,85,0.6); display: flex; align-items: center; justify-content: center; }
+    .mini-card-icon svg { width: 8px; height: 8px; stroke: #d97706; fill: none; stroke-width: 2; }
+    .mini-card-label { font-size: 5px; font-weight: 600; color: #e2e8f0; text-align: center; }
+    .mini-progress {
+      width: 100%; background: rgba(30,41,59,0.55); border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 6px; padding: 4px 6px;
+    }
+    .mini-progress-label { font-size: 5px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .mini-progress-bar { width: 100%; height: 2px; border-radius: 1px; background: rgba(51,65,85,0.6); margin-top: 3px; }
+    .mini-progress-fill { width: 0%; height: 100%; border-radius: 2px; background: linear-gradient(90deg, #f59e0b, #d97706); }
+
+    /* ===== MACBOOK MINI ===== */
+    .macbook-mini-frame { position: relative; }
+    .macbook-mini-screen {
+      width: 300px; height: 195px; background: #0d1117;
+      border: 2px solid #1e293b; border-radius: 10px 10px 0 0;
+      overflow: hidden; position: relative;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 -2px 30px rgba(0,0,0,0.3), 0 0 60px rgba(217,119,6,0.04);
+    }
+    .macbook-mini-cam { position: absolute; top: 5px; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; border-radius: 50%; background: #1e293b; z-index: 5; }
+    .macbook-mini-base {
+      width: 350px; height: 10px;
+      background: linear-gradient(180deg, #1e293b, #15202e);
+      border-radius: 0 0 6px 6px; margin-left: -25px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    /* Mini Dashboard UI */
+    .mini-dash { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; font-size: 7px; }
+    .mini-dash-header {
+      background: linear-gradient(135deg, #4c1d95, #312e81); padding: 6px 8px;
+      display: flex; align-items: center; gap: 4px;
+      border-bottom: 1px solid rgba(139,92,246,0.2);
+    }
+    .mini-dash-header-icon { width: 12px; height: 12px; border-radius: 3px; background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+    .mini-dash-title { font-size: 7px; font-weight: 700; color: #e2e8f0; flex: 1; }
+    .mini-dash-badge { font-size: 5px; color: #22c55e; background: rgba(34,197,94,0.12); border-radius: 6px; padding: 1px 4px; display: flex; align-items: center; gap: 2px; }
+    .mini-dash-badge::before { content: ''; width: 3px; height: 3px; border-radius: 50%; background: #22c55e; }
+    .mini-dash-modules {
+      background: rgba(30,41,59,0.6); padding: 3px 6px;
+      display: flex; gap: 2px; border-bottom: 1px solid rgba(148,163,184,0.08);
+    }
+    .mini-mod { padding: 2px 5px; border-radius: 4px; font-size: 5px; font-weight: 600; background: rgba(30,41,59,0.5); color: #94a3b8; }
+    .mini-mod.active { background: rgba(139,92,246,0.15); color: #a78bfa; }
+    .mini-dash-body { flex: 1; display: flex; overflow: hidden; }
+    .mini-dash-main { flex: 1; padding: 6px; display: flex; flex-direction: column; gap: 4px; }
+    .mini-dash-stats { display: flex; gap: 3px; }
+    .mini-dash-stat { flex: 1; padding: 4px 5px; border-radius: 5px; background: rgba(30,41,59,0.55); border: 1px solid rgba(148,163,184,0.08); }
+    .mini-dash-stat-label { font-size: 5px; color: #64748b; }
+    .mini-dash-stat-val { font-size: 9px; font-weight: 700; }
+    .mini-dash-stat-val.purple { color: #a78bfa; }
+    .mini-dash-stat-val.green { color: #4ade80; }
+    .mini-dash-stat-val.amber { color: #f59e0b; }
+    .mini-dash-grid-wrap {
+      flex: 1; background: rgba(30,41,59,0.55); border: 1px solid rgba(148,163,184,0.08);
+      border-radius: 5px; padding: 4px 5px;
+    }
+    .mini-dash-grid-title { font-size: 5px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 3px; }
+    .mini-dash-grid { display: grid; grid-template-columns: repeat(15, 1fr); gap: 1px; }
+    .mini-cell { height: 5px; border-radius: 1px; }
+    .mini-dash-cowan {
+      width: 80px; border-left: 1px solid rgba(148,163,184,0.08);
+      background: rgba(30,41,59,0.4); display: flex; flex-direction: column;
+    }
+    .mini-dash-cowan-header { padding: 4px 5px; border-bottom: 1px solid rgba(148,163,184,0.08); display: flex; align-items: center; gap: 3px; }
+    .mini-dash-cowan-dot { width: 8px; height: 8px; border-radius: 2px; background: linear-gradient(135deg, #fbbf24, #d97706); display: flex; align-items: center; justify-content: center; font-size: 5px; font-weight: 800; color: #0f172a; }
+    .mini-dash-cowan-label { font-size: 6px; font-weight: 600; color: #e2e8f0; }
+    .mini-dash-cowan-chat { flex: 1; padding: 4px; display: flex; flex-direction: column; gap: 2px; }
+    .mini-bubble { padding: 2px 4px; border-radius: 4px; font-size: 5px; line-height: 1.3; }
+    .mini-bubble-bot { background: rgba(30,41,59,0.6); border: 1px solid rgba(148,163,184,0.1); color: #94a3b8; align-self: flex-start; }
+    .mini-bubble-user { background: #334155; color: #94a3b8; align-self: flex-end; }
+
+    /* ===== DEVICE LABELS ===== */
+    .device-label {
+      font-size: 15px; font-weight: 700; color: #e2e8f0; text-align: center;
+    }
+    .device-sublabel {
+      font-size: 12px; color: #94a3b8; text-align: center; max-width: 160px;
+    }
+
+    /* ===== FLOW CONNECTORS ===== */
+    .flow-connectors {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 5;
+    }
+
+    .flow-arrow {
+      position: absolute; display: flex; flex-direction: column; align-items: center; gap: 4px;
+      pointer-events: auto; cursor: default;
+      transform: translate(-50%, -50%);
+    }
+    .flow-arrow-line {
+      width: 80px; height: 2px; position: relative;
+      background: linear-gradient(90deg, rgba(245,158,11,0.15), rgba(245,158,11,0.4), rgba(245,158,11,0.15));
+      border-radius: 1px;
+    }
+    .flow-arrow-line::after {
+      content: ''; position: absolute; right: -6px; top: 50%; transform: translateY(-50%);
+      border-left: 7px solid rgba(245,158,11,0.5);
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+    }
+    .flow-arrow-pulse {
+      position: absolute; top: 0; left: 0; width: 16px; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(251,191,36,0.6), transparent);
+      border-radius: 1px;
+      animation: flowPulse 2s ease-in-out infinite;
+    }
+    @keyframes flowPulse { 0% { left: -16px; } 100% { left: 100%; } }
+
+    .flow-label {
+      font-size: 10px; font-weight: 600; color: #f59e0b;
+      background: rgba(15,23,42,0.9); border: 1px solid rgba(245,158,11,0.2);
+      border-radius: 8px; padding: 4px 10px; white-space: nowrap;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* ===== FLOW DETAIL CARDS ===== */
+    .flow-details {
+      display: flex; justify-content: center; gap: 32px;
+      margin-top: 48px; flex-wrap: wrap;
+    }
+    .flow-card {
+      background: rgba(30,41,59,0.45); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(148,163,184,0.08); border-radius: 14px; padding: 20px 22px;
+      width: 280px; transition: all 0.35s ease;
+    }
+    .flow-card:hover { border-color: rgba(245,158,11,0.25); background: rgba(30,41,59,0.6); }
+    .flow-card-step {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(217,119,6,0.15));
+      font-size: 13px; font-weight: 700; color: #f59e0b; margin-bottom: 12px;
+    }
+    .flow-card h3 { font-size: 15px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px; }
+    .flow-card p { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+    .flow-card .tag { display: inline-block; margin-top: 10px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #f59e0b; background: rgba(245,158,11,0.08); padding: 2px 7px; border-radius: 5px; }
+
+    /* ===== CTA ===== */
+    .tour-cta { text-align: center; margin-top: 80px; padding: 48px 24px; background: rgba(30,41,59,0.3); border-radius: 24px; border: 1px solid rgba(148,163,184,0.08); }
+    .tour-cta h2 { font-size: clamp(22px, 4vw, 30px); font-weight: 700; margin-bottom: 12px; }
+    .tour-cta h2 span { background: linear-gradient(135deg, #fbbf24, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .tour-cta p { font-size: 15px; color: #94a3b8; max-width: 520px; margin: 0 auto 24px; }
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #0f172a; font-weight: 600; font-size: 14px; text-decoration: none; transition: all 0.2s; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(217,119,6,0.3); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 12px; background: rgba(30,41,59,0.55); border: 1px solid rgba(148,163,184,0.18); color: #e2e8f0; font-weight: 500; font-size: 14px; text-decoration: none; transition: all 0.2s; }
+    .btn-secondary:hover { background: rgba(30,41,59,0.75); transform: translateY(-2px); }
+
+    .tour-footer { text-align: center; padding: 32px 24px; font-size: 13px; color: #475569; border-top: 1px solid rgba(148,163,184,0.08); margin-top: 60px; }
+    .tour-footer a { color: #64748b; text-decoration: none; } .tour-footer a:hover { color: #f59e0b; }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 900px) {
+      .eco-devices { flex-direction: column; gap: 48px; }
+      .flow-connectors { display: none; }
+      .flow-details { flex-direction: column; align-items: center; }
+      .flow-card { width: 100%; max-width: 400px; }
+    }
+    @media (max-width: 640px) {
+      .macbook-mini-screen { width: 240px; height: 156px; }
+      .macbook-mini-base { width: 280px; margin-left: -20px; }
+      .mini-dash-cowan { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<div class="back-nav">
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    Zurück zur Website
+  </a>
+  <span class="nav-title">Das Ökosystem</span>
+</div>
+
+<div class="tour-page">
+
+  <div class="tour-hero fade-up">
+    <h1>Drei Produkte.<br><span>Ein Ökosystem.</span></h1>
+    <p>Buch, App und Dashboard arbeiten zusammen – vom Lesen über Fragen bis zum Fortschrittstracking.</p>
+  </div>
+
+  <!-- === DEVICES === -->
+  <div class="eco-section fade-up">
+    <div class="eco-devices" id="ecoDevices">
+
+      <!-- BOOK -->
+      <div class="book-wrapper">
+        <a href="leseprobe.html" style="text-decoration:none; color:inherit;">
+          <div class="book-frame">
+            <div class="book-3d">
+              <div class="book-cover">
+                <div class="book-spine"></div>
+                <div class="book-pages"></div>
+                <svg class="book-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <defs><linearGradient id="blg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs>
+                  <path d="M50 15c-8 0-15 5-18 12-2 5-1 10 1 14l-8 12c-2 3-1 7 2 9l6 4-3 10c-1 3 1 6 4 7h8l2 7c1 3 4 5 7 4l8-2 8 2c3 1 6-1 7-4l2-7h8c3-1 5-4 4-7l-3-10 6-4c3-2 4-6 2-9l-8-12c2-4 3-9 1-14-3-7-10-12-18-12z" fill="url(#blg)"/>
+                </svg>
+                <div class="book-title">OpenClaw</div>
+                <div class="book-subtitle">Wie du mit KI ein Buch schreibst und dabei ein ganzes Ökosystem baust</div>
+              </div>
+            </div>
+          </div>
+        </a>
+        <div class="device-label">Das Buch</div>
+        <div class="device-sublabel">15 Kapitel. Vom Prompt bis zum fertigen System.</div>
+      </div>
+
+      <!-- IPHONE / COWAN -->
+      <div class="iphone-wrapper">
+        <a href="cowan-tour.html" style="text-decoration:none; color:inherit;">
+          <div class="iphone-mini">
+            <div class="dyn-island"></div>
+            <div class="iphone-mini-screen">
+              <div class="mini-header">
+                <svg class="mini-header-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <defs><linearGradient id="clg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs>
+                  <path d="M50 15c-8 0-15 5-18 12-2 5-1 10 1 14l-8 12c-2 3-1 7 2 9l6 4-3 10c-1 3 1 6 4 7h8l2 7c1 3 4 5 7 4l8-2 8 2c3 1 6-1 7-4l2-7h8c3-1 5-4 4-7l-3-10 6-4c3-2 4-6 2-9l-8-12c2-4 3-9 1-14-3-7-10-12-18-12z" fill="url(#clg)"/>
+                </svg>
+                <span class="mini-header-title">Cowan</span>
+              </div>
+              <div class="mini-home">
+                <div class="mini-app-title">Cowan</div>
+                <div class="mini-status">Verbunden</div>
+                <div class="mini-cards">
+                  <div class="mini-card">
+                    <div class="mini-card-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+                    <div class="mini-card-label">Scan</div>
+                  </div>
+                  <div class="mini-card">
+                    <div class="mini-card-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/></svg></div>
+                    <div class="mini-card-label">Sprache</div>
+                  </div>
+                  <div class="mini-card">
+                    <div class="mini-card-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+                    <div class="mini-card-label">Frage</div>
+                  </div>
+                </div>
+                <div class="mini-progress">
+                  <div class="mini-progress-label">Fortschritt</div>
+                  <div class="mini-progress-bar"><div class="mini-progress-fill"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+        <div class="device-label">Cowan App</div>
+        <div class="device-sublabel">Scanne, frag, hör zu. Dein mobiler KI-Begleiter.</div>
+      </div>
+
+      <!-- MACBOOK / DASHBOARD -->
+      <div class="macbook-wrapper">
+        <a href="dashboard-tour.html" style="text-decoration:none; color:inherit;">
+          <div class="macbook-mini-frame">
+            <div class="macbook-mini-screen">
+              <div class="macbook-mini-cam"></div>
+              <div class="mini-dash">
+                <div class="mini-dash-header">
+                  <div class="mini-dash-header-icon"></div>
+                  <span class="mini-dash-title">OpenClaw Buchprojekt</span>
+                  <div class="mini-dash-badge">API</div>
+                </div>
+                <div class="mini-dash-modules">
+                  <div class="mini-mod active">Home</div>
+                  <div class="mini-mod">M1</div>
+                  <div class="mini-mod">M2</div>
+                  <div class="mini-mod">M3</div>
+                  <div class="mini-mod">M4</div>
+                  <div class="mini-mod">M5</div>
+                  <div class="mini-mod">M6</div>
+                </div>
+                <div class="mini-dash-body">
+                  <div class="mini-dash-main">
+                    <div class="mini-dash-stats">
+                      <div class="mini-dash-stat"><div class="mini-dash-stat-label">Tasks</div><div class="mini-dash-stat-val purple">120</div></div>
+                      <div class="mini-dash-stat"><div class="mini-dash-stat-label">Done</div><div class="mini-dash-stat-val green">42</div></div>
+                      <div class="mini-dash-stat"><div class="mini-dash-stat-label">%</div><div class="mini-dash-stat-val amber">35%</div></div>
+                    </div>
+                    <div class="mini-dash-grid-wrap">
+                      <div class="mini-dash-grid-title">Kapitel</div>
+                      <div class="mini-dash-grid" id="miniGrid"></div>
+                    </div>
+                  </div>
+                  <div class="mini-dash-cowan">
+                    <div class="mini-dash-cowan-header">
+                      <div class="mini-dash-cowan-dot">C</div>
+                      <span class="mini-dash-cowan-label">Cowan</span>
+                    </div>
+                    <div class="mini-dash-cowan-chat">
+                      <div class="mini-bubble mini-bubble-bot">Wie kann ich helfen?</div>
+                      <div class="mini-bubble mini-bubble-user">Status Kap. 3?</div>
+                      <div class="mini-bubble mini-bubble-bot">Outline fertig, Draft läuft.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="macbook-mini-base"></div>
+          </div>
+        </a>
+        <div class="device-label">Dashboard</div>
+        <div class="device-sublabel">120 Tasks, 7 Module, Kapitel-Tracker. Alles im Blick.</div>
+      </div>
+
+      <!-- Flow Arrows (inside eco-devices for correct positioning) -->
+      <div class="flow-connectors" id="flowConnectors">
+        <div class="flow-arrow" id="arrow1">
+          <div class="flow-label">Seite scannen</div>
+          <div class="flow-arrow-line"><div class="flow-arrow-pulse"></div></div>
+        </div>
+        <div class="flow-arrow" id="arrow2">
+          <div class="flow-label">Fortschritt tracken</div>
+          <div class="flow-arrow-line"><div class="flow-arrow-pulse" style="animation-delay: 1s;"></div></div>
+        </div>
+      </div>
+
+    </div><!-- /eco-devices -->
+
+  </div><!-- /eco-section -->
+
+  <!-- === FLOW DETAILS === -->
+  <div class="flow-details fade-up">
+    <div class="flow-card">
+      <div class="flow-card-step">1</div>
+      <h3>Lesen & Entdecken</h3>
+      <p>Du liest das Buch – 15 Kapitel vom ersten Prompt bis zum fertigen Multi-Agent-System. Jedes Kapitel baut auf dem vorherigen auf.</p>
+      <span class="tag">Buch → Wissen</span>
+    </div>
+    <div class="flow-card">
+      <div class="flow-card-step">2</div>
+      <h3>Scannen & Fragen</h3>
+      <p>Mit Cowan fotografierst du eine Buchseite und stellst Fragen dazu. Per Sprache oder Text – Cowan antwortet mit Kontext aus 36 Wissensblöcken.</p>
+      <span class="tag">Cowan → Verstehen</span>
+    </div>
+    <div class="flow-card">
+      <div class="flow-card-step">3</div>
+      <h3>Tracken & Umsetzen</h3>
+      <p>Das Dashboard zeigt deinen Fortschritt: welche Kapitel fertig sind, welche Tasks offen sind, und wo du als Nächstes ansetzen kannst.</p>
+      <span class="tag">Dashboard → Überblick</span>
+    </div>
+  </div>
+
+  <!-- === CTA === -->
+  <div class="tour-cta fade-up">
+    <h2>Drei Werkzeuge.<br><span>Ein Ziel: Dein eigenes System.</span></h2>
+    <p>Das Buch erklärt den Weg. Cowan begleitet dich unterwegs. Das Dashboard hält alles zusammen. Alles Open Source, alles BYOK.</p>
+    <div class="cta-buttons">
+      <a href="leseprobe.html" class="btn-primary">Leseprobe lesen</a>
+      <a href="cowan-tour.html" class="btn-secondary">Cowan Tour</a>
+      <a href="dashboard-tour.html" class="btn-secondary">Dashboard Tour</a>
+    </div>
+  </div>
+
+  <div class="tour-footer">
+    <p>OpenClaw · <a href="index.html">Website</a> · <a href="cowan-tour.html">Cowan</a> · <a href="dashboard-tour.html">Dashboard</a> · <a href="leseprobe.html">Leseprobe</a></p>
+    <p style="margin-top: 8px;">© 2026 Thomas Iburg</p>
+  </div>
+
+</div>
+
+<script>
+  // Mini dashboard grid
+  const grid = document.getElementById('miniGrid');
+  const colors = ['cell-blue','cell-cyan','cell-yellow','cell-orange','cell-green'];
+  const progress = [5,5,4,3,2,2,1,1,0,0,0,0,0,0,0];
+  for (let step = 0; step < 5; step++) {
+    for (let ch = 0; ch < 15; ch++) {
+      const cell = document.createElement('div');
+      cell.className = 'mini-cell ' + (step < progress[ch] ? colors[step] : 'cell-empty');
+      grid.appendChild(cell);
+    }
+  }
+
+  // Position flow arrows between devices
+  function positionArrows() {
+    const container = document.getElementById('ecoDevices');
+    if (!container || window.innerWidth <= 900) return;
+
+    const cRect = container.getBoundingClientRect();
+
+    const bookEl = container.querySelector('.book-frame');
+    const iphoneEl = container.querySelector('.iphone-mini');
+    const macEl = container.querySelector('.macbook-mini-screen');
+
+    if (!bookEl || !iphoneEl || !macEl) return;
+
+    const bookRect = bookEl.getBoundingClientRect();
+    const iphoneRect = iphoneEl.getBoundingClientRect();
+    const macRect = macEl.getBoundingClientRect();
+
+    const a1 = document.getElementById('arrow1');
+    const a2 = document.getElementById('arrow2');
+
+    // Arrow 1: Book → iPhone
+    // Horizontal: center of the gap between book right edge and iphone left edge
+    const a1x = ((bookRect.right + iphoneRect.left) / 2) - cRect.left;
+    // Vertical: average of both device vertical centers
+    const bookCenterY = (bookRect.top + bookRect.bottom) / 2;
+    const iphoneCenterY = (iphoneRect.top + iphoneRect.bottom) / 2;
+    const a1y = ((bookCenterY + iphoneCenterY) / 2) - cRect.top;
+    // Arrow line width = gap width minus padding
+    const gap1W = (iphoneRect.left - bookRect.right);
+    a1.querySelector('.flow-arrow-line').style.width = Math.max(24, gap1W - 12) + 'px';
+    // transform: translate(-50%, -50%) centers the element on this point
+    a1.style.left = a1x + 'px';
+    a1.style.top = a1y + 'px';
+
+    // Arrow 2: iPhone → MacBook
+    const a2x = ((iphoneRect.right + macRect.left) / 2) - cRect.left;
+    const macCenterY = (macRect.top + macRect.bottom) / 2;
+    const a2y = ((iphoneCenterY + macCenterY) / 2) - cRect.top;
+    const gap2W = (macRect.left - iphoneRect.right);
+    a2.querySelector('.flow-arrow-line').style.width = Math.max(24, gap2W - 12) + 'px';
+    a2.style.left = a2x + 'px';
+    a2.style.top = a2y + 'px';
+  }
+
+  // Scroll animations
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(el => observer.observe(el));
+
+  window.addEventListener('resize', positionArrows);
+  window.addEventListener('scroll', positionArrows);
+  setTimeout(positionArrows, 200);
+</script>
+
+</body>
+</html>

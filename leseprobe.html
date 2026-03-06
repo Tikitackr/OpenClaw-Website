@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leseprobe – Kapitel 1: Was ist OpenClaw?</title>
+  <meta name="description" content="Leseprobe aus dem OpenClaw-Sachbuch: Kapitel 1 – Was ist OpenClaw? Erfahre, warum selbstgehostete KI-Agenten die Zukunft sind.">
+  <meta name="author" content="Thomas Iburg">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0f172a">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Leseprobe – Was ist OpenClaw?">
+  <meta property="og:description" content="Kapitel 1 des OpenClaw-Sachbuchs: Warum selbstgehostete KI-Agenten? Was kann OpenClaw? Und wie ist dieses Buch aufgebaut?">
+  <meta property="og:url" content="https://tikitackr.github.io/OpenClaw/leseprobe.html">
+  <meta property="og:site_name" content="OpenClaw">
+  <meta property="og:locale" content="de_DE">
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===== BACKGROUND ===== */
+    .bg-glow {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .bg-glow::before {
+      content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%;
+      background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 70%);
+      animation: floatGlow 20s ease-in-out infinite;
+    }
+    .bg-glow::after {
+      content: ''; position: absolute; bottom: -20%; right: -10%; width: 60%; height: 60%;
+      background: radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%);
+      animation: floatGlow 25s ease-in-out infinite reverse;
+    }
+    @keyframes floatGlow {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(40px, -30px); }
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 24px;
+      background: rgba(15,23,42,0.8);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(148,163,184,0.1);
+    }
+    .nav-inner {
+      max-width: 800px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: #e2e8f0;
+    }
+    .nav-logo-icon {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 8px rgba(217,119,6,0.3));
+    }
+    .nav-logo-text { font-weight: 700; font-size: 18px; letter-spacing: -0.3px; }
+    .nav-back {
+      color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 500;
+      display: flex; align-items: center; gap: 6px; transition: color 0.2s;
+    }
+    .nav-back:hover { color: #f59e0b; }
+    .nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ===== ARTICLE ===== */
+    .article {
+      position: relative; z-index: 1;
+      max-width: 800px; margin: 0 auto;
+      padding: 120px 24px 80px;
+    }
+    .article-badge {
+      display: inline-block; padding: 6px 16px; border-radius: 20px;
+      background: rgba(217,119,6,0.12); border: 1px solid rgba(217,119,6,0.25);
+      color: #f59e0b; font-size: 13px; font-weight: 600; margin-bottom: 24px;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .article h1 {
+      font-size: clamp(28px, 5vw, 42px); font-weight: 800;
+      letter-spacing: -1px; line-height: 1.15; margin-bottom: 16px;
+    }
+    .article h1 .highlight {
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .article-meta {
+      font-size: 14px; color: #64748b; margin-bottom: 48px;
+      padding-bottom: 32px; border-bottom: 1px solid rgba(148,163,184,0.1);
+    }
+
+    /* Lernziele Box */
+    .lernziele {
+      background: rgba(30,41,59,0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(217,119,6,0.18);
+      border-radius: 16px; padding: 28px 32px; margin-bottom: 48px;
+      position: relative; overflow: hidden;
+    }
+    .lernziele::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+      background: linear-gradient(180deg, #fbbf24, #d97706); border-radius: 4px 0 0 4px;
+    }
+    .lernziele h3 {
+      font-size: 16px; font-weight: 700; color: #f59e0b; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .lernziele ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .lernziele li {
+      font-size: 15px; color: #cbd5e1; padding-left: 20px; position: relative;
+    }
+    .lernziele li::before {
+      content: ''; position: absolute; left: 0; top: 8px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(217,119,6,0.4); border: 1px solid rgba(217,119,6,0.6);
+    }
+
+    /* Content */
+    .article h2 {
+      font-size: clamp(22px, 3vw, 28px); font-weight: 700;
+      color: #e2e8f0; margin: 56px 0 20px; letter-spacing: -0.3px;
+    }
+    .article h3 {
+      font-size: 19px; font-weight: 700; color: #e2e8f0; margin: 36px 0 14px;
+    }
+    .article p {
+      font-size: 17px; color: #cbd5e1; line-height: 1.8; margin-bottom: 20px;
+    }
+    .article p strong { color: #f59e0b; font-weight: 600; }
+
+    /* Code block */
+    .code-block {
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 12px; padding: 24px; margin: 28px 0;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 13px; color: #94a3b8; line-height: 1.7;
+      overflow-x: auto; white-space: pre;
+    }
+
+    /* Table */
+    .article-table {
+      width: 100%; border-collapse: collapse; margin: 28px 0;
+      font-size: 14px;
+    }
+    .article-table th {
+      text-align: left; padding: 12px 16px;
+      background: rgba(217,119,6,0.08); color: #f59e0b;
+      font-weight: 600; border-bottom: 2px solid rgba(217,119,6,0.2);
+    }
+    .article-table td {
+      padding: 10px 16px; color: #cbd5e1;
+      border-bottom: 1px solid rgba(148,163,184,0.06);
+    }
+    .article-table tr:hover td { background: rgba(30,41,59,0.4); }
+
+    /* CTA bottom */
+    .article-cta {
+      margin-top: 64px; padding-top: 40px;
+      border-top: 1px solid rgba(148,163,184,0.1);
+      text-align: center;
+    }
+    .article-cta p {
+      font-size: 15px; color: #64748b; margin-bottom: 24px; text-align: center;
+    }
+    .btn-primary {
+      display: inline-block; padding: 14px 32px; border-radius: 12px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff; font-weight: 600; font-size: 15px; text-decoration: none;
+      box-shadow: 0 4px 20px rgba(217,119,6,0.3);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(217,119,6,0.4); }
+    .btn-secondary {
+      display: inline-block; padding: 14px 32px; border-radius: 12px;
+      background: rgba(30,41,59,0.6);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(148,163,184,0.18);
+      color: #e2e8f0; font-weight: 600; font-size: 15px; text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .btn-secondary:hover { background: rgba(217,119,6,0.08); border-color: rgba(217,119,6,0.3); }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* Footer */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid rgba(148,163,184,0.08);
+      padding: 40px 24px;
+    }
+    .footer-inner {
+      max-width: 800px; margin: 0 auto;
+      text-align: center; color: #64748b; font-size: 14px;
+    }
+    .footer-inner a { color: #64748b; text-decoration: none; transition: color 0.2s; }
+    .footer-inner a:hover { color: #f59e0b; }
+
+    /* Fade in */
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="22" height="22"><defs><linearGradient id="navLG" x1="20%" y1="0%" x2="80%" y2="100%"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0.9"/><stop offset="50%" stop-color="#f59e0b" stop-opacity="0.8"/><stop offset="100%" stop-color="#d97706" stop-opacity="0.65"/></linearGradient></defs><path fill="url(#navLG)" d="m166.5 52.5q3.5 0 7 0 2.75 2.99 1.5 7-21.27 45.61-20.5 96 39.99 2.76 72 26.5 7.87 6.86 13.5 15.5 42.88-56.39 103.5-92.5 47.35-25.46 101-25 14.52 0.38 23.5 11.5 3.19 7.74 2 16-1.81 7.18-4.5 14-1 0-1 1-5.04 6.05-9 13-1 0-1 1 0 0.5 0 1-12.42 12.15-28.5 19-6.02 36.27-41.5 45-0.83 2.75 0 5 19.02-12.85 41.5-9 10.85-8.09 23.5-13 15.01-6.37 31-2.5 14.09 7.43 14 23.5-2.83 23.25-15.5 43-6.42 9.92-14 19-10.04 8.8-19.5 18-72.02 48.88-156.5 27-19.63 9.6-41.5 10.5-4.59 1.27-9 3 2 1 4 2 20.09-1.11 35 12 25.46 6.95 37.5 30.5 1.26 5.69-1 11-3.38 3.79-7.5 6.5 5.74 10.07 1.5 20.5-7.55 7.47-17.5 3.5-11.01-5.34-22.5-9.5-18.26 10-38.5 13-15.5 0-31 0-26.62-4.54-51-17-4.17 1.33-8 3.5-7.23 5.87-15 11-8.62 2.58-13.5-4.5-1.82 2.32-4.5 3.5-6.06 2.24-12 3.5-7.5 0-15 0-27.42-2.56-50-18.5-18-17.25-23-41.5 0-11.5 0-23 4.12-22.7 25-33 6.95-16.67 22-26.5-20.39-20.8-14.5-49.5 7.01-26.98 28.5-44.5 7.56-5.27 15-10.5-13.09-30.88-7.5-64 3.16-15.57 14.5-26.5 6.85-2.48 8 4.5-6.59 39.53 11 75.5 7.99-0.49 16-2 2.42-34.57 14.5-67.5 8.51-22.23 27.5-36z"/></svg></div>
+        <span class="nav-logo-text">OpenClaw</span>
+      </a>
+      <a href="index.html#buch" class="nav-back">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Zurück zum Buch
+      </a>
+    </div>
+  </nav>
+
+  <!-- Article -->
+  <article class="article">
+    <div class="fade-in">
+      <div class="article-badge">Leseprobe · Kapitel 1</div>
+      <h1>Was ist <span class="highlight">OpenClaw</span>?</h1>
+      <div class="article-meta">Thomas Iburg · OpenClaw – Agentic Authorship · 2026</div>
+    </div>
+
+    <!-- Lernziele -->
+    <div class="lernziele fade-in">
+      <h3>Was du in diesem Kapitel mitnimmst</h3>
+      <ul>
+        <li>Du verstehst, was OpenClaw ist und wofür es gedacht ist</li>
+        <li>Du kennst die Unterschiede zu ChatGPT, Claude.ai und anderen gehosteten Diensten</li>
+        <li>Du weißt, welche Komponenten OpenClaw hat: Gateway, Agent, Channels, Nodes</li>
+        <li>Du kannst einschätzen, ob OpenClaw für dich passt</li>
+      </ul>
+    </div>
+
+    <!-- 1.1 -->
+    <div class="fade-in">
+      <h2>1.1 Das Problem: KI-Assistenten ohne Kontrolle</h2>
+
+      <p>Weißt du, was mich an den meisten KI-Tools wahnsinnig macht? Die tun so, als wären sie fertig. Als wäre das Problem gelöst. Du tippst eine Frage in ChatGPT, bekommst eine Antwort, und alle klatschen. Verdammt nochmal. Das ist wie ein Telefon, das nur anrufen kann. Nützlich? Ja. Aber fertig? Nicht annähernd.</p>
+
+      <p>Schau mal, was passiert, wenn du mehr willst. Du arbeitest an einem Buchprojekt. Du brauchst einen Assistenten, der deine bisherigen Kapitel kennt, deinen Schreibstil versteht, der weiß, was du gestern geschrieben hast. Bei ChatGPT? Neue Sitzung, neues Glück, alles vergessen. Dein Assistent hat Alzheimer. Und das verkaufen die als Zukunft?</p>
+
+      <p>Oder nimm die Erreichbarkeit. Du willst deinen KI-Assistenten über Telegram ansprechen. Unterwegs, vom Handy, schnell eine Frage. Über WhatsApp, weil dein Kollege dort schreibt. Nachts soll er recherchieren, morgens liegt die Zusammenfassung bereit. Bei den gehosteten Diensten: Fehlanzeige. Eine Webseite, ein Chatfenster, fertig. Das ist kein Werkzeug. Das ist ein Guckloch.</p>
+
+      <p>Und genau DA liegt der Hund begraben. Das Problem heißt Kontrolle. Gehostete KI-Dienste geben dir Zugang zu einem Modell. Aber keine Kontrolle über das Drumherum.</p>
+
+      <p><strong>Datenschutz.</strong> Deine Gespräche liegen auf Servern von OpenAI, Anthropic oder Google. Was damit passiert? Gute Frage. Für private Spielereien mag das egal sein. Für geschäftliche Daten, Kundengespräche oder sensible Recherchen ist das ein Problem, über das erstaunlich wenige nachdenken.</p>
+
+      <p><strong>Abhängigkeit.</strong> Der Anbieter ändert die Preise? Du zahlst. Er streicht ein Feature? Du lebst damit. Er schließt deinen Account? Deine gesamte Gesprächshistorie ist weg. Wie ein Mieter, der die Wohnung renoviert hat. Die Wohnung gehört trotzdem dem Vermieter.</p>
+
+      <p><strong>Keine Anpassung.</strong> Du kannst das Verhalten des Assistenten nicht verändern. Keine eigenen Tools, keine eigene Persönlichkeit, kein eigenes Wissen. Nur das, was der Anbieter dir gibt. Und was er dir gibt, entscheidet er. Nicht du.</p>
+
+      <p>Selbstgehostet bedeutet: Die Software läuft auf deinem Server. Die Daten bleiben bei dir. Du entscheidest, welches KI-Modell zum Einsatz kommt. Du baust dir genau den Assistenten, den du brauchst. Wie ein eigenes Haus statt einer Mietwohnung. Mehr Arbeit? Ja. Mehr Freiheit? Unvergleichlich.</p>
+
+      <p>Ist das nicht irre? Die Technik existiert. Open Source. Kostet weniger als ein Netflix-Abo. Und trotzdem lassen die meisten Leute ihre Daten auf fremden Servern liegen, weil niemand ihnen zeigt, wie es anders geht. Die Frage ist: Willst du weiter Mieter sein, oder endlich Eigentümer?</p>
+    </div>
+
+    <!-- 1.2 -->
+    <div class="fade-in">
+      <h2>1.2 OpenClaw auf einen Blick</h2>
+
+      <p>Was ist eigentlich ein Gateway? Schau mal. Du hast fünf verschiedene Messaging-Apps auf deinem Schreibtisch. Telegram, WhatsApp, eine Webseite. Alle wollen mit deinem KI-Agenten reden. Wer nimmt die Nachrichten entgegen? Wer leitet sie weiter? Wer schickt die Antwort zurück an den richtigen Kanal?</p>
+
+      <p>OpenClaw. Das ist kein Zauberer. Das ist ein verdammt kluger Postbote: Er liest den Brief, kennt den Empfänger, kennt den Rückweg. Automatisch. Bevor du auch nur den Gedanken zu Ende denkst.</p>
+
+      <p>Der entscheidende Unterschied zu einem einfachen API-Wrapper: OpenClaw macht aus dem KI-Modell einen Agenten. Und ein Agent ist etwas völlig anderes als ein Chatbot. Ein Chatbot antwortet. Ein Agent arbeitet. Er hat eine Persönlichkeit, Werkzeuge und ein Gedächtnis. Er kann Dateien lesen, im Web recherchieren, Code ausführen. Und mit anderen Agenten zusammenarbeiten. Wie ein Kollege, der seinen eigenen Schreibtisch hat.</p>
+
+      <h3>Was OpenClaw ausmacht</h3>
+
+      <p><strong>Mehrkanalig.</strong> Ein Agent, viele Eingänge. Du schreibst über Telegram, dein Kollege über WhatsApp, dein Dashboard zeigt den gleichen Agenten im Webwidget. Alle Nachrichten landen beim selben Agenten. Gleicher Kontext. Gleiche Erinnerung. Wie ein Büro mit mehreren Türen, aber nur einem Mitarbeiter drin.</p>
+
+      <p><strong>Agenten-nativ.</strong> OpenClaw wurde für Agenten gebaut. Nicht für einfache Chat-Anfragen. Jeder Agent hat sein eigenes Arbeitsverzeichnis mit Konfigurationsdateien, die sein Verhalten steuern. Die wichtigste heißt SOUL.md. Klingt technisch? Ist es nicht. Die SOUL.md ist der Gesellenbrief deines Agenten. Sein Eid. Sein Charakter-Ausweis. Wer bin ich? Wofür stehe ich? Was tue ich nicht, egal was man mir sagt?</p>
+
+      <p><strong>Open Source.</strong> MIT-Lizenz. Der komplette Quellcode liegt offen. Lesen, verändern, für kommerzielle Projekte einsetzen. Keine versteckten Kosten, keine Falle, aus der du nicht mehr rauskommst.</p>
+
+      <h3>Wie es zusammenhängt</h3>
+      <div class="code-block">Telegram ──┐
+WhatsApp ──┼── Gateway ── Agent ── KI-Modell (Claude, GPT, …)
+WebChat ───┘      │           │
+                  │           ├── SOUL.md (Persönlichkeit)
+                  │           ├── AGENTS.md (Verhalten)
+                  │           └── Workspace (Dateien, Tools)
+                  │
+                  └── Channels (Verbindungen zu Messaging-Apps)</div>
+
+      <p>Das <strong>Gateway</strong> ist der Postbote. Es läuft auf deinem Server und verwaltet alles: Agenten, Kanäle, Nachrichten. Ein einziger Befehl startet das Ganze.</p>
+
+      <p>Der <strong>Agent</strong> ist dein KI-Assistent. Du definierst seine Persönlichkeit in der SOUL.md, sein Verhalten in der AGENTS.md, und legst Dateien in seinen Workspace, auf die er zugreifen kann. Wie eine Werkstatt mit Bauplan, Werkzeugkasten und eigenem Regal.</p>
+
+      <p><strong>Channels</strong> verbinden den Agenten mit der Außenwelt. Jeder Kanal ist ein Plugin, das du aktivierst und konfigurierst. Telegram an, WhatsApp an, Web an. Fertig.</p>
+
+      <p>Das <strong>KI-Modell</strong> ist austauschbar. Heute Claude, morgen GPT, übermorgen ein lokales Modell. Eine Einstellung ändern, der Rest bleibt gleich. Kein Vendor-Lock-in. Nie.</p>
+
+      <p>Moment mal. Klingt das zu gut? Vielleicht. Denn ein Postbote, dem du blind vertraust, ohne je seinen Weg zu prüfen, ist kein Assistent. Der ist ein Risiko. Weißt du, wohin deine Anfragen gehen? Weißt du, welches Modell antwortet? Wenn nicht: Das solltest du wissen. Kontrolle heißt Verantwortung. Und Verantwortung heißt: hinschauen. Denn am Ende stellt sich die Frage: Ist OpenClaw dein Werkzeug, oder bist du OpenClaws Nutzer?</p>
+
+      <h3>OpenClaw vs. die Alternativen</h3>
+      <table class="article-table">
+        <thead>
+          <tr><th>Feature</th><th>ChatGPT</th><th>Claude.ai</th><th>LibreChat</th><th>OpenClaw</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Selbstgehostet</td><td>Nein</td><td>Nein</td><td>Ja</td><td style="color:#f59e0b;font-weight:600">Ja</td></tr>
+          <tr><td>Multi-Channel</td><td>Nein</td><td>Nein</td><td>Eingeschränkt</td><td style="color:#f59e0b;font-weight:600">Ja</td></tr>
+          <tr><td>Agent-Workspace</td><td>Nein</td><td>Projekte</td><td>Nein</td><td style="color:#f59e0b;font-weight:600">Ja</td></tr>
+          <tr><td>Multi-Agent</td><td>Nein</td><td>Nein</td><td>Nein</td><td style="color:#f59e0b;font-weight:600">Ja</td></tr>
+          <tr><td>Open Source</td><td>Nein</td><td>Nein</td><td>Ja</td><td style="color:#f59e0b;font-weight:600">Ja</td></tr>
+          <tr><td>KI-Modell wählbar</td><td>Nur GPT</td><td>Nur Claude</td><td>Mehrere</td><td style="color:#f59e0b;font-weight:600">Mehrere</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 1.3 Was du damit machen kannst -->
+    <div class="fade-in">
+      <h2>1.3 Was du damit machen kannst</h2>
+
+      <p>Theorie ist gut. Beispiele sind besser. Schau mal, was passiert, wenn OpenClaw läuft. Nicht irgendwann. Jetzt. Auf deinem Server. Mit deinen Daten.</p>
+
+      <h3>Das Dashboard: Deine Kommandozentrale</h3>
+
+      <p>Montagmorgen, Kaffee in der Hand, du öffnest das Dashboard. Ein einzelnes Browser-Tab. Was du siehst: den Status deines gesamten Buchprojekts. Welche Kapitel fertig sind. Welche in Arbeit. Wo der Chefredakteur-Agent über Nacht drei Entwürfe orchestriert hat, die auf deine Freigabe warten. Writer hat geschrieben, Editor hat poliert, QA hat geprüft. Alles da. Alles transparent.</p>
+
+      <p>Das Dashboard ist kein hübsches Spielzeug. Das ist eine Glassmorphism-Oberfläche im iOS-18-Stil, die dir auf einen Blick zeigt, wo dein Projekt steht. Kapitelfortschritt, Agent-Übersicht, Produktionssteuerung. Und weil es eine React-App auf GitHub Pages ist, läuft es überall. Laptop, Tablet, Handy. Kein Login, kein Account, keine Cloud-Abhängigkeit.</p>
+
+      <p>Ist das nicht irre? Eine Kommandozentrale für dein Buchprojekt, die du selbst hostest. Die niemand dir wegnehmen kann. Die genau das zeigt, was du brauchst. Nichts mehr, nichts weniger.</p>
+
+      <h3>Cowan: Dein Gedankenpartner fürs Handy</h3>
+
+      <p>Jetzt wird es persönlich. Cowan ist der mobile Begleiter zum Buch. Kein Chatbot. Ein Gedankenpartner. Der Unterschied? Ein Chatbot antwortet auf Fragen. Ein Gedankenpartner stellt welche.</p>
+
+      <p>Du sitzt in der S-Bahn, hast eine Idee für Kapitel 7. Du öffnest Cowan auf dem Handy, sprichst deine Idee ein. Cowan versteht, ordnet ein, stellt Rückfragen. Du fotografierst eine Buchseite, die du unterwegs gelesen hast. Cowan analysiert den Inhalt, verknüpft ihn mit deinem Projekt. Du willst dir den letzten Absatz vorlesen lassen? Cowan hat Text-to-Speech eingebaut. Alles im Browser. Keine App-Installation, kein Store, kein Update-Terror.</p>
+
+      <p>Und weil Cowan eine SOUL.md hat, ist er kein Spiegel, der dir zeigt, was du hören willst. Er ist ein Gegenüber. Mit Haltung. Der auch mal sagt: "Das passt nicht zu dem, was du in Kapitel 3 geschrieben hast." Genau das macht den Unterschied zwischen einem Werkzeug und einem Partner.</p>
+
+      <h3>Die Multi-Agent-Pipeline: Dein Orchester</h3>
+
+      <p>Schau mal, wie dieses Buch entsteht. Nicht ein einzelner Agent, der alles macht. Ein Orchester. Der Chefredakteur verteilt die Aufgaben. Der Writer-Agent schreibt den Rohtext. Der Editor-Agent überarbeitet Stil und Struktur. Der QA-Agent prüft Fakten und Konsistenz. Jeder hat seine Rolle, jeder hat seine SOUL.md. Und du? Du bist der Dirigent. Du gibst die Richtung vor, du gibst die Freigabe. Ohne dich passiert nichts.</p>
+
+      <p>Moment mal. Klingt das nicht so, als würde die KI das Buch schreiben? Verdammt nochmal, nein. Agentic Authorship heißt nicht: Maschine schreibt, Mensch guckt zu. Es heißt: Du komponierst das Stück. Die Agenten spielen es. Und wenn der erste Entwurf nicht klingt, schickst du ihn zurück. Freigabe-Kultur. Der Mensch bleibt Dirigent. Immer.</p>
+
+      <h3>Was es kostet: Ehrlich auf den Tisch</h3>
+
+      <p>Jetzt kommt der Mahner. Denn Ehrlichkeit gehört dazu, und ich verpacke das nicht in Watte.</p>
+
+      <p>OpenClaw selbst ist kostenlos. Open Source, MIT-Lizenz, kein Haken. Was Geld kostet, sind zwei Dinge: der Server und die KI-Modelle.</p>
+
+      <p><strong>Server.</strong> Ein VPS bei Hostinger ab circa 5 Euro im Monat. Das ist dein eigener Rechner im Netz, der rund um die Uhr läuft. Weniger als ein Cappuccino pro Woche. Wenn du erstmal nur testen willst, geht auch dein eigener Laptop. Kein VPS nötig. Null Euro.</p>
+
+      <p><strong>KI-Modell.</strong> Du brauchst einen API-Key von Anthropic (Claude) oder OpenAI (GPT). Die Kosten hängen von der Nutzung ab. Bei normaler Arbeit an einem Buchprojekt landest du bei 3 bis 5 Euro im Monat. Kein Abo, keine Mindestlaufzeit. Du zahlst nur, was du verbrauchst. Wie Strom.</p>
+
+      <p><strong>Zusammengerechnet:</strong> Für unter 10 Euro im Monat hast du einen eigenen KI-Assistenten auf deinem eigenen Server, erreichbar über Telegram, WhatsApp und Web, mit Dashboard und mobilem Begleiter. Zum Vergleich: Ein ChatGPT-Plus-Abo kostet 20 Euro. Und da hast du weder Kontrolle noch Multi-Channel noch Agenten.</p>
+
+      <p>Aber. Und dieses Aber ist wichtig. Du investierst Zeit. Die Einrichtung dauert je nach Erfahrung ein bis drei Stunden. Die Lernkurve ist da. Dieses Buch macht sie so flach wie möglich, aber ganz flach wird sie nie. OpenClaw ist kein fertiges Produkt mit einer glatten Oberfläche. Es ist ein Werkzeug für Leute, die bereit sind, ihre Werkstatt selbst einzurichten. Die Frage ist nicht, ob du es dir leisten kannst. Die Frage ist, ob du es dir leisten willst, es nicht zu tun?</p>
+    </div>
+
+    <!-- 1.4 Buchaufbau -->
+    <div class="fade-in">
+      <h2>1.4 Wie dieses Buch aufgebaut ist</h2>
+
+      <p>Weißt du, was mich an den meisten Technik-Büchern fasziniert? Die erklären Werkzeuge. Schritt eins, Schritt zwei, Schritt drei, fertig. Was sie nicht erklären: Warum dieses Werkzeug? Was ging schief? Was hat es gekostet, wirklich gekostet, an Zeit, Geld und Nerven?</p>
+
+      <p>Dieses Buch macht das anders. Drei Teile, drei Aufträge.</p>
+
+      <p><strong>Teil A: OpenClaw Tutorial.</strong> Kapitel 1 bis 7. Hier baust du dein System auf. Von null auf einen laufenden KI-Assistenten auf deinem eigenen Server. Installation, Docker, Agent-Konzepte, Messaging-Kanäle, Sicherheit. Jedes Kapitel eine Anleitung, die du direkt nachmachen kannst. Am Ende hast du ein funktionierendes System. Kein Theoriegefasel. Ein System, das antwortet, wenn du schreibst.</p>
+
+      <p><strong>Teil B: Case Study.</strong> Kapitel 8 bis 12. Hier erzählen wir die Geschichte dieses Buches. Ja, genau: Das Buch, das du gerade liest, hat seine eigene Entstehungsgeschichte. Welche Architektur-Entscheidungen wir getroffen haben. Wie der Chefredakteur-Agent seine Writer und Editoren orchestriert. Was schiefgegangen ist, denn verdammt nochmal, einiges ist schiefgegangen. Und was es gekostet hat. Echte Zahlen aus über 50 Sessions.</p>
+
+      <p><strong>Teil C: Blueprint.</strong> Kapitel 13 bis 15. Dein Bauplan. Komplettanleitung zum Nachbauen, ein 30-Tage-Plan von der Idee bis zum fertigen Buch, dazu Tipps für Marketing und Verkauf über Amazon KDP. Für alle, die nicht nur lesen wollen, sondern loslegen.</p>
+
+      <p>Die Frage, die am Ende bleibt: Wirst du Leser sein, oder Macher? Teil A gibt dir das Werkzeug. Teil B den Beweis, dass es funktioniert. Teil C den Mut, es selbst zu tun. Was fehlt, ist nur noch deine Entscheidung.</p>
+    </div>
+
+    <!-- CTA -->
+    <div class="article-cta fade-in">
+      <p>Das war die Leseprobe aus Kapitel 1. Neugierig geworden?</p>
+      <div class="cta-buttons">
+        <a href="index.html#buch" class="btn-primary">Alle 15 Kapitel ansehen</a>
+        <a href="https://github.com/tikitackr" target="_blank" class="btn-secondary">GitHub ansehen</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <span>&copy; 2026 OpenClaw. Open Source unter MIT.</span>
+      &nbsp;·&nbsp;
+      <a href="index.html">Zurück zur Startseite</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/tikitackr" target="_blank">GitHub</a>
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
