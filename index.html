@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OpenClaw – Agentic Authorship</title>
-  <meta name="description" content="Das Sachbuch über Agentic Authorship. Wie ein Mensch mit KI ein Buch schreibt – und dabei eine App, ein Dashboard und eine Multi-Agent-Pipeline baut.">
+  <meta name="description" content="Du willst KI nutzen? Dann hör auf, sie zu mieten. Das Sachbuch über Agentic Authorship – mit eigener App, Dashboard und Multi-Agent-Pipeline. Alles Open Source, alles deins.">
   <meta name="author" content="Thomas Iburg">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0f172a">
@@ -13,7 +13,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="OpenClaw – Agentic Authorship">
-  <meta property="og:description" content="Ein Mensch. Eine KI. Ein ganzes Ökosystem. Das Sachbuch über Agentic Authorship – mit App, Dashboard und Multi-Agent-Pipeline.">
+  <meta property="og:description" content="Du willst KI nutzen? Dann hör auf, sie zu mieten. Das Sachbuch über Agentic Authorship – mit eigener App, Dashboard und Multi-Agent-Pipeline. Alles Open Source, alles deins.">
   <meta property="og:url" content="https://tikitackr.github.io/OpenClaw/">
   <meta property="og:site_name" content="OpenClaw">
   <meta property="og:locale" content="de_DE">
@@ -21,7 +21,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="OpenClaw – Agentic Authorship">
-  <meta name="twitter:description" content="Ein Mensch. Eine KI. Ein ganzes Ökosystem. Das Sachbuch über Agentic Authorship.">
+  <meta name="twitter:description" content="Du willst KI nutzen? Dann hör auf, sie zu mieten. Das Sachbuch über Agentic Authorship – mit eigener App, Dashboard und Pipeline. Alles Open Source.">
 
   <style>
     /* ===== RESET & BASE ===== */
@@ -628,117 +628,42 @@
 
     /* ===== ECOSYSTEM ===== */
     .ecosystem {
-      padding-top: 120px;
-      padding-bottom: 80px;
+      padding-top: 56px;
+      padding-bottom: 40px;
     }
-    .eco-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 48px;
-    }
-    .eco-card {
-      background: rgba(30,41,59,0.55);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid rgba(148,163,184,0.12);
-      border-radius: 16px;
-      padding: 32px 28px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-    }
-    .eco-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #f59e0b, #d97706);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .eco-card:hover::before { opacity: 1; }
-    .eco-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(217,119,6,0.2);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(217,119,6,0.1);
-    }
-    .eco-icon {
-      width: 56px; height: 56px;
-      border-radius: 14px;
-      background: rgba(217,119,6,0.08);
-      border: 1px solid rgba(217,119,6,0.15);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 20px;
-    }
-    .eco-icon svg { width: 28px; height: 28px; stroke: #f59e0b; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .eco-card h3 {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: #e2e8f0;
-    }
-    .eco-card .version {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 8px;
-      background: rgba(217,119,6,0.1);
-      color: #f59e0b;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-    .eco-card p {
-      font-size: 14px;
-      color: #94a3b8;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-    .eco-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 20px;
-    }
-    .eco-tag {
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: rgba(30,41,59,0.8);
-      border: 1px solid rgba(148,163,184,0.1);
-      font-size: 11px;
-      color: #94a3b8;
-      font-weight: 500;
-    }
-    .eco-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: #f59e0b;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      transition: gap 0.2s;
-    }
-    .eco-link:hover { gap: 10px; }
-    .eco-link svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
-
     @media (max-width: 768px) {
-      .eco-grid { grid-template-columns: 1fr; }
       .eco-preview-devices { flex-direction: column; align-items: center; }
-      .eco-prev-arrow { transform: rotate(90deg); margin: -8px 0; }
+      .eco-prev-arrow { transform: rotate(90deg); margin: -8px 0; width: 60px; height: 30px; }
+      .eco-flow-packet { font-size: 6px; padding: 1px 5px; }
+      .eco-prev-device-graphic { height: 150px; }
     }
 
     /* ===== ECOSYSTEM MINI-PREVIEW ===== */
     .eco-preview-devices {
       display: flex; align-items: center; justify-content: center;
-      gap: 12px; padding: 0 16px;
+      gap: 20px; padding: 24px 36px;
+      background: rgba(15,23,42,0.5);
+      border: 1px solid rgba(148,163,184,0.08);
+      border-radius: 20px;
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 4px 40px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03);
     }
     .eco-prev-device {
       display: flex; flex-direction: column; align-items: center; gap: 8px;
     }
+    .eco-prev-device-link {
+      text-decoration: none; color: inherit;
+      transition: transform 0.3s ease;
+      position: relative; z-index: 10;
+    }
+    .eco-prev-device-link:hover {
+      transform: translateY(-4px);
+    }
+    .eco-prev-device-graphic {
+      height: 200px; display: flex; align-items: flex-end; justify-content: center;
+    }
     .eco-prev-book {
-      width: 100px; height: 136px; perspective: 400px; cursor: pointer;
+      width: 130px; height: 176px; perspective: 400px; cursor: pointer;
     }
     .eco-prev-book-inner {
       width: 100%; height: 100%; border-radius: 3px 6px 6px 3px;
@@ -747,17 +672,15 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       padding: 10px 8px; position: relative; overflow: hidden;
       transform: rotateY(-6deg); transition: transform 0.4s ease;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.35), 0 0 40px rgba(217,119,6,0.05);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.35), 0 0 50px rgba(217,119,6,0.12), 0 0 80px rgba(251,191,36,0.06);
     }
-    .eco-prev-book:hover .eco-prev-book-inner { transform: rotateY(-2deg); }
+    .eco-prev-book:hover .eco-prev-book-inner { transform: rotateY(-2deg); box-shadow: 0 6px 24px rgba(0,0,0,0.35), 0 0 60px rgba(217,119,6,0.2), 0 0 100px rgba(251,191,36,0.1); }
     .eco-prev-book-inner::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(circle at 50% 30%, rgba(251,191,36,0.08) 0%, transparent 60%);
+      background: radial-gradient(circle at 50% 30%, rgba(251,191,36,0.14) 0%, transparent 60%);
     }
-    .eco-prev-logo { width: 32px; height: 32px; margin-bottom: 6px; position: relative; z-index: 1; }
-
     .eco-prev-phone {
-      width: 60px; height: 120px; background: #0d1321; border-radius: 12px;
+      width: 70px; height: 140px; background: #0d1321; border-radius: 14px;
       border: 2px solid #1e293b; position: relative; overflow: hidden; cursor: pointer;
       box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 12px 40px rgba(0,0,0,0.35), 0 0 40px rgba(217,119,6,0.04);
       transition: transform 0.3s ease;
@@ -765,64 +688,106 @@
     .eco-prev-phone:hover { transform: translateY(-3px); }
     .eco-prev-phone-notch {
       position: absolute; top: 3px; left: 50%; transform: translateX(-50%);
-      width: 22px; height: 7px; background: #000; border-radius: 5px; z-index: 10;
+      width: 26px; height: 8px; background: #000; border-radius: 5px; z-index: 10;
     }
 
     .eco-prev-mac { cursor: pointer; transition: transform 0.3s ease; }
     .eco-prev-mac:hover { transform: translateY(-3px); }
     .eco-prev-mac-screen {
-      width: 160px; height: 100px; background: #0d1117;
+      width: 240px; height: 150px; background: #0d1117;
       border: 2px solid #1e293b; border-radius: 6px 6px 0 0; overflow: hidden;
       box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 -2px 20px rgba(0,0,0,0.25), 0 0 40px rgba(217,119,6,0.03);
     }
     .eco-prev-mac-base {
-      width: 184px; height: 7px;
+      width: 272px; height: 9px;
       background: linear-gradient(180deg, #1e293b, #15202e);
-      border-radius: 0 0 4px 4px; margin-left: -12px;
+      border-radius: 0 0 4px 4px; margin-left: -16px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.25);
     }
 
-    .eco-prev-label { font-size: 14px; font-weight: 700; color: #e2e8f0; }
-    .eco-prev-sublabel { font-size: 11px; color: #94a3b8; }
-
-    /* Flow Arrows */
-    .eco-prev-arrow { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-    .eco-prev-arrow-label {
-      font-size: 9px; font-weight: 600; color: #f59e0b;
-      background: rgba(15,23,42,0.9); border: 1px solid rgba(245,158,11,0.2);
-      border-radius: 6px; padding: 3px 8px; white-space: nowrap;
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    /* Ecosystem CTA Link */
+    .eco-prev-cta-link {
+      font-size: 14px; color: #f59e0b; text-decoration: none; font-weight: 600;
+      transition: all 0.25s ease;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 24px; border-radius: 12px;
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.2);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     }
-    .eco-prev-arrow-line {
-      width: 50px; height: 2px; position: relative;
-      background: linear-gradient(90deg, rgba(245,158,11,0.15), rgba(245,158,11,0.4), rgba(245,158,11,0.15));
+    .eco-prev-cta-link:hover {
+      color: #fbbf24;
+      background: rgba(245,158,11,0.14);
+      border-color: rgba(245,158,11,0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(217,119,6,0.15);
+    }
+
+    /* Flow Arrows – Animated Data Packets */
+    .eco-prev-arrow {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 80px; position: relative; height: 40px;
+    }
+    /* Track line (subtle background) */
+    .eco-prev-arrow-track {
+      width: 100%; height: 2px; position: absolute; top: 50%;
+      background: linear-gradient(90deg, rgba(245,158,11,0.1), rgba(245,158,11,0.3), rgba(245,158,11,0.1));
       border-radius: 1px;
     }
-    .eco-prev-arrow-line::after {
-      content: ''; position: absolute; right: -5px; top: 50%; transform: translateY(-50%);
+    /* Arrowhead */
+    .eco-prev-arrow-track::after {
+      content: ''; position: absolute; right: -6px; top: 50%; transform: translateY(-50%);
       border-left: 6px solid rgba(245,158,11,0.5);
       border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+      z-index: 2;
     }
-    .eco-prev-arrow-pulse {
-      position: absolute; top: 0; left: 0; width: 12px; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(251,191,36,0.6), transparent);
-      border-radius: 1px; animation: ecoPulse 2s ease-in-out infinite;
+    /* Glowing pulse on track */
+    .eco-flow-pulse {
+      position: absolute; top: 50%; left: -14px;
+      width: 14px; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(251,191,36,0.7), transparent);
+      border-radius: 1px;
+      animation: trackPulse 2.5s ease-in-out infinite;
     }
-    @keyframes ecoPulse { 0% { left: -12px; } 100% { left: 100%; } }
+    .eco-prev-arrow-2 .eco-flow-pulse {
+      animation-delay: 1.2s;
+    }
+    @keyframes trackPulse {
+      0% { left: -14px; }
+      100% { left: 100%; }
+    }
+    /* Data packet (the animated pill) */
+    .eco-flow-packet {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      display: flex; align-items: center; gap: 3px;
+      padding: 2px 7px; border-radius: 8px;
+      background: rgba(245,158,11,0.12);
+      border: 1px solid rgba(245,158,11,0.3);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      white-space: nowrap;
+      font-size: 7px; font-weight: 600; color: #f59e0b;
+      opacity: 0;
+      animation: flowPacket 30s ease-in-out infinite;
+    }
+    /* Packets are children 3,4,5 (after track + pulse) */
+    .eco-flow-packet:nth-child(4) { animation-delay: 10s; }
+    .eco-flow-packet:nth-child(5) { animation-delay: 20s; }
 
-    /* CTA Button */
-    .eco-preview-cta {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 28px; border-radius: 14px;
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #0f172a; font-weight: 600; font-size: 15px;
-      text-decoration: none; transition: all 0.25s ease;
-      box-shadow: 0 4px 20px rgba(217,119,6,0.25);
+    @keyframes flowPacket {
+      /* Start hinter dem linken Device, Ende hinter dem rechten Device */
+      0% { left: -50px; opacity: 0; }
+      1% { left: -40px; opacity: 0.6; }
+      2% { left: -20px; opacity: 1; }
+      8% { left: calc(100% + 20px); opacity: 1; }
+      9% { left: calc(100% + 40px); opacity: 0.6; }
+      10% { left: calc(100% + 50px); opacity: 0; }
+      100% { left: calc(100% + 50px); opacity: 0; }
     }
-    .eco-preview-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(217,119,6,0.35);
-    }
+
+    /* Second arrow delay – packets start after first arrow's packets arrive */
+    .eco-prev-arrow-2 .eco-flow-packet:nth-child(3) { animation-delay: 3s; }
+    .eco-prev-arrow-2 .eco-flow-packet:nth-child(4) { animation-delay: 13s; }
+    .eco-prev-arrow-2 .eco-flow-packet:nth-child(5) { animation-delay: 23s; }
 
     /* ===== BOOK / TOC ===== */
     .book-toc {
@@ -830,18 +795,18 @@
       padding-bottom: 80px;
     }
     .toc-parts {
-      margin-top: 48px;
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
     }
     .toc-part {
       background: rgba(30,41,59,0.55);
       backdrop-filter: blur(20px) saturate(180%);
       -webkit-backdrop-filter: blur(20px) saturate(180%);
       border: 1px solid rgba(148,163,184,0.12);
-      border-radius: 16px;
-      padding: 28px 32px;
+      border-radius: 14px;
+      padding: 20px 20px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
       position: relative;
       overflow: hidden;
@@ -850,36 +815,38 @@
       content: '';
       position: absolute;
       top: 0; left: 0;
-      width: 4px; height: 100%;
+      width: 3px; height: 100%;
       background: linear-gradient(180deg, #fbbf24, #d97706);
-      border-radius: 4px 0 0 4px;
+      border-radius: 3px 0 0 3px;
     }
     .toc-part-header {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(148,163,184,0.08);
     }
     .toc-part-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 40px; height: 40px;
-      border-radius: 10px;
+      width: 32px; height: 32px;
+      border-radius: 8px;
       background: rgba(217,119,6,0.12);
       border: 1px solid rgba(217,119,6,0.25);
       color: #f59e0b;
       font-weight: 800;
-      font-size: 16px;
+      font-size: 14px;
       flex-shrink: 0;
     }
     .toc-part-title {
-      font-size: 18px;
+      font-size: 15px;
       font-weight: 700;
       color: #e2e8f0;
     }
     .toc-part-subtitle {
-      font-size: 13px;
+      font-size: 11px;
       color: #94a3b8;
       font-weight: 500;
     }
@@ -887,24 +854,31 @@
       display: flex;
       flex-direction: column;
       gap: 0;
+      min-height: 340px;
     }
     .toc-chapter {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(148,163,184,0.06);
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(148,163,184,0.05);
       transition: all 0.2s;
+      position: relative;
     }
     .toc-chapter:last-child { border-bottom: none; }
-    .toc-chapter:hover { padding-left: 8px; }
+    .toc-chapter:hover { padding-left: 6px; }
     .toc-chapter:hover .toc-ch-num { color: #f59e0b; border-color: rgba(217,119,6,0.4); }
+    .toc-chapter:hover .toc-ch-desc {
+      opacity: 1;
+      max-height: 40px;
+      margin-top: 2px;
+    }
     .toc-ch-num {
-      width: 32px; height: 32px;
-      border-radius: 8px;
+      width: 26px; height: 26px;
+      border-radius: 6px;
       border: 1px solid rgba(148,163,184,0.15);
       display: flex; align-items: center; justify-content: center;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 700;
       color: #64748b;
       flex-shrink: 0;
@@ -912,122 +886,250 @@
     }
     .toc-ch-info { flex: 1; min-width: 0; }
     .toc-ch-title {
-      font-size: 15px;
+      font-size: 13px;
       color: #cbd5e1;
       font-weight: 500;
     }
     .toc-ch-desc {
-      font-size: 13px;
+      font-size: 11px;
       color: #64748b;
-      margin-top: 2px;
       line-height: 1.4;
+      opacity: 0;
+      max-height: 0;
+      margin-top: 0;
+      overflow: hidden;
+      transition: all 0.25s ease;
     }
     .toc-part-result {
-      font-size: 13px;
+      font-size: 12px;
       color: #94a3b8;
-      margin-top: 4px;
+      margin-top: 3px;
       font-style: italic;
     }
     .toc-cta {
-      margin-top: 40px;
+      margin-top: 36px;
       text-align: center;
     }
 
     @media (max-width: 768px) {
-      .toc-part { padding: 24px 20px; }
+      .toc-parts { grid-template-columns: 1fr; }
+      .toc-part { padding: 20px 18px; }
+      .toc-ch-desc { opacity: 1; max-height: 40px; margin-top: 2px; }
+      .toc-chapters { min-height: auto; }
     }
 
     /* ===== PIPELINE ===== */
     .pipeline {
-      padding-top: 120px;
-      padding-bottom: 80px;
+      padding-top: 80px;
+      padding-bottom: 48px;
     }
     .pipeline-visual {
       margin-top: 48px;
       position: relative;
     }
-    .pipeline-steps {
+    .pipeline-stage {
+      background: rgba(15,23,42,0.5);
+      border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 20px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+      padding: 28px 24px;
       display: flex;
+      align-items: center;
       gap: 0;
-      align-items: stretch;
       position: relative;
+      overflow: hidden;
+      max-width: 900px;
+      margin: 0 auto;
     }
-    .pipe-step {
+    .pipe-agent {
       flex: 1;
       text-align: center;
-      padding: 28px 16px;
       position: relative;
+      z-index: 10;
+      min-width: 0;
     }
-    .pipe-step::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      right: -12px;
-      width: 24px;
-      height: 2px;
-      background: linear-gradient(90deg, rgba(217,119,6,0.4), rgba(217,119,6,0.1));
-      z-index: 2;
-    }
-    .pipe-step:last-child::after { display: none; }
-    .pipe-num {
-      width: 44px; height: 44px;
+    .pipe-agent-icon {
+      width: 56px; height: 56px;
       border-radius: 50%;
-      background: rgba(217,119,6,0.12);
-      border: 2px solid rgba(217,119,6,0.3);
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 14px;
-      font-weight: 700;
-      font-size: 16px;
-      color: #f59e0b;
+      margin: 0 auto 12px;
+      font-size: 24px;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .pipe-title {
-      font-size: 15px;
+    .pipe-agent:nth-child(1) .pipe-agent-icon {
+      background: rgba(217,119,6,0.15);
+      border: 2px solid rgba(217,119,6,0.4);
+      box-shadow: 0 0 20px rgba(217,119,6,0.15);
+    }
+    .pipe-agent:nth-child(3) .pipe-agent-icon {
+      background: rgba(245,158,11,0.15);
+      border: 2px solid rgba(245,158,11,0.4);
+      box-shadow: 0 0 20px rgba(245,158,11,0.15);
+    }
+    .pipe-agent:nth-child(5) .pipe-agent-icon {
+      background: rgba(251,191,36,0.15);
+      border: 2px solid rgba(251,191,36,0.4);
+      box-shadow: 0 0 20px rgba(251,191,36,0.15);
+    }
+    .pipe-agent:nth-child(7) .pipe-agent-icon {
+      background: rgba(252,211,77,0.15);
+      border: 2px solid rgba(252,211,77,0.4);
+      box-shadow: 0 0 20px rgba(252,211,77,0.15);
+    }
+    .pipe-agent:hover .pipe-agent-icon {
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(245,158,11,0.3);
+    }
+    .pipe-agent-title {
+      font-size: 14px;
       font-weight: 700;
       color: #e2e8f0;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
-    .pipe-desc {
-      font-size: 13px;
+    .pipe-agent-desc {
+      font-size: 11px;
       color: #94a3b8;
-      line-height: 1.5;
+      line-height: 1.4;
+      max-width: 140px;
+      margin: 0 auto;
     }
-    .pipeline-card {
-      background: rgba(30,41,59,0.55);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid rgba(148,163,184,0.12);
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
-      overflow: hidden;
+    /* Flow arrows between agents */
+    .pipe-flow {
+      width: 80px;
+      min-width: 60px;
+      height: 40px;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
     }
-    .pipeline-card::before {
-      content: '';
+    .pipe-flow-track {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(217,119,6,0.3), rgba(245,158,11,0.15));
+      position: relative;
+      border-radius: 1px;
+    }
+    .pipe-flow-pulse {
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 50%;
-      background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+      top: 0; left: 0;
+      width: 30px; height: 2px;
+      background: linear-gradient(90deg, transparent, #f59e0b, transparent);
+      border-radius: 1px;
+      animation: pipeFlowPulse 2.5s ease-in-out infinite;
+    }
+    .pipe-flow:nth-child(4) .pipe-flow-pulse { animation-delay: 0.8s; }
+    .pipe-flow:nth-child(6) .pipe-flow-pulse { animation-delay: 1.6s; }
+    @keyframes pipeFlowPulse {
+      0% { left: -30px; opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { left: calc(100% + 30px); opacity: 0; }
+    }
+    /* Animated data packets */
+    .pipe-packet {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 9px;
+      font-weight: 600;
+      color: #fbbf24;
+      background: rgba(217,119,6,0.18);
+      border: 1px solid rgba(245,158,11,0.3);
+      border-radius: 8px;
+      padding: 2px 8px;
+      white-space: nowrap;
+      opacity: 0;
+      z-index: 8;
       pointer-events: none;
+    }
+    /* Flow 1: Recherche → Entwurf */
+    .pipe-flow:nth-child(2) .pipe-packet:nth-child(2) {
+      animation: pipePacketMove 30s linear infinite;
+    }
+    .pipe-flow:nth-child(2) .pipe-packet:nth-child(3) {
+      animation: pipePacketMove 30s linear infinite 10s;
+    }
+    .pipe-flow:nth-child(2) .pipe-packet:nth-child(4) {
+      animation: pipePacketMove 30s linear infinite 20s;
+    }
+    /* Flow 2: Entwurf → Review */
+    .pipe-flow:nth-child(4) .pipe-packet:nth-child(2) {
+      animation: pipePacketMove 30s linear infinite 3s;
+    }
+    .pipe-flow:nth-child(4) .pipe-packet:nth-child(3) {
+      animation: pipePacketMove 30s linear infinite 13s;
+    }
+    .pipe-flow:nth-child(4) .pipe-packet:nth-child(4) {
+      animation: pipePacketMove 30s linear infinite 23s;
+    }
+    /* Flow 3: Review → Final */
+    .pipe-flow:nth-child(6) .pipe-packet:nth-child(2) {
+      animation: pipePacketMove 30s linear infinite 6s;
+    }
+    .pipe-flow:nth-child(6) .pipe-packet:nth-child(3) {
+      animation: pipePacketMove 30s linear infinite 16s;
+    }
+    .pipe-flow:nth-child(6) .pipe-packet:nth-child(4) {
+      animation: pipePacketMove 30s linear infinite 26s;
+    }
+    @keyframes pipePacketMove {
+      0% { left: -20px; opacity: 0; }
+      2% { opacity: 1; }
+      8% { opacity: 1; }
+      10% { left: calc(100% + 20px); opacity: 0; }
+      100% { left: calc(100% + 20px); opacity: 0; }
     }
 
     @media (max-width: 768px) {
-      .pipeline-steps { flex-direction: column; }
-      .pipe-step::after {
-        top: auto;
-        bottom: -12px;
-        left: 50%;
-        right: auto;
-        width: 2px;
-        height: 24px;
-        background: linear-gradient(180deg, rgba(217,119,6,0.4), rgba(217,119,6,0.1));
+      .pipeline-stage {
+        flex-direction: column;
+        padding: 24px 16px;
+        gap: 0;
       }
+      .pipe-flow {
+        width: 40px;
+        height: 60px;
+        min-width: auto;
+      }
+      .pipe-flow-track {
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(180deg, rgba(217,119,6,0.3), rgba(245,158,11,0.15));
+      }
+      .pipe-flow-pulse {
+        width: 2px; height: 20px;
+        top: -20px; left: 0;
+        animation: pipeFlowPulseV 2.5s ease-in-out infinite;
+      }
+      @keyframes pipeFlowPulseV {
+        0% { top: -20px; opacity: 0; }
+        20% { opacity: 1; }
+        80% { opacity: 1; }
+        100% { top: calc(100% + 20px); opacity: 0; }
+      }
+      .pipe-packet {
+        font-size: 7px;
+        padding: 1px 5px;
+      }
+      @keyframes pipePacketMove {
+        0% { top: -15px; left: 50%; transform: translateX(-50%); opacity: 0; }
+        2% { opacity: 1; }
+        8% { opacity: 1; }
+        10% { top: calc(100% + 15px); left: 50%; transform: translateX(-50%); opacity: 0; }
+        100% { top: calc(100% + 15px); left: 50%; transform: translateX(-50%); opacity: 0; }
+      }
+      .pipe-agent-desc { font-size: 10px; }
     }
 
     /* ===== NUMBERS / STATS ===== */
     .stats {
-      padding-top: 80px;
-      padding-bottom: 80px;
+      padding-top: 48px;
+      padding-bottom: 60px;
     }
     .stats-grid {
       display: grid;
@@ -1231,43 +1333,6 @@
     }
 
     /* ===== CTA ===== */
-    .cta {
-      padding-top: 80px;
-      padding-bottom: 120px;
-      text-align: center;
-    }
-    .cta-card {
-      background: rgba(30,41,59,0.55);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid rgba(217,119,6,0.15);
-      border-radius: 20px;
-      padding: 60px 40px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 80px rgba(217,119,6,0.05);
-      position: relative;
-      overflow: hidden;
-    }
-    .cta-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(217,119,6,0.3), transparent);
-    }
-    .cta-card h2 {
-      font-size: clamp(24px, 3.5vw, 36px);
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
-    .cta-card p {
-      color: #94a3b8;
-      font-size: 17px;
-      margin-bottom: 32px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
     /* ===== FOOTER ===== */
     footer {
       position: relative;
@@ -1461,169 +1526,216 @@
   <section class="ecosystem" id="ecosystem">
     <div class="fade-in" style="text-align:center;">
       <div class="section-label">Das Ökosystem</div>
-      <div class="section-title" style="max-width:600px;margin:0 auto 8px;">Dein Werkzeugkasten. Nicht ihrer.</div>
-      <div class="section-subtitle" style="margin:0 auto;">Drei Bausteine, die zusammen ein ganzes Ökosystem bilden – und jeder davon gehört dir.</div>
+      <div class="section-title" style="margin:0 auto 8px;">Dein Werkzeugkasten. Nicht ihrer.</div>
+      <div class="section-subtitle" style="margin:0 auto;">Drei Bausteine. Ein Ökosystem. Alles deins.</div>
     </div>
-    <div class="eco-grid fade-in">
-      <!-- Book -->
-      <div class="eco-card">
-        <div class="eco-icon">
-          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        </div>
-        <h3>Das Buch</h3>
-        <span class="version">15 Kapitel</span>
-        <p>
-          Ein Sachbuch, das dokumentiert wie es selbst entsteht. Jedes Kapitel zeigt einen anderen Aspekt der Mensch-KI-Kollaboration – von der ersten Idee bis zum fertigen Manuskript.
-        </p>
-        <div class="eco-tags">
-          <span class="eco-tag">Sachbuch</span>
-          <span class="eco-tag">Agentic Authorship</span>
-          <span class="eco-tag">Transparenz</span>
-        </div>
-        <a href="#buch" class="eco-link">
-          Inhaltsverzeichnis
-          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-      </div>
-      <!-- Cowan -->
-      <div class="eco-card">
-        <div class="eco-icon">
-          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-        </div>
-        <h3>Cowan App</h3>
-        <span class="version">v5.7.0</span>
-        <p>
-          Der mobile Begleiter zum Buch. Fotografiere eine Buchseite, stelle Fragen per Sprache, und lass dir Inhalte vorlesen. KI-gestützt, komplett im Browser.
-        </p>
-        <div class="eco-tags">
-          <span class="eco-tag">React</span>
-          <span class="eco-tag">Kamera</span>
-          <span class="eco-tag">TTS</span>
-          <span class="eco-tag">BYOK</span>
-        </div>
-        <a href="cowan-tour.html" class="eco-link">
-          Ansehen
-          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-      </div>
-      <!-- Dashboard -->
-      <div class="eco-card">
-        <div class="eco-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </div>
-        <h3>Dashboard</h3>
-        <span class="version">v6.11.0</span>
-        <p>
-          Die Kommandozentrale. Buchstatus, Kapitelfortschritt, Agent-Übersicht und Produktionssteuerung – alles in einem iOS-18-inspirierten Glassmorphism-Interface.
-        </p>
-        <div class="eco-tags">
-          <span class="eco-tag">React</span>
-          <span class="eco-tag">Glassmorphism</span>
-          <span class="eco-tag">GitHub Pages</span>
-        </div>
-        <a href="dashboard-tour.html" class="eco-link">
-          Ansehen
-          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-      </div>
-    </div>
-
     <!-- === ECOSYSTEM MINI-PREVIEW === -->
-    <div class="eco-preview fade-in" style="margin-top:48px;">
-      <div style="text-align:center;margin-bottom:24px;">
-        <div style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:#f59e0b;margin-bottom:8px;">So hängt alles zusammen</div>
-      </div>
+    <div class="eco-preview fade-in" style="margin-top:28px;">
 
       <div class="eco-preview-devices">
         <!-- Book -->
-        <div class="eco-prev-device">
-          <div class="eco-prev-book">
-            <div class="eco-prev-book-inner">
-              <svg class="eco-prev-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <defs><linearGradient id="epblg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs>
-                <path d="M50 15c-8 0-15 5-18 12-2 5-1 10 1 14l-8 12c-2 3-1 7 2 9l6 4-3 10c-1 3 1 6 4 7h8l2 7c1 3 4 5 7 4l8-2 8 2c3 1 6-1 7-4l2-7h8c3-1 5-4 4-7l-3-10 6-4c3-2 4-6 2-9l-8-12c2-4 3-9 1-14-3-7-10-12-18-12z" fill="url(#epblg)"/>
-              </svg>
-              <div style="font-size:10px;font-weight:700;color:#e2e8f0;">OpenClaw</div>
+        <a href="ecosystem-tour.html" class="eco-prev-device eco-prev-device-link">
+
+          <div class="eco-prev-device-graphic">
+            <div class="eco-prev-book">
+              <div class="eco-prev-book-inner">
+                <!-- Decorative top line -->
+                <div style="width:60%;height:1px;background:linear-gradient(90deg,transparent,rgba(251,191,36,0.3),transparent);margin-bottom:6px;"></div>
+                <!-- Small hummer logo -->
+                <svg style="width:22px;height:22px;margin-bottom:4px;position:relative;z-index:1;opacity:0.85;" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                  <defs><linearGradient id="epblg" x1="20%" y1="0%" x2="80%" y2="100%"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0.9"/><stop offset="50%" stop-color="#f59e0b" stop-opacity="0.8"/><stop offset="100%" stop-color="#d97706" stop-opacity="0.65"/></linearGradient></defs>
+                  <path fill="url(#epblg)" d="m166.5 52.5q3.5 0 7 0 2.75 2.99 1.5 7-21.27 45.61-20.5 96 39.99 2.76 72 26.5 7.87 6.86 13.5 15.5 42.88-56.39 103.5-92.5 47.35-25.46 101-25 14.52 0.38 23.5 11.5 3.19 7.74 2 16-1.81 7.18-4.5 14-1 0-1 1-5.04 6.05-9 13-1 0-1 1 0 0.5 0 1-12.42 12.15-28.5 19-6.02 36.27-41.5 45-0.83 2.75 0 5 19.02-12.85 41.5-9 10.85-8.09 23.5-13 15.01-6.37 31-2.5 14.09 7.43 14 23.5-2.83 23.25-15.5 43-6.42 9.92-14 19-10.04 8.8-19.5 18-72.02 48.88-156.5 27-19.63 9.6-41.5 10.5-4.59 1.27-9 3 2 1 4 2 20.09-1.11 35 12 25.46 6.95 37.5 30.5 1.26 5.69-1 11-3.38 3.79-7.5 6.5 5.74 10.07 1.5 20.5-7.55 7.47-17.5 3.5-11.01-5.34-22.5-9.5-18.26 10-38.5 13-15.5 0-31 0-26.62-4.54-51-17-4.17 1.33-8 3.5-7.23 5.87-15 11-8.62 2.58-13.5-4.5-1.82 2.32-4.5 3.5-6.06 2.24-12 3.5-7.5 0-15 0-27.42-2.56-50-18.5-18-17.25-23-41.5 0-11.5 0-23 4.12-22.7 25-33 6.95-16.67 22-26.5-20.39-20.8-14.5-49.5 7.01-26.98 28.5-44.5 7.56-5.27 15-10.5-13.09-30.88-7.5-64 3.16-15.57 14.5-26.5 6.85-2.48 8 4.5-6.59 39.53 11 75.5 7.99-0.49 16-2 2.42-34.57 14.5-67.5 8.51-22.23 27.5-36z"/>
+                  <path fill="#b45309" opacity="0.45" d="m113.5 401.5q0.48-5.1-1-10-0.91 0.19-1 1-2.46 1.74-5 3.5 5.65 9.54-5 13-32.21 5.55-61-10-32.89-23.11-29.5-63.5 2.96-22.67 23.5-32 7.99-19.75 27-29.5-27.65-23.7-15.5-58.5 7.33-16.82 20.5-29.5 10.79-8.14 22-15.5-16.49-37.08-5.5-76 3.19-6.13 7.5-11.5 1.48-0.89 2 1-5.69 41.09 12.5 78.5 1 1 2 2 9.97-3.24 20.5-4 2 0 4 0 0-7.5 0-15 0.99-42.22 24.5-77 6.12-7.12 14-12-4.65 13.43-10 27-11.93 37.6-9.5 77 49.38 0.7 83.5 36 2.75 4.5 5.5 9 38.99-52.24 93-88.5 45.84-29.03 100-32.5 15.69-1.56 29 6.5 5.68 7.29 3.5 16.5-10.38 33.62-43.5 45-4.39 37.33-41 45-0.79 8.63-6 15.5 1.91 1.83 4.5 2.5 22.27-17.25 50.5-14.5 12.93-9.41 28-15 36.22-8.28 31.5 28.5-15.19 51.69-62.5 77.5-65.92 35.87-138 15.5-19.67 10.42-42 10.5-8.39 2.88-17 5 3.58 6.08 10 9 20.92-1.14 36 13 22.67 5.23 34.5 25.5 3.33 7.13-3.5 11.5-3.88 1.8-8 3 7.36 8.45 6.5 19.5-4.43 5.66-11.5 3.5-12.84-5.67-26-10.5-39.4 21.02-83 10.5-18.85-5.78-36.5-14.5-13.65 4.14-23.5 14.5-9.51 3.74-11-6.5z"/>
+                </svg>
+                <!-- Title -->
+                <div style="font-size:9px;font-weight:800;color:#f59e0b;letter-spacing:0.5px;text-transform:uppercase;line-height:1.2;text-align:center;position:relative;z-index:1;">Agentic</div>
+                <div style="font-size:9px;font-weight:800;color:#f59e0b;letter-spacing:0.5px;text-transform:uppercase;line-height:1.2;text-align:center;margin-bottom:4px;position:relative;z-index:1;">Authorship</div>
+                <!-- Divider -->
+                <div style="width:40%;height:1px;background:rgba(148,163,184,0.2);margin-bottom:4px;"></div>
+                <!-- Subtitle -->
+                <div style="font-size:5px;color:#94a3b8;text-align:center;line-height:1.3;padding:0 6px;position:relative;z-index:1;">Wie du mit KI ein Buch schreibst</div>
+                <!-- Decorative bottom line -->
+                <div style="width:60%;height:1px;background:linear-gradient(90deg,transparent,rgba(251,191,36,0.2),transparent);margin-top:auto;margin-bottom:2px;"></div>
+                <!-- Author -->
+                <div style="font-size:5px;color:rgba(148,163,184,0.5);position:relative;z-index:1;">Thomas Iburg</div>
+              </div>
             </div>
           </div>
-          <div class="eco-prev-label">Buch</div>
-          <div class="eco-prev-sublabel">Lesen & Lernen</div>
-        </div>
+        </a>
 
-        <!-- Arrow 1 -->
+        <!-- Arrow 1: Book → iPhone (Scan flow) -->
         <div class="eco-prev-arrow">
-          <div class="eco-prev-arrow-label">Seite scannen</div>
-          <div class="eco-prev-arrow-line"><div class="eco-prev-arrow-pulse"></div></div>
+          <div class="eco-prev-arrow-track"></div>
+          <div class="eco-flow-pulse"></div>
+          <div class="eco-flow-packet">📖 Seite 42</div>
+          <div class="eco-flow-packet">📄 Kapitel 8</div>
+          <div class="eco-flow-packet">🔍 Absatz</div>
         </div>
 
         <!-- iPhone -->
-        <div class="eco-prev-device">
-          <div class="eco-prev-phone">
-            <div class="eco-prev-phone-notch"></div>
-            <div style="padding:14px 6px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;">
-              <div style="font-size:7px;font-weight:700;color:#e2e8f0;">Cowan</div>
-              <div style="font-size:5px;color:#22c55e;background:rgba(34,197,94,0.12);border-radius:4px;padding:1px 4px;">Verbunden</div>
-              <div style="display:flex;gap:2px;margin-top:2px;">
-                <div style="width:18px;height:14px;border-radius:3px;background:rgba(30,41,59,0.6);border:1px solid rgba(148,163,184,0.12);display:flex;align-items:center;justify-content:center;">
-                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/></svg>
-                </div>
-                <div style="width:18px;height:14px;border-radius:3px;background:rgba(30,41,59,0.6);border:1px solid rgba(148,163,184,0.12);display:flex;align-items:center;justify-content:center;">
-                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/></svg>
-                </div>
-                <div style="width:18px;height:14px;border-radius:3px;background:rgba(30,41,59,0.6);border:1px solid rgba(148,163,184,0.12);display:flex;align-items:center;justify-content:center;">
-                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        <a href="ecosystem-tour.html" class="eco-prev-device eco-prev-device-link">
+
+          <div class="eco-prev-device-graphic">
+            <div class="eco-prev-phone">
+              <div class="eco-prev-phone-notch"></div>
+              <div style="padding:14px 6px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;">
+                <div style="font-size:7px;font-weight:700;color:#e2e8f0;">Cowan</div>
+                <div style="font-size:5px;color:#22c55e;background:rgba(34,197,94,0.12);border-radius:4px;padding:1px 4px;">Verbunden</div>
+                <div style="display:flex;gap:2px;margin-top:2px;">
+                  <div style="width:18px;height:14px;border-radius:3px;background:rgba(30,41,59,0.6);border:1px solid rgba(148,163,184,0.12);display:flex;align-items:center;justify-content:center;">
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/></svg>
+                  </div>
+                  <div style="width:18px;height:14px;border-radius:3px;background:rgba(30,41,59,0.6);border:1px solid rgba(148,163,184,0.12);display:flex;align-items:center;justify-content:center;">
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/></svg>
+                  </div>
+                  <div style="width:18px;height:14px;border-radius:3px;background:rgba(30,41,59,0.6);border:1px solid rgba(148,163,184,0.12);display:flex;align-items:center;justify-content:center;">
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="eco-prev-label">Cowan</div>
-          <div class="eco-prev-sublabel">Scannen & Fragen</div>
-        </div>
+        </a>
 
-        <!-- Arrow 2 -->
-        <div class="eco-prev-arrow">
-          <div class="eco-prev-arrow-label">Fortschritt tracken</div>
-          <div class="eco-prev-arrow-line"><div class="eco-prev-arrow-pulse" style="animation-delay:1s;"></div></div>
+        <!-- Arrow 2: iPhone → MacBook (Track flow) -->
+        <div class="eco-prev-arrow eco-prev-arrow-2">
+          <div class="eco-prev-arrow-track"></div>
+          <div class="eco-flow-pulse"></div>
+          <div class="eco-flow-packet">✓ Kap. 3</div>
+          <div class="eco-flow-packet">📊 35%</div>
+          <div class="eco-flow-packet">✓ gelesen</div>
         </div>
 
         <!-- MacBook -->
-        <div class="eco-prev-device">
-          <div class="eco-prev-mac">
-            <div class="eco-prev-mac-screen">
-              <div style="background:linear-gradient(135deg,#4c1d95,#312e81);padding:3px 5px;display:flex;align-items:center;gap:3px;border-bottom:1px solid rgba(139,92,246,0.2);">
-                <div style="width:8px;height:8px;border-radius:2px;background:linear-gradient(135deg,#8b5cf6,#6d28d9);"></div>
-                <span style="font-size:5px;font-weight:700;color:#e2e8f0;">Dashboard</span>
-              </div>
-              <div style="padding:3px;display:flex;gap:2px;">
-                <div style="flex:1;padding:2px 3px;border-radius:3px;background:rgba(30,41,59,0.55);border:1px solid rgba(148,163,184,0.08);">
-                  <div style="font-size:4px;color:#64748b;">Tasks</div>
-                  <div style="font-size:7px;font-weight:700;color:#a78bfa;">120</div>
-                </div>
-                <div style="flex:1;padding:2px 3px;border-radius:3px;background:rgba(30,41,59,0.55);border:1px solid rgba(148,163,184,0.08);">
-                  <div style="font-size:4px;color:#64748b;">Done</div>
-                  <div style="font-size:7px;font-weight:700;color:#4ade80;">42</div>
-                </div>
-                <div style="flex:1;padding:2px 3px;border-radius:3px;background:rgba(30,41,59,0.55);border:1px solid rgba(148,163,184,0.08);">
-                  <div style="font-size:4px;color:#64748b;">%</div>
-                  <div style="font-size:7px;font-weight:700;color:#f59e0b;">35%</div>
-                </div>
-              </div>
-            </div>
-            <div class="eco-prev-mac-base"></div>
-          </div>
-          <div class="eco-prev-label">Dashboard</div>
-          <div class="eco-prev-sublabel">Tracken & Umsetzen</div>
-        </div>
-      </div>
+        <a href="ecosystem-tour.html" class="eco-prev-device eco-prev-device-link">
 
-      <!-- CTA Button -->
-      <div style="text-align:center;margin-top:32px;">
-        <a href="ecosystem-tour.html" class="eco-preview-cta">
-          Ökosystem entdecken
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <div class="eco-prev-device-graphic">
+            <div class="eco-prev-mac">
+              <div class="eco-prev-mac-screen">
+                <!-- Header -->
+                <div style="background:linear-gradient(135deg,#4c1d95,#312e81);padding:3px 5px;display:flex;align-items:center;gap:3px;border-bottom:1px solid rgba(139,92,246,0.2);">
+                  <div style="width:8px;height:8px;border-radius:2px;background:linear-gradient(135deg,#8b5cf6,#6d28d9);"></div>
+                  <span style="font-size:5px;font-weight:700;color:#e2e8f0;">OpenClaw Buchprojekt</span>
+                  <div style="margin-left:auto;width:5px;height:5px;border-radius:50%;background:rgba(74,222,128,0.5);"></div>
+                </div>
+                <!-- Nav Tabs -->
+                <div style="padding:2px 3px 0;display:flex;gap:1px;">
+                  <div style="padding:1px 4px;border-radius:2px 2px 0 0;background:rgba(139,92,246,0.2);font-size:4px;color:#a78bfa;font-weight:600;">Home</div>
+                  <div style="padding:1px 4px;border-radius:2px 2px 0 0;font-size:4px;color:#64748b;">M1</div>
+                  <div style="padding:1px 4px;border-radius:2px 2px 0 0;font-size:4px;color:#64748b;">M2</div>
+                  <div style="padding:1px 4px;border-radius:2px 2px 0 0;font-size:4px;color:#64748b;">M3</div>
+                  <div style="padding:1px 4px;border-radius:2px 2px 0 0;font-size:4px;color:#64748b;">M4</div>
+                  <div style="padding:1px 4px;border-radius:2px 2px 0 0;font-size:4px;color:#64748b;">M5</div>
+                  <div style="padding:1px 4px;border-radius:2px 2px 0 0;font-size:4px;color:#64748b;">M6</div>
+                </div>
+                <!-- Stats Row -->
+                <div style="padding:2px 3px;display:flex;gap:2px;">
+                  <div style="flex:1;padding:2px 3px;border-radius:3px;background:rgba(30,41,59,0.55);border:1px solid rgba(148,163,184,0.08);">
+                    <div style="font-size:3px;color:#64748b;">Tasks</div>
+                    <div style="font-size:7px;font-weight:700;color:#a78bfa;">120</div>
+                  </div>
+                  <div style="flex:1;padding:2px 3px;border-radius:3px;background:rgba(30,41,59,0.55);border:1px solid rgba(148,163,184,0.08);">
+                    <div style="font-size:3px;color:#64748b;">Done</div>
+                    <div style="font-size:7px;font-weight:700;color:#4ade80;">42</div>
+                  </div>
+                  <div style="flex:1;padding:2px 3px;border-radius:3px;background:rgba(30,41,59,0.55);border:1px solid rgba(148,163,184,0.08);">
+                    <div style="font-size:3px;color:#64748b;">%</div>
+                    <div style="font-size:7px;font-weight:700;color:#f59e0b;">35%</div>
+                  </div>
+                </div>
+                <!-- Mini Chapter Grid (15 chapters × 5 rows = progress heatmap) -->
+                <div style="padding:2px 3px 1px;">
+                  <div style="font-size:3px;color:#64748b;margin-bottom:1px;font-weight:600;">Kapitel-Fortschritt</div>
+                  <div style="display:grid;grid-template-columns:repeat(15,1fr);gap:1px;">
+                    <!-- Row 1: Research -->
+                    <div style="height:3px;border-radius:1px;background:#4ade80;opacity:0.6;"></div>
+                    <div style="height:3px;border-radius:1px;background:#4ade80;opacity:0.6;"></div>
+                    <div style="height:3px;border-radius:1px;background:#4ade80;opacity:0.5;"></div>
+                    <div style="height:3px;border-radius:1px;background:#4ade80;opacity:0.4;"></div>
+                    <div style="height:3px;border-radius:1px;background:#f59e0b;opacity:0.45;"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <!-- Row 2: Draft -->
+                    <div style="height:3px;border-radius:1px;background:#4ade80;opacity:0.5;"></div>
+                    <div style="height:3px;border-radius:1px;background:#4ade80;opacity:0.4;"></div>
+                    <div style="height:3px;border-radius:1px;background:#f59e0b;opacity:0.4;"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <!-- Row 3: Review -->
+                    <div style="height:3px;border-radius:1px;background:#4ade80;opacity:0.4;"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                    <div style="height:3px;border-radius:1px;background:rgba(148,163,184,0.12);"></div>
+                  </div>
+                </div>
+                <!-- Mini Task List -->
+                <div style="padding:2px 3px 1px;display:flex;flex-direction:column;gap:1px;">
+                  <div style="display:flex;align-items:center;gap:2px;">
+                    <div style="width:4px;height:4px;border-radius:1px;background:#4ade80;opacity:0.6;"></div>
+                    <div style="flex:1;height:1px;border-radius:1px;background:rgba(148,163,184,0.18);"></div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:2px;">
+                    <div style="width:4px;height:4px;border-radius:1px;background:#4ade80;opacity:0.6;"></div>
+                    <div style="flex:1;height:1px;border-radius:1px;background:rgba(148,163,184,0.18);"></div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:2px;">
+                    <div style="width:4px;height:4px;border-radius:1px;border:1px solid rgba(148,163,184,0.2);"></div>
+                    <div style="flex:1;height:1px;border-radius:1px;background:rgba(148,163,184,0.1);"></div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:2px;">
+                    <div style="width:4px;height:4px;border-radius:1px;border:1px solid rgba(148,163,184,0.2);"></div>
+                    <div style="flex:1;height:1px;border-radius:1px;background:rgba(148,163,184,0.1);"></div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:2px;">
+                    <div style="width:4px;height:4px;border-radius:1px;border:1px solid rgba(148,163,184,0.2);"></div>
+                    <div style="flex:1;height:1px;border-radius:1px;background:rgba(148,163,184,0.1);"></div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:2px;">
+                    <div style="width:4px;height:4px;border-radius:1px;border:1px solid rgba(148,163,184,0.15);"></div>
+                    <div style="flex:1;height:1px;border-radius:1px;background:rgba(148,163,184,0.08);"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="eco-prev-mac-base"></div>
+            </div>
+          </div>
         </a>
       </div>
+
+      <div style="text-align:center;margin-top:20px;">
+        <a href="ecosystem-tour.html" class="eco-prev-cta-link">Ökosystem entdecken →</a>
+      </div>
     </div>
+
 
   </section>
 
@@ -1633,7 +1745,7 @@
   <section class="book-toc" id="buch">
     <div class="fade-in" style="text-align:center;">
       <div class="section-label">Das Buch</div>
-      <div class="section-title" style="max-width:650px;margin:0 auto 8px;">15 Kapitel. Drei Teile. Ein roter Faden.</div>
+      <div class="section-title" style="margin:0 auto 8px;">15 Kapitel. Drei Teile. Ein roter Faden.</div>
       <div class="section-subtitle" style="margin:0 auto;">Vom ersten Setup bis zum eigenen Buch-Projekt – mit echten Zahlen, echten Fehlern und echten Learnings.</div>
     </div>
     <div class="toc-parts fade-in">
@@ -1703,32 +1815,55 @@
   <section class="pipeline" id="pipeline">
     <div class="fade-in" style="text-align:center;">
       <div class="section-label">Multi-Agent Pipeline</div>
-      <div class="section-title" style="max-width:650px;margin:0 auto 8px;">Vier Agenten. Ein Kapitel. Null Chaos.</div>
+      <div class="section-title" style="margin:0 auto 8px;">Vier Agenten. Ein Kapitel. Null Chaos.</div>
       <div class="section-subtitle" style="margin:0 auto;">Stell dir ein Orchester vor – nur dass hier KI-Agenten die Instrumente spielen. Vom Rohkonzept zum druckfertigen Text.</div>
     </div>
     <div class="pipeline-visual fade-in">
-      <div class="pipeline-card">
-        <div class="pipeline-steps">
-          <div class="pipe-step">
-            <div class="pipe-num">1</div>
-            <div class="pipe-title">Recherche</div>
-            <div class="pipe-desc">Agent sammelt Quellen, Fakten und Kontext zum Kapitelthema.</div>
-          </div>
-          <div class="pipe-step">
-            <div class="pipe-num">2</div>
-            <div class="pipe-title">Entwurf</div>
-            <div class="pipe-desc">Erster Textentwurf auf Basis der Recherche und Stilvorlage.</div>
-          </div>
-          <div class="pipe-step">
-            <div class="pipe-num">3</div>
-            <div class="pipe-title">Review</div>
-            <div class="pipe-desc">Kritische Prüfung auf Fakten, Stil, Kohärenz und Lesbarkeit.</div>
-          </div>
-          <div class="pipe-step">
-            <div class="pipe-num">4</div>
-            <div class="pipe-title">Finalisierung</div>
-            <div class="pipe-desc">Letzte Überarbeitung, Formatierung und Einbau ins Manuskript.</div>
-          </div>
+      <div class="pipeline-stage">
+        <!-- Agent 1: Recherche -->
+        <div class="pipe-agent">
+          <div class="pipe-agent-icon">🔍</div>
+          <div class="pipe-agent-title">Recherche</div>
+          <div class="pipe-agent-desc">Sammelt Quellen, Fakten und Kontext zum Kapitelthema.</div>
+        </div>
+        <!-- Flow 1→2 -->
+        <div class="pipe-flow">
+          <div class="pipe-flow-track"><div class="pipe-flow-pulse"></div></div>
+          <span class="pipe-packet">📋 Quellen</span>
+          <span class="pipe-packet">📊 Fakten</span>
+          <span class="pipe-packet">🔗 Kontext</span>
+        </div>
+        <!-- Agent 2: Entwurf -->
+        <div class="pipe-agent">
+          <div class="pipe-agent-icon">🖊️</div>
+          <div class="pipe-agent-title">Entwurf</div>
+          <div class="pipe-agent-desc">Schreibt den ersten Text auf Basis der Recherche und Stilvorlage.</div>
+        </div>
+        <!-- Flow 2→3 -->
+        <div class="pipe-flow">
+          <div class="pipe-flow-track"><div class="pipe-flow-pulse"></div></div>
+          <span class="pipe-packet">📝 Rohtext</span>
+          <span class="pipe-packet">📄 Entwurf</span>
+          <span class="pipe-packet">🖊️ Kapitel</span>
+        </div>
+        <!-- Agent 3: Review -->
+        <div class="pipe-agent">
+          <div class="pipe-agent-icon">🧪</div>
+          <div class="pipe-agent-title">Review</div>
+          <div class="pipe-agent-desc">Prüft Fakten, Stil, Kohärenz und Lesbarkeit.</div>
+        </div>
+        <!-- Flow 3→4 -->
+        <div class="pipe-flow">
+          <div class="pipe-flow-track"><div class="pipe-flow-pulse"></div></div>
+          <span class="pipe-packet">✓ Geprüft</span>
+          <span class="pipe-packet">🔧 Korrektur</span>
+          <span class="pipe-packet">✓ Freigabe</span>
+        </div>
+        <!-- Agent 4: Finalisierung -->
+        <div class="pipe-agent">
+          <div class="pipe-agent-icon">✅</div>
+          <div class="pipe-agent-title">Finalisierung</div>
+          <div class="pipe-agent-desc">Formatierung und Einbau ins Manuskript.</div>
         </div>
       </div>
     </div>
@@ -1816,20 +1951,6 @@
           er baut die Werkzeuge gleich mit. Mit OpenClaw zeigt er, dass die Zukunft
           des Schreibens nicht "Mensch oder KI" heißt, sondern "Mensch mit KI".
         </p>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"><hr></div>
-
-  <!-- CTA -->
-  <section class="cta">
-    <div class="cta-card fade-in">
-      <h2>Noch Mieter – oder schon <span style="color:#f59e0b">Eigentümer</span>?</h2>
-      <p>Schau dir an, wie das Ganze in der Praxis aussieht. Cowan und Dashboard laufen im Demo-Modus – für die volle Funktion brauchst du einen eigenen API-Key (BYOK). Alles offen, alles live, alles im Code nachvollziehbar.</p>
-      <div class="hero-buttons">
-        <a href="cowan-tour.html" class="btn-primary">Cowan ansehen</a>
-        <a href="dashboard-tour.html" class="btn-secondary">Dashboard ansehen</a>
       </div>
     </div>
   </section>
