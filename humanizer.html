@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Humanizer-DE – KI-Texte erkennen und menschlicher machen</title>
+  <meta name="description" content="Der erste deutsche KI-Text-Detektor fuer OpenClaw. 24 Muster, 168 Vokabeln, 5 statistische Signale – erkennt KI-Texte und schreibt sie menschlicher um.">
+  <meta name="author" content="Thomas Iburg">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0f172a">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Humanizer-DE – KI-Texte erkennen und menschlicher machen">
+  <meta property="og:description" content="24 KI-Muster, 168 Vokabeln, 5 statistische Signale. Erkennt KI-Text auf Deutsch und macht ihn menschlicher.">
+  <meta property="og:url" content="https://tikitackr.github.io/OpenClaw-Website/humanizer.html">
+  <meta property="og:site_name" content="OpenClaw">
+  <meta property="og:locale" content="de_DE">
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===== BACKGROUND ===== */
+    .bg-glow {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .bg-glow::before {
+      content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%;
+      background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 70%);
+      animation: floatGlow 20s ease-in-out infinite;
+    }
+    .bg-glow::after {
+      content: ''; position: absolute; bottom: -20%; right: -10%; width: 60%; height: 60%;
+      background: radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%);
+      animation: floatGlow 25s ease-in-out infinite reverse;
+    }
+    @keyframes floatGlow {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(40px, -30px); }
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 24px;
+      background: rgba(15,23,42,0.8);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(148,163,184,0.1);
+    }
+    .nav-inner {
+      max-width: 800px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: #e2e8f0;
+    }
+    .nav-logo-icon {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 8px rgba(217,119,6,0.3));
+    }
+    .nav-logo-text { font-weight: 700; font-size: 18px; letter-spacing: -0.3px; }
+    .nav-back {
+      color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 500;
+      display: flex; align-items: center; gap: 6px; transition: color 0.2s;
+    }
+    .nav-back:hover { color: #f59e0b; }
+    .nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ===== ARTICLE ===== */
+    .article {
+      position: relative; z-index: 1;
+      max-width: 800px; margin: 0 auto;
+      padding: 120px 24px 80px;
+    }
+    .article-badge {
+      display: inline-block; padding: 6px 16px; border-radius: 20px;
+      background: rgba(217,119,6,0.12); border: 1px solid rgba(217,119,6,0.25);
+      color: #f59e0b; font-size: 13px; font-weight: 600; margin-bottom: 24px;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .article h1 {
+      font-size: clamp(28px, 5vw, 42px); font-weight: 800;
+      letter-spacing: -1px; line-height: 1.15; margin-bottom: 16px;
+    }
+    .article h1 .highlight {
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .article-meta {
+      font-size: 14px; color: #64748b; margin-bottom: 48px;
+      padding-bottom: 32px; border-bottom: 1px solid rgba(148,163,184,0.1);
+    }
+
+    .article h2 {
+      font-size: clamp(22px, 3vw, 28px); font-weight: 700;
+      color: #e2e8f0; margin: 56px 0 20px; letter-spacing: -0.3px;
+    }
+    .article p {
+      font-size: 16px; color: #cbd5e1; margin-bottom: 20px; line-height: 1.7;
+    }
+    .article strong { color: #e2e8f0; }
+
+    /* ===== GLASS CARDS ===== */
+    .glass-card {
+      background: rgba(30,41,59,0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 16px; padding: 28px 32px; margin-bottom: 32px;
+      position: relative; overflow: hidden;
+    }
+    .glass-card.amber {
+      border-color: rgba(217,119,6,0.18);
+    }
+    .glass-card.amber::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+      background: linear-gradient(180deg, #fbbf24, #d97706); border-radius: 4px 0 0 4px;
+    }
+    .glass-card.green {
+      border-color: rgba(34,197,94,0.2);
+    }
+    .glass-card.green::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+      background: linear-gradient(180deg, #4ade80, #22c55e); border-radius: 4px 0 0 4px;
+    }
+    .glass-card h3 {
+      font-size: 17px; font-weight: 700; color: #e2e8f0; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .glass-card p { margin-bottom: 12px; }
+    .glass-card p:last-child { margin-bottom: 0; }
+
+    /* ===== 5-PASS PIPELINE ===== */
+    .pipeline-steps {
+      display: flex; flex-direction: column; gap: 16px;
+      margin: 28px 0;
+    }
+    .pipe-step {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 16px 20px; border-radius: 12px;
+      background: rgba(30,41,59,0.4);
+      border: 1px solid rgba(148,163,184,0.08);
+      transition: border-color 0.2s;
+    }
+    .pipe-step:hover { border-color: rgba(217,119,6,0.2); }
+    .pipe-icon {
+      flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      background: rgba(217,119,6,0.1); border: 1px solid rgba(217,119,6,0.15);
+    }
+    .pipe-content { flex: 1; }
+    .pipe-content strong { display: block; color: #e2e8f0; margin-bottom: 2px; font-size: 15px; }
+    .pipe-content p { font-size: 13px; color: #94a3b8; margin: 0; line-height: 1.5; }
+
+    /* ===== VORHER/NACHHER ===== */
+    .compare {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+      margin: 28px 0;
+    }
+    @media (max-width: 600px) {
+      .compare { grid-template-columns: 1fr; }
+    }
+    .compare-box {
+      background: rgba(30,41,59,0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(148,163,184,0.1);
+      border-radius: 14px; padding: 20px 24px;
+    }
+    .compare-box.before { border-color: rgba(239,68,68,0.2); }
+    .compare-box.after { border-color: rgba(34,197,94,0.25); }
+    .compare-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .compare-box.before .compare-label { color: #ef4444; }
+    .compare-box.after .compare-label { color: #4ade80; }
+    .compare-score {
+      font-size: 28px; font-weight: 800; margin-bottom: 8px;
+    }
+    .compare-box.before .compare-score { color: #ef4444; }
+    .compare-box.after .compare-score { color: #4ade80; }
+    .compare-text {
+      font-size: 13px; color: #94a3b8; line-height: 1.6;
+      font-style: italic;
+    }
+    .compare-text .flagged {
+      color: #ef4444; text-decoration: line-through; opacity: 0.7;
+    }
+
+    /* ===== STATS ROW ===== */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+      margin: 28px 0;
+    }
+    @media (max-width: 600px) {
+      .stats-row { grid-template-columns: 1fr; }
+    }
+    .stat-card {
+      text-align: center; padding: 20px 16px; border-radius: 12px;
+      background: rgba(30,41,59,0.4);
+      border: 1px solid rgba(148,163,184,0.08);
+    }
+    .stat-num {
+      font-size: 32px; font-weight: 800;
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-label { font-size: 12px; color: #64748b; margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* ===== BEFEHLE ===== */
+    .cmd-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      margin: 24px 0;
+    }
+    @media (max-width: 600px) {
+      .cmd-grid { grid-template-columns: 1fr; }
+    }
+    .cmd-item {
+      padding: 14px 18px; border-radius: 10px;
+      background: rgba(30,41,59,0.4);
+      border: 1px solid rgba(148,163,184,0.08);
+    }
+    .cmd-item code {
+      display: block; font-size: 13px; font-weight: 600; color: #fbbf24;
+      font-family: "SF Mono", "Fira Code", monospace;
+      margin-bottom: 4px;
+    }
+    .cmd-item span { font-size: 12px; color: #64748b; }
+
+    /* ===== CTA ===== */
+    .article-cta {
+      margin-top: 56px; padding: 40px 32px; border-radius: 16px; text-align: center;
+      background: rgba(30,41,59,0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(217,119,6,0.18);
+    }
+    .article-cta p { color: #94a3b8; font-size: 15px; margin-bottom: 20px; }
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 12px; font-weight: 600; font-size: 15px;
+      text-decoration: none; color: #0f172a; transition: all 0.2s;
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      box-shadow: 0 4px 20px rgba(217,119,6,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(217,119,6,0.4); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 12px; font-weight: 600; font-size: 15px;
+      text-decoration: none; color: #e2e8f0; transition: all 0.2s;
+      background: rgba(30,41,59,0.6); border: 1px solid rgba(148,163,184,0.15);
+    }
+    .btn-secondary:hover { border-color: rgba(148,163,184,0.3); background: rgba(30,41,59,0.8); }
+
+    /* ===== ECOSYSTEM TEASER ===== */
+    .eco-teaser {
+      max-width: 520px; margin: 48px auto 0; padding: 28px 32px; text-align: center;
+      background: rgba(15,23,42,0.5); border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 16px; backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.2);
+    }
+    .eco-teaser-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+      color: #f59e0b; margin-bottom: 12px;
+    }
+    .eco-teaser p { color: #94a3b8; font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+    .eco-teaser-btn {
+      display: inline-block; font-size: 13px; font-weight: 600; color: #f59e0b;
+      text-decoration: none; padding: 8px 20px; border-radius: 10px;
+      border: 1px solid rgba(245,158,11,0.25); background: rgba(245,158,11,0.06);
+      transition: all 0.2s;
+    }
+    .eco-teaser-btn:hover { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.4); transform: translateY(-1px); }
+
+    /* ===== FADE IN ===== */
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid rgba(148,163,184,0.08);
+      padding: 24px; text-align: center;
+      font-size: 13px; color: #475569;
+      position: relative; z-index: 1;
+    }
+    .footer-inner { max-width: 800px; margin: 0 auto; }
+    footer a { color: #64748b; text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: #f59e0b; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .article { padding: 100px 16px 60px; }
+      .article-cta { padding: 28px 20px; }
+      .glass-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="28" height="28"><defs><linearGradient id="hLG" x1="20%" y1="0%" x2="80%" y2="100%"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0.9"/><stop offset="50%" stop-color="#f59e0b" stop-opacity="0.8"/><stop offset="100%" stop-color="#d97706" stop-opacity="0.65"/></linearGradient></defs><path fill="url(#hLG)" d="m166.5 52.5q3.5 0 7 0 2.75 2.99 1.5 7-21.27 45.61-20.5 96 39.99 2.76 72 26.5 7.87 6.86 13.5 15.5 42.88-56.39 103.5-92.5 47.35-25.46 101-25 14.52 0.38 23.5 11.5 3.19 7.74 2 16-1.81 7.18-4.5 14-1 0-1 1-5.04 6.05-9 13-1 0-1 1 0 0.5 0 1-12.42 12.15-28.5 19-6.02 36.27-41.5 45-0.83 2.75 0 5 19.02-12.85 41.5-9 10.85-8.09 23.5-13 15.01-6.37 31-2.5 14.09 7.43 14 23.5-2.83 23.25-15.5 43-6.42 9.92-14 19-10.04 8.8-19.5 18-72.02 48.88-156.5 27-19.63 9.6-41.5 10.5-4.59 1.27-9 3 2 1 4 2 20.09-1.11 35 12 25.46 6.95 37.5 30.5 1.26 5.69-1 11-3.38 3.79-7.5 6.5 5.74 10.07 1.5 20.5-7.55 7.47-17.5 3.5-11.01-5.34-22.5-9.5-18.26 10-38.5 13-15.5 0-31 0-26.62-4.54-51-17-4.17 1.33-8 3.5-7.23 5.87-15 11-8.62 2.58-13.5-4.5-1.82 2.32-4.5 3.5-6.06 2.24-12 3.5-7.5 0-15 0-27.42-2.56-50-18.5-18-17.25-23-41.5 0-11.5 0-23 4.12-22.7 25-33 6.95-16.67 22-26.5-20.39-20.8-14.5-49.5 7.01-26.98 28.5-44.5 7.56-5.27 15-10.5-13.09-30.88-7.5-64 3.16-15.57 14.5-26.5 6.85-2.48 8 4.5-6.59 39.53 11 75.5 7.99-0.49 16-2 2.42-34.57 14.5-67.5 8.51-22.23 27.5-36z"/></svg></div>
+        <span class="nav-logo-text">OpenClaw</span>
+      </a>
+      <a onclick="history.back()" style="cursor:pointer" class="nav-back">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Zurueck
+      </a>
+    </div>
+  </nav>
+
+  <article class="article">
+
+    <!-- Hero -->
+    <div class="fade-in">
+      <span class="article-badge">OpenClaw Skill · v1.0.0</span>
+      <h1>Klingt dein Text nach <span class="highlight">KI</span>?<br>Jetzt findest du's raus.</h1>
+      <p class="article-meta">Humanizer-DE: Der erste deutsche KI-Text-Detektor fuer OpenClaw. Erkennt, markiert, erklaert – und schreibt auf Wunsch menschlicher um.</p>
+    </div>
+
+    <!-- 1. Was ist das? -->
+    <div class="fade-in">
+      <h2>Was macht der Humanizer?</h2>
+      <p>Du gibst ihm einen deutschen Text. Er sagt dir, wie stark der Text nach KI klingt – auf einer Skala von 0 bis 100. Score 0 heisst: klingt menschlich. Score 100 heisst: klingt wie ChatGPT auf Autopilot.</p>
+      <p>Aber er zeigt nicht nur den Score. Er markiert die Stellen, erklaert warum sie auffallen, und macht konkrete Vorschlaege, wie du es besser formulierst.</p>
+    </div>
+
+    <!-- Zahlen -->
+    <div class="fade-in">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num">24</div>
+          <div class="stat-label">KI-Muster</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">168</div>
+          <div class="stat-label">Vokabeln & Phrasen</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">5</div>
+          <div class="stat-label">Statistische Signale</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Die 5 Durchgaenge -->
+    <div class="fade-in">
+      <h2>Fuenf Durchgaenge. Ein Ergebnis.</h2>
+      <p>Jeder Text durchlaeuft fuenf Analyse-Schritte – vom groben Score bis zur konkreten Umschreibung.</p>
+
+      <div class="pipeline-steps">
+        <div class="pipe-step">
+          <div class="pipe-icon">🔍</div>
+          <div class="pipe-content">
+            <strong>1. Muster-Scan</strong>
+            <p>24 typische KI-Schreibmuster: Bedeutungsinflation, Aufzaehlungs-Sucht, leere Verstaerker, negativer Parallelismus und mehr.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon">📖</div>
+          <div class="pipe-content">
+            <strong>2. Vokabel-Check</strong>
+            <p>168 Woerter und Phrasen in drei Schweregrad-Stufen: Verboten (sofort raus), Sparsam (in Massen okay), Beobachten (nur im Cluster verdaechtig).</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon">📊</div>
+          <div class="pipe-content">
+            <strong>3. Statistische Analyse</strong>
+            <p>Burstiness, Type-Token-Ratio, Satzlaengen-Variation, Trigramm-Wiederholung und Flesch-DE. Fuenf Signale, die KI-Gleichfoermigkeit entlarven.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon">🎯</div>
+          <div class="pipe-content">
+            <strong>4. Score & Report</strong>
+            <p>Alles zusammen ergibt einen Score von 0 bis 100 – mit detailliertem Report: was auffaellt, wo es steht, warum es problematisch ist.</p>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon">🖊️</div>
+          <div class="pipe-content">
+            <strong>5. Personality Injection</strong>
+            <p>Auf Wunsch schreibt der Skill den Text um: Einschuebe, Rhythmuswechsel, Mini-Abschweifungen, Unsicherheitsmarker. Optional im Lesch-Stil.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Vorher / Nachher -->
+    <div class="fade-in">
+      <h2>Vorher / Nachher</h2>
+      <p>Ein typischer KI-Blogpost – und was der Humanizer daraus macht.</p>
+
+      <div class="compare">
+        <div class="compare-box before">
+          <div class="compare-label">Vorher · KI-generiert</div>
+          <div class="compare-score">75/100</div>
+          <p class="compare-text">"Es ist wichtig zu beachten, dass kuenstliche Intelligenz einen <span class="flagged">grundlegenden Paradigmenwechsel</span> in der Arbeitswelt darstellt. Die Technologie fungiert als <span class="flagged">Katalysator</span> fuer Innovation und bietet eine <span class="flagged">ganzheitliche Loesung</span> fuer moderne Herausforderungen..."</p>
+        </div>
+        <div class="compare-box after">
+          <div class="compare-label">Nachher · humanisiert</div>
+          <div class="compare-score">18/100</div>
+          <p class="compare-text">"KI veraendert die Art, wie wir arbeiten. Nicht irgendwann, sondern jetzt. Laut McKinsey sparen Teams mit KI-Tools im Schnitt 3,2 Stunden pro Woche. Das klingt nach wenig. Ist es aber nicht – auf ein Jahr gerechnet sind das 20 volle Arbeitstage."</p>
+        </div>
+      </div>
+
+      <div class="glass-card amber">
+        <h3>Was sich geaendert hat</h3>
+        <p><strong>Raus:</strong> "Paradigmenwechsel", "Katalysator", "ganzheitliche Loesung", "nahtlos", "Es ist wichtig zu beachten" – klassische KI-Marker, die sofort auffallen.</p>
+        <p><strong>Rein:</strong> Konkrete Zahlen mit Quelle, persoenliche Erfahrung, ehrliche Einschaetzung ("Da bin ich mir nicht sicher"), kurze Saetze neben langen.</p>
+      </div>
+    </div>
+
+    <!-- 4. Befehle -->
+    <div class="fade-in">
+      <h2>Sechs Befehle. Mehr brauchst du nicht.</h2>
+      <div class="cmd-grid">
+        <div class="cmd-item">
+          <code>Check diesen Text</code>
+          <span>Vollstaendiger Report mit Score</span>
+        </div>
+        <div class="cmd-item">
+          <code>Score: [Text]</code>
+          <span>Nur der Score (0–100)</span>
+        </div>
+        <div class="cmd-item">
+          <code>Was klingt hier nach KI?</code>
+          <span>Problematische Stellen markiert</span>
+        </div>
+        <div class="cmd-item">
+          <code>Humanisiere das</code>
+          <span>Text menschlicher umschreiben</span>
+        </div>
+        <div class="cmd-item">
+          <code>Humanisiere im Lesch-Stil</code>
+          <span>Umschreiben mit Lesch-Layer</span>
+        </div>
+        <div class="cmd-item">
+          <code>Mach das menschlicher</code>
+          <span>Synonym fuer Humanisiere</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Installation -->
+    <div class="fade-in">
+      <h2>Installation</h2>
+      <div class="glass-card green">
+        <h3>Ein Satz. Fertig.</h3>
+        <p>Sag deinem OpenClaw:</p>
+        <p style="font-family: 'SF Mono', 'Fira Code', monospace; font-size: 15px; color: #fbbf24; background: rgba(0,0,0,0.2); padding: 12px 16px; border-radius: 8px; margin-top: 8px;">"Installiere den Skill OpenClaw/humanizer-de"</p>
+        <p style="margin-top: 12px;">Kein Terminal, kein manueller Download. OpenClaw laedt den Skill herunter und aktiviert ihn automatisch beim naechsten Schreibvorgang.</p>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="article-cta fade-in">
+      <p>Texte, die nach Mensch klingen. Nicht nach Maschine.</p>
+      <div class="cta-buttons">
+        <a href="index.html#buch" class="btn-primary">Das Buch ansehen</a>
+        <a href="https://tikitackr.github.io/Cowan/" target="_blank" class="btn-secondary">Cowan ausprobieren</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- Ecosystem Teaser -->
+  <div class="eco-teaser fade-in">
+    <div class="eco-teaser-label">Das ganze Oekosystem</div>
+    <p>Der Humanizer ist ein Baustein. Entdecke das Buch, Cowan, das Dashboard und die Multi-Agent-Pipeline – alles Open Source, alles deins.</p>
+    <a href="index.html" class="eco-teaser-btn">OpenClaw entdecken &rarr;</a>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <span>&copy; 2026 OpenClaw. Open Source unter MIT.</span>
+      &nbsp;&middot;&nbsp;
+      <a href="index.html">Zurueck zur Startseite</a>
+      &nbsp;&middot;&nbsp;
+      <a href="https://github.com/tikitackr" target="_blank">GitHub</a>
+      &nbsp;&middot;&nbsp;
+      <a href="voice-upgrade.html">Voice-Upgrade</a>
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
