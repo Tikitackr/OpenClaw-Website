@@ -230,6 +230,26 @@
     }
     .btn-secondary:hover { border-color: rgba(148,163,184,0.3); background: rgba(30,41,59,0.8); }
 
+    /* Ecosystem Teaser */
+    .eco-teaser {
+      max-width: 520px; margin: 48px auto 0; padding: 28px 32px; text-align: center;
+      background: rgba(15,23,42,0.5); border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 16px; backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.2);
+    }
+    .eco-teaser-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+      color: #f59e0b; margin-bottom: 12px;
+    }
+    .eco-teaser p { color: #94a3b8; font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+    .eco-teaser-btn {
+      display: inline-block; font-size: 13px; font-weight: 600; color: #f59e0b;
+      text-decoration: none; padding: 8px 20px; border-radius: 10px;
+      border: 1px solid rgba(245,158,11,0.25); background: rgba(245,158,11,0.06);
+      transition: all 0.2s;
+    }
+    .eco-teaser-btn:hover { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.4); transform: translateY(-1px); }
+
     /* Fade In */
     .fade-in {
       opacity: 0; transform: translateY(24px);
@@ -272,9 +292,9 @@
         </span>
         <span class="nav-logo-text">OpenClaw</span>
       </a>
-      <a href="index.html" class="nav-back">
+      <a onclick="history.back()" style="cursor:pointer" class="nav-back">
         <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-        Startseite
+        Zurück
       </a>
     </div>
   </nav>
@@ -396,10 +416,17 @@
       <p>Bereit fuer die natuerliche Stimme? Alles beginnt mit dem Buch.</p>
       <div class="cta-buttons">
         <a href="index.html#buch" class="btn-primary">Das Buch ansehen</a>
-        <a href="https://tikitackr.github.io/Cowan/" target="_blank" class="btn-secondary">Cowan ausprobieren</a>
+        <a id="cowan-btn" href="https://tikitackr.github.io/Cowan/" target="_blank" class="btn-secondary">Cowan ausprobieren</a>
       </div>
     </div>
   </article>
+
+  <!-- Ecosystem Teaser -->
+  <div class="eco-teaser fade-in">
+    <div class="eco-teaser-label">Das ganze Oekosystem</div>
+    <p>Cowan ist nur ein Baustein. Entdecke das Buch, das Dashboard und die Multi-Agent-Pipeline – alles Open Source, alles deins.</p>
+    <a href="index.html" class="eco-teaser-btn">OpenClaw entdecken →</a>
+  </div>
 
   <!-- Footer -->
   <footer>
@@ -421,6 +448,17 @@
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Smart Cowan-Button: Wer von Cowan kommt, sieht "Zurück zu Cowan"
+    if (new URLSearchParams(window.location.search).get('from') === 'cowan') {
+      const btn = document.getElementById('cowan-btn');
+      if (btn) {
+        btn.textContent = 'Zurück zu Cowan';
+        btn.removeAttribute('target');
+        btn.href = '#';
+        btn.addEventListener('click', function(e) { e.preventDefault(); history.back(); });
+      }
+    }
   </script>
 
 </body>
