@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice-Upgrade – Cowan bekommt eine echte Stimme</title>
+  <meta name="description" content="Upgrade Cowans Stimme kostenlos: Von roboterhafter Browser-Stimme zu natuerlicher Neural-Stimme ueber deinen eigenen OpenClaw-Server. Kein extra API-Key noetig.">
+  <meta name="author" content="Thomas Iburg">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0f172a">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Voice-Upgrade – Cowan bekommt eine echte Stimme">
+  <meta property="og:description" content="Kostenlos, ohne extra API-Key: Dein OpenClaw-Server gibt Cowan eine natuerliche Stimme ueber Edge TTS.">
+  <meta property="og:url" content="https://tikitackr.github.io/OpenClaw-Website/voice-upgrade.html">
+  <meta property="og:site_name" content="OpenClaw">
+  <meta property="og:locale" content="de_DE">
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===== BACKGROUND ===== */
+    .bg-glow {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .bg-glow::before {
+      content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%;
+      background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 70%);
+      animation: floatGlow 20s ease-in-out infinite;
+    }
+    .bg-glow::after {
+      content: ''; position: absolute; bottom: -20%; right: -10%; width: 60%; height: 60%;
+      background: radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%);
+      animation: floatGlow 25s ease-in-out infinite reverse;
+    }
+    @keyframes floatGlow {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(40px, -30px); }
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 24px;
+      background: rgba(15,23,42,0.8);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(148,163,184,0.1);
+    }
+    .nav-inner {
+      max-width: 800px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: #e2e8f0;
+    }
+    .nav-logo-icon {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 8px rgba(217,119,6,0.3));
+    }
+    .nav-logo-text { font-weight: 700; font-size: 18px; letter-spacing: -0.3px; }
+    .nav-back {
+      color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 500;
+      display: flex; align-items: center; gap: 6px; transition: color 0.2s;
+    }
+    .nav-back:hover { color: #f59e0b; }
+    .nav-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ===== ARTICLE ===== */
+    .article {
+      position: relative; z-index: 1;
+      max-width: 800px; margin: 0 auto;
+      padding: 120px 24px 80px;
+    }
+    .article-badge {
+      display: inline-block; padding: 6px 16px; border-radius: 20px;
+      background: rgba(217,119,6,0.12); border: 1px solid rgba(217,119,6,0.25);
+      color: #f59e0b; font-size: 13px; font-weight: 600; margin-bottom: 24px;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .article h1 {
+      font-size: clamp(28px, 5vw, 42px); font-weight: 800;
+      letter-spacing: -1px; line-height: 1.15; margin-bottom: 16px;
+    }
+    .article h1 .highlight {
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .article-meta {
+      font-size: 14px; color: #64748b; margin-bottom: 48px;
+      padding-bottom: 32px; border-bottom: 1px solid rgba(148,163,184,0.1);
+    }
+
+    .article h2 {
+      font-size: clamp(22px, 3vw, 28px); font-weight: 700;
+      color: #e2e8f0; margin: 56px 0 20px; letter-spacing: -0.3px;
+    }
+    .article p {
+      font-size: 16px; color: #cbd5e1; margin-bottom: 20px; line-height: 1.7;
+    }
+    .article strong { color: #e2e8f0; }
+
+    /* ===== GLASS CARDS ===== */
+    .glass-card {
+      background: rgba(30,41,59,0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 16px; padding: 28px 32px; margin-bottom: 32px;
+      position: relative; overflow: hidden;
+    }
+    .glass-card.amber {
+      border-color: rgba(217,119,6,0.18);
+    }
+    .glass-card.amber::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+      background: linear-gradient(180deg, #fbbf24, #d97706); border-radius: 4px 0 0 4px;
+    }
+    .glass-card.green {
+      border-color: rgba(34,197,94,0.2);
+    }
+    .glass-card.green::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+      background: linear-gradient(180deg, #4ade80, #22c55e); border-radius: 4px 0 0 4px;
+    }
+    .glass-card h3 {
+      font-size: 17px; font-weight: 700; color: #e2e8f0; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .glass-card p { margin-bottom: 12px; }
+    .glass-card p:last-child { margin-bottom: 0; }
+
+    /* Steps */
+    .steps {
+      counter-reset: step;
+      display: flex; flex-direction: column; gap: 20px;
+      margin: 24px 0;
+    }
+    .step {
+      counter-increment: step;
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .step-num {
+      flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(217,119,6,0.15); border: 1px solid rgba(217,119,6,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: #f59e0b;
+    }
+    .step-content { flex: 1; }
+    .step-content strong { display: block; color: #e2e8f0; margin-bottom: 4px; font-size: 15px; }
+    .step-content p { font-size: 14px; color: #94a3b8; margin: 0; }
+
+    /* Vergleichs-Box */
+    .compare {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+      margin: 28px 0;
+    }
+    @media (max-width: 600px) {
+      .compare { grid-template-columns: 1fr; }
+    }
+    .compare-box {
+      background: rgba(30,41,59,0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(148,163,184,0.1);
+      border-radius: 14px; padding: 20px 24px; text-align: center;
+    }
+    .compare-box.before { border-color: rgba(148,163,184,0.15); }
+    .compare-box.after { border-color: rgba(217,119,6,0.25); }
+    .compare-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .compare-box.before .compare-label { color: #64748b; }
+    .compare-box.after .compare-label { color: #f59e0b; }
+    .compare-voice {
+      font-size: 18px; font-weight: 700; margin-bottom: 6px;
+    }
+    .compare-box.before .compare-voice { color: #94a3b8; }
+    .compare-box.after .compare-voice { color: #fbbf24; }
+    .compare-desc { font-size: 13px; color: #64748b; line-height: 1.5; }
+
+    /* Icon Container */
+    .icon-circle {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .icon-circle.amber { background: rgba(217,119,6,0.15); }
+    .icon-circle.green { background: rgba(34,197,94,0.15); }
+    .icon-circle svg { width: 20px; height: 20px; }
+
+    /* CTA */
+    .article-cta {
+      margin-top: 56px; padding: 40px 32px; border-radius: 16px; text-align: center;
+      background: rgba(30,41,59,0.55);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(217,119,6,0.18);
+    }
+    .article-cta p { color: #94a3b8; font-size: 15px; margin-bottom: 20px; }
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 12px; font-weight: 600; font-size: 15px;
+      text-decoration: none; color: #0f172a; transition: all 0.2s;
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      box-shadow: 0 4px 20px rgba(217,119,6,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(217,119,6,0.4); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 12px; font-weight: 600; font-size: 15px;
+      text-decoration: none; color: #e2e8f0; transition: all 0.2s;
+      background: rgba(30,41,59,0.6); border: 1px solid rgba(148,163,184,0.15);
+    }
+    .btn-secondary:hover { border-color: rgba(148,163,184,0.3); background: rgba(30,41,59,0.8); }
+
+    /* Fade In */
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(148,163,184,0.08);
+      padding: 24px; text-align: center;
+      font-size: 13px; color: #475569;
+      position: relative; z-index: 1;
+    }
+    .footer-inner { max-width: 800px; margin: 0 auto; }
+    footer a { color: #64748b; text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: #f59e0b; }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .article { padding: 100px 16px 60px; }
+      .glass-card { padding: 20px; }
+      .article-cta { padding: 28px 20px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-glow"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-icon">
+          <svg viewBox="0 0 100 100" width="32" height="32">
+            <defs><linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#d97706"/></linearGradient></defs>
+            <path d="M50 8 C35 8 22 18 18 32 C16 38 17 45 20 50 L15 65 C14 68 16 71 19 71 L25 70 C30 76 38 80 47 81 L47 90 C47 92 49 94 51 94 L53 94 C55 94 57 92 57 90 L57 81 C66 80 74 75 79 68 C85 59 86 48 82 38 C78 22 65 8 50 8Z M35 45 C32 45 30 42 30 39 C30 36 32 33 35 33 C38 33 40 36 40 39 C40 42 38 45 35 45Z M55 60 C48 63 40 63 35 59 C33 57 34 54 36 53 C38 52 41 53 42 55 C45 57 50 57 54 55 C56 54 59 53 60 55 C62 57 60 60 58 61Z M65 45 C62 45 60 42 60 39 C60 36 62 33 65 33 C68 33 70 36 70 39 C70 42 68 45 65 45Z" fill="url(#hg)"/>
+          </svg>
+        </span>
+        <span class="nav-logo-text">OpenClaw</span>
+      </a>
+      <a href="index.html" class="nav-back">
+        <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Startseite
+      </a>
+    </div>
+  </nav>
+
+  <!-- ARTICLE -->
+  <article class="article">
+    <div class="fade-in">
+      <span class="article-badge">Cowan Voice-Upgrade</span>
+      <h1>Cowan bekommt eine <span class="highlight">echte Stimme</span></h1>
+      <div class="article-meta">
+        Kostenlos. Kein extra API-Key. Dein Server macht den Unterschied.
+      </div>
+    </div>
+
+    <!-- 1. Was ist das Voice-Upgrade? -->
+    <div class="fade-in">
+      <h2>Was ist das Voice-Upgrade?</h2>
+      <p>Cowan kann sprechen. Aber ehrlich gesagt: Die Browser-Stimme klingt wie ein Navigationsgerät aus 2008. Besonders auf Android. Auf iPhones mit "Anna" oder "Helena" etwas besser, aber immer noch deutlich kuenstlich.</p>
+      <p>Das Voice-Upgrade aendert das. Dein eigener OpenClaw-Server uebernimmt die Sprachausgabe und nutzt dafuer <strong>Edge TTS</strong> von Microsoft. Das sind Neural Voices, also Stimmen die mit neuronalen Netzen trainiert wurden. Der Unterschied ist sofort hoerbar.</p>
+
+      <div class="compare">
+        <div class="compare-box before">
+          <div class="compare-label">Vorher</div>
+          <div class="compare-voice">Browser-TTS</div>
+          <div class="compare-desc">Roboterhaft, monoton, klingt nach Maschine</div>
+        </div>
+        <div class="compare-box after">
+          <div class="compare-label">Nachher</div>
+          <div class="compare-voice">Edge TTS</div>
+          <div class="compare-desc">Natuerliche Intonation, menschliche Pausen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Was brauchst du? -->
+    <div class="fade-in">
+      <h2>Was brauchst du?</h2>
+
+      <div class="glass-card amber">
+        <h3>
+          <span class="icon-circle amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+              <line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>
+            </svg>
+          </span>
+          Deinen eigenen OpenClaw-Server
+        </h3>
+        <p>Einen VPS, zum Beispiel bei Hostinger. Darauf laeuft dein OpenClaw. Das Buch fuehrt dich Schritt fuer Schritt durch die Installation. Wenn du das Buch bis zum Server-Kapitel durchgearbeitet hast, steht der Server schon.</p>
+        <p style="font-size: 14px; color: #94a3b8;"><strong style="color: #f59e0b;">Wichtig:</strong> Du brauchst keinen zweiten API-Key. Edge TTS ist ein kostenloser Dienst von Microsoft. Kein Account, keine Registrierung, keine versteckten Kosten.</p>
+      </div>
+    </div>
+
+    <!-- 3. Wie geht's? -->
+    <div class="fade-in">
+      <h2>Drei Schritte, fertig</h2>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <strong>ClawHub-Skill installieren</strong>
+            <p>Im OpenClaw-Dashboard den Skill "Cowan Companion" suchen und installieren. Ein Klick. Der Skill richtet TTS, System-Prompt und die Wissensbasis automatisch ein.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <strong>QR-Code scannen</strong>
+            <p>Dashboard zeigt einen QR-Code. Handy scannen. Cowan verbindet sich automatisch mit deinem Server. Kein URL-Eintippen, keine Konfiguration.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <strong>Sprechen und staunen</strong>
+            <p>Sprich mit Cowan. Die naechste Antwort kommt mit der neuen Stimme. Du hoerst den Unterschied sofort.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Kostet das was? -->
+    <div class="fade-in">
+      <h2>Kostet das was?</h2>
+
+      <div class="glass-card green">
+        <h3>
+          <span class="icon-circle green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+          </span>
+          Nein. Komplett kostenlos.
+        </h3>
+        <p>Edge TTS laeuft ueber deinen Server und verursacht keine Zusatzkosten. Kein Freemium-Modell, kein Limit, kein Ablaufdatum. Solange dein Server laeuft, laeuft die Stimme.</p>
+        <p>Du hast bereits fuer den VPS bezahlt, der sowieso fuer OpenClaw noetig ist. Edge TTS ist ein Bonus obendrauf.</p>
+      </div>
+    </div>
+
+    <!-- 5. Noch mehr? -->
+    <div class="fade-in">
+      <h2>Noch bessere Stimmen?</h2>
+      <p>Edge TTS klingt gut. Aber wenn du noch mehr willst, kannst du optional auf andere Anbieter wechseln:</p>
+      <p><strong>OpenAI TTS</strong> liefert extrem natuerliche Stimmen. Braucht einen OpenAI API-Key und kostet ca. 0,015 Dollar pro 1.000 Zeichen. Fuer den gelegentlichen Einsatz ein paar Cent am Tag.</p>
+      <p><strong>ElevenLabs</strong> bietet die vielleicht realistischsten Stimmen am Markt. Free-Tier mit 10.000 Zeichen pro Monat, danach ab 5 Dollar.</p>
+      <p>Aber das ist Kuer, keine Pflicht. Edge TTS reicht fuer die allermeisten voellig aus. In <code>openclaw.json</code> kannst du den Provider jederzeit wechseln, wenn du experimentieren willst.</p>
+    </div>
+
+    <!-- 6. Das Buch -->
+    <div class="fade-in">
+      <h2>Schritt fuer Schritt im Buch</h2>
+      <p>Alles, was hier beschrieben ist, wird im Buch ausfuehrlich erklaert. Von der Server-Installation ueber den ClawHub-Skill bis zum ersten gesprochenen Satz. Mit Screenshots, Befehlen zum Kopieren und ehrlichen Hinweisen, wenn etwas schiefgehen kann.</p>
+      <p>Cowan funktioniert auch ohne Server, mit der Browser-Stimme. Aber wenn du einmal die Server-Stimme gehoert hast, willst du nicht mehr zurueck.</p>
+    </div>
+
+    <!-- CTA -->
+    <div class="article-cta fade-in">
+      <p>Bereit fuer die natuerliche Stimme? Alles beginnt mit dem Buch.</p>
+      <div class="cta-buttons">
+        <a href="index.html#buch" class="btn-primary">Das Buch ansehen</a>
+        <a href="https://tikitackr.github.io/Cowan/" target="_blank" class="btn-secondary">Cowan ausprobieren</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <span>&copy; 2026 OpenClaw. Open Source unter MIT.</span>
+      &nbsp;&middot;&nbsp;
+      <a href="index.html">Zurueck zur Startseite</a>
+      &nbsp;&middot;&nbsp;
+      <a href="https://github.com/tikitackr" target="_blank">GitHub</a>
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
