@@ -292,7 +292,7 @@
         </span>
         <span class="nav-logo-text">OpenClaw</span>
       </a>
-      <a onclick="history.back()" style="cursor:pointer" class="nav-back">
+      <a id="nav-back-btn" onclick="if(window.history.length>1){history.back()}else{window.location.href='index.html'}" style="cursor:pointer" class="nav-back">
         <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
         Zurück
       </a>
@@ -452,14 +452,23 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    // Smart Cowan-Button: Wer von Cowan kommt, sieht "Zurück zu Cowan"
-    if (new URLSearchParams(window.location.search).get('from') === 'cowan') {
-      const btn = document.getElementById('cowan-btn');
+    // Smart Cowan-Button + Nav-Back: Wer von Cowan kommt, geht zurueck zu Cowan
+    var fromCowan = new URLSearchParams(window.location.search).get('from') === 'cowan';
+    if (fromCowan) {
+      var cowanUrl = 'https://tikitackr.github.io/Cowan/';
+      // CTA-Button umbauen
+      var btn = document.getElementById('cowan-btn');
       if (btn) {
         btn.textContent = 'Zurück zu Cowan';
         btn.removeAttribute('target');
-        btn.href = '#';
-        btn.addEventListener('click', function(e) { e.preventDefault(); history.back(); });
+        btn.href = cowanUrl;
+      }
+      // Nav-Back-Button umbauen
+      var navBack = document.getElementById('nav-back-btn');
+      if (navBack) {
+        navBack.textContent = '';
+        navBack.innerHTML = '<svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> Zurück zu Cowan';
+        navBack.onclick = function() { window.location.href = cowanUrl; };
       }
     }
   </script>
