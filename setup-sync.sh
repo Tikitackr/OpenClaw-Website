@@ -158,7 +158,7 @@ SYSTEMD
 
   systemctl daemon-reload
   systemctl enable openclaw-sync --quiet
-  systemctl start openclaw-sync
+  systemctl restart openclaw-sync
 
   # Token in Datei speichern
   echo "${SYNC_TOKEN}" > /root/sync-data/SYNC_TOKEN.txt
