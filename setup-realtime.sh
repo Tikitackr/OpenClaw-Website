@@ -118,7 +118,6 @@ const SESSION_CONFIG = JSON.stringify({
   model: 'gpt-realtime-mini',
   voice: 'marin',
   instructions: 'Du bist Cowan, ein freundlicher und kompetenter Buch-Begleiter fuer das OpenClaw-Sachbuch. Du sprichst Deutsch, antwortest in 1-2 kurzen Saetzen, stellst Rueckfragen wenn etwas unklar ist, und hilfst dem Leser beim Verstehen von KI-Agenten, OpenClaw-Setup und Programmierung. Kein Markdown, keine Listen, keine Emojis – du sprichst natuerlich wie in einem echten Gespraech.',
-  input_audio_transcription: { model: 'whisper-1' },
   turn_detection: { type: 'server_vad', threshold: 0.5, prefix_padding_ms: 300, silence_duration_ms: 600 }
 });
 
