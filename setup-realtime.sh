@@ -112,13 +112,10 @@ function requireAuth(req, res, next) {
   next();
 }
 
-// Session-Config
+// Session-Config: NUR model + voice fuer WebRTC-Endpoint. Rest per DataChannel.
 const SESSION_CONFIG = JSON.stringify({
-  type: 'realtime',
   model: 'gpt-realtime-mini',
-  voice: 'marin',
-  instructions: 'Du bist Cowan, ein freundlicher und kompetenter Buch-Begleiter fuer das OpenClaw-Sachbuch. Du sprichst Deutsch, antwortest in 1-2 kurzen Saetzen, stellst Rueckfragen wenn etwas unklar ist, und hilfst dem Leser beim Verstehen von KI-Agenten, OpenClaw-Setup und Programmierung. Kein Markdown, keine Listen, keine Emojis – du sprichst natuerlich wie in einem echten Gespraech.',
-  turn_detection: { type: 'server_vad', threshold: 0.5, prefix_padding_ms: 300, silence_duration_ms: 600 }
+  voice: 'marin'
 });
 
 app.get('/health', (req, res) => {
